@@ -19,8 +19,7 @@ def get_image_files(directory: str, recursive: bool = False) -> List[str]:
         List of paths to image files
     """
     # Supported image file extensions
-    image_extensions = ('*.jpg', '*.jpeg', '*.png', '*.tiff', '*.bmp',
-                   '*.cr2', '*.nef', '*.arw', '*.dng', '*.orf', '*.rw2', '*.pef', '*.srw')
+    image_extensions = ('*.jpg', '*.jpeg', '*.png', '*.tiff', '*.bmp')
     
     # Check if directory exists
     if not os.path.isdir(directory):
