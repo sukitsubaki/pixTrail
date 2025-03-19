@@ -1,6 +1,6 @@
 # PixTrail
 
-A Python tool to extract GPS data from geotagged photos and create GPX files for visualizing your journey on maps.
+A Python tool to extract GPS data from geotagged photos and create GPX files for visualizing your journey on maps. PixTrail makes it easy to trace and share your travel routes by reading GPS information stored in your photos' metadata and converting it into standard GPX format that can be used in various mapping applications.
 
 ## Features
 
@@ -10,6 +10,10 @@ A Python tool to extract GPS data from geotagged photos and create GPX files for
 - Support for various raw formats: CR2 (Canon), NEF (Nikon), ARW (Sony), ORF (Olympus), RW2 (Panasonic), PEF (Pentax), SRW (Samsung), DNG
 - Command-line interface for easy use
 - Support for recursive directory processing
+
+## Privacy
+
+PixTrail processes all photo metadata locally on your device. No data is uploaded to any server, shared with third parties, or sent anywhere outside your computer. Your location data and photos remain completely private and under your control at all times.
 
 ## Installation
 
