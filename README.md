@@ -84,3 +84,52 @@ After running PixTrail on a directory of geotagged photos, you'll get a GPX file
 - Google Earth
 - GPX viewers
 - Mapping applications on smartphones and GPS devices
+
+## Future Roadmap
+
+Here are some features we're planning to add in future releases:
+
+- **Automatic GPX Naming**: Name GPX files automatically after the photo directory
+- **Local Web Interface**: A browser-based interface running entirely on your device
+  - Processes photos locally without any server uploads
+  - Displays the extracted route on OpenStreetMap while keeping all data on your device
+  - Creates GPX files directly on your computer
+  - Allows sharing only the generated GPX file (never your original photos or personal metadata)
+- **Time-based Filtering**: Process only photos within specific time windows
+- **Route Smoothing**: Algorithm to reduce GPS inaccuracies
+- **Statistics**: Calculate and display statistics like total distance, average speed, elevation profile
+- **Batch Processing**: Process multiple directories at once with separate GPX outputs
+- **Video Support**: Extract GPS data from video files
+
+## Contributing
+
+Contributions and suggestions for additional features are welcome! Here's how you can help:
+
+- **Bug Reports**: If you encounter any issues, please open an issue on GitHub with details about the problem, including steps to reproduce it.
+- **Feature Requests**: Have an idea for a new feature? Feel free to create an issue describing your suggestion.
+- **Code Contributions**: Want to contribute code? Fork the repository, make your changes, and submit a pull request.
+- **Documentation**: Help improve the documentation by fixing errors or adding examples.
+
+Please follow these guidelines when contributing:
+- Follow the existing code style
+- Add tests for new functionality
+- Update documentation as needed
+- Keep pull requests focused on a single change
+
+### Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/pixtrail.git
+cd pixtrail
+
+# Create a virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install development dependencies
+pip install -e ".[dev]"
+
+# Run tests
+pytest
+```
