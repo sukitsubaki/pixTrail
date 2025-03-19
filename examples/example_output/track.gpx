@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1" creator="PixTrail - GPS Photo Tracker">
+  <wpt lat="41.90578055555555" lon="12.482402777777779">
+    <ele>0.0</ele>
+    <time>2025-03-19T22:17:50.510469</time>
+    <name>BDH_10_1I_0174.jpg</name>
+  </wpt>
+  <wpt lat="41.90521666666667" lon="12.48255">
+    <ele>0.0</ele>
+    <time>2025-03-19T22:17:50.510791</time>
+    <name>BDH_10_1I_0180.jpg</name>
+  </wpt>
+  <wpt lat="41.905205555555554" lon="12.482552777777778">
+    <ele>0.0</ele>
+    <time>2025-03-19T22:17:50.511079</time>
+    <name>BDH_10_1I_0181.jpg</name>
+  </wpt>
+  <wpt lat="41.90326944444444" lon="12.483222222222222">
+    <ele>0.0</ele>
+    <time>2025-03-19T22:17:50.511541</time>
+    <name>BDH_10_1I_0196.jpg</name>
+  </wpt>
+  <wpt lat="41.900980555555556" lon="12.479041666666667">
+    <ele>0.0</ele>
+    <time>2025-03-19T22:17:50.511830</time>
+    <name>BDH_10_1I_0382.jpg</name>
+  </wpt>
+  <wpt lat="41.90100555555556" lon="12.479544444444445">
+    <ele>0.0</ele>
+    <time>2025-03-19T22:17:50.512114</time>
+    <name>BDH_10_1I_0384.jpg</name>
+  </wpt>
+  <wpt lat="41.90122222222222" lon="12.480305555555555">
+    <ele>0.0</ele>
+    <time>2025-03-19T22:17:50.512469</time>
+    <name>BDH_10_1I_0452.jpg</name>
+  </wpt>
+  <wpt lat="41.901627777777776" lon="12.48108888888889">
+    <ele>0.0</ele>
+    <time>2025-03-19T22:17:50.512786</time>
+    <name>BDH_10_1I_0472.jpg</name>
+  </wpt>
+  <wpt lat="41.902455555555555" lon="12.481211111111111">
+    <ele>0.0</ele>
+    <time>2025-03-19T22:17:50.513095</time>
+    <name>BDH_10_1I_0477.jpg</name>
+  </wpt>
+  <wpt lat="41.90535277777778" lon="12.478694444444445">
+    <ele>0.0</ele>
+    <time>2025-03-19T22:17:50.513396</time>
+    <name>BDH_10_1I_0499.jpg</name>
+  </wpt>
+  <wpt lat="41.906080555555555" lon="12.479169444444445">
+    <ele>0.0</ele>
+    <time>2025-03-19T22:17:50.513676</time>
+    <name>BDH_10_1I_0511.jpg</name>
+  </wpt>
+  <wpt lat="41.90631944444444" lon="12.483197222222222">
+    <ele>0.0</ele>
+    <time>2025-03-19T22:17:50.513963</time>
+    <name>BDH_10_1I_0557.jpg</name>
+  </wpt>
+  <wpt lat="41.906238888888886" lon="12.48311111111111">
+    <ele>0.0</ele>
+    <time>2025-03-19T22:17:50.514246</time>
+    <name>BDH_10_1I_0617.jpg</name>
+  </wpt>
+  <wpt lat="41.91005277777778" lon="12.479669444444445">
+    <ele>0.0</ele>
+    <time>2025-03-19T22:17:50.514569</time>
+    <name>BDH_10_1I_0651.jpg</name>
+  </wpt>
+  <wpt lat="41.90400277777778" lon="12.472822222222222">
+    <ele>0.0</ele>
+    <time>2025-03-19T22:17:50.514877</time>
+    <name>BDH_10_1I_0676.jpg</name>
+  </wpt>
+  <wpt lat="41.901069444444445" lon="12.46526111111111">
+    <ele>0.0</ele>
+    <time>2025-03-19T22:17:50.515160</time>
+    <name>BDH_10_1I_0732.jpg</name>
+  </wpt>
+  <trk>
+    <trkseg>
+      <trkpt lat="41.90578055555555" lon="12.482402777777779">
+        <ele>0.0</ele>
+        <time>2025-03-19T22:17:50.510469</time>
+      </trkpt>
+      <trkpt lat="41.90521666666667" lon="12.48255">
+        <ele>0.0</ele>
+        <time>2025-03-19T22:17:50.510791</time>
+      </trkpt>
+      <trkpt lat="41.905205555555554" lon="12.482552777777778">
+        <ele>0.0</ele>
+        <time>2025-03-19T22:17:50.511079</time>
+      </trkpt>
+      <trkpt lat="41.90326944444444" lon="12.483222222222222">
+        <ele>0.0</ele>
+        <time>2025-03-19T22:17:50.511541</time>
+      </trkpt>
+      <trkpt lat="41.900980555555556" lon="12.479041666666667">
+        <ele>0.0</ele>
+        <time>2025-03-19T22:17:50.511830</time>
+      </trkpt>
+      <trkpt lat="41.90100555555556" lon="12.479544444444445">
+        <ele>0.0</ele>
+        <time>2025-03-19T22:17:50.512114</time>
+      </trkpt>
+      <trkpt lat="41.90122222222222" lon="12.480305555555555">
+        <ele>0.0</ele>
+        <time>2025-03-19T22:17:50.512469</time>
+      </trkpt>
+      <trkpt lat="41.901627777777776" lon="12.48108888888889">
+        <ele>0.0</ele>
+        <time>2025-03-19T22:17:50.512786</time>
+      </trkpt>
+      <trkpt lat="41.902455555555555" lon="12.481211111111111">
+        <ele>0.0</ele>
+        <time>2025-03-19T22:17:50.513095</time>
+      </trkpt>
+      <trkpt lat="41.90535277777778" lon="12.478694444444445">
+        <ele>0.0</ele>
+        <time>2025-03-19T22:17:50.513396</time>
+      </trkpt>
+      <trkpt lat="41.906080555555555" lon="12.479169444444445">
+        <ele>0.0</ele>
+        <time>2025-03-19T22:17:50.513676</time>
+      </trkpt>
+      <trkpt lat="41.90631944444444" lon="12.483197222222222">
+        <ele>0.0</ele>
+        <time>2025-03-19T22:17:50.513963</time>
+      </trkpt>
+      <trkpt lat="41.906238888888886" lon="12.48311111111111">
+        <ele>0.0</ele>
+        <time>2025-03-19T22:17:50.514246</time>
+      </trkpt>
+      <trkpt lat="41.91005277777778" lon="12.479669444444445">
+        <ele>0.0</ele>
+        <time>2025-03-19T22:17:50.514569</time>
+      </trkpt>
+      <trkpt lat="41.90400277777778" lon="12.472822222222222">
+        <ele>0.0</ele>
+        <time>2025-03-19T22:17:50.514877</time>
+      </trkpt>
+      <trkpt lat="41.901069444444445" lon="12.46526111111111">
+        <ele>0.0</ele>
+        <time>2025-03-19T22:17:50.515160</time>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>
