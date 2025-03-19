@@ -12,7 +12,7 @@ I wanted to see the path I wandered through a city, the trails I hiked in the mo
 - Extract GPS coordinates and timestamps from EXIF metadata in photos
 - Generate GPX files with waypoints and tracks
 - Support for various image formats: JPG, PNG, TIFF, BMP
-- Support for various raw formats: CR2, NEF, ARW, ORF, RW2, PEF, SRW, DNG (Canon, Nikon, Sony, Olympus, Panasonic, Pentax, Samsung, digital negative)
+- Support for various RAW formats: CR2, NEF, ARW, ORF, RW2, PEF, SRW, DNG (Canon, Nikon, Sony, Olympus, Panasonic, Pentax, Samsung, digital negative)
 - Command-line interface for easy use
 - Support for recursive directory processing
 
