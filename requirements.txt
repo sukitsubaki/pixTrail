@@ -1,0 +1,3 @@
+exifread>=3.0.0
+gpxpy>=1.5.0
+pillow>=9.0.0
