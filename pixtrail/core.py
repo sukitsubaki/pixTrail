@@ -93,29 +93,29 @@ class PixTrail:
     ) -> bool:
         """
         Process all images in a directory and generate a GPX file.
-        
+    
         Args:
             input_dir: Directory containing image files
-            output_path: Path where the GPX file will be saved
+            output_path: Path where the GPX file will be saved (if None, use automatic naming)
             recursive: Whether to search recursively in subdirectories
-        
+    
         Returns:
             bool: True if the GPX file was generated successfully, False otherwise
         """
         # Process directory
         self.process_directory(input_dir, recursive)
-        
+    
         if not self.gps_data_list:
             return False
-        
-        # Use provided output path or generate a default one
+    
+        # Use provided output path or generate a default one automatically
         final_output_path = output_path
         if not final_output_path:
             final_output_path = get_default_output_path(input_dir)
-        
+    
         # Ensure output directory exists
         output_dir = os.path.dirname(os.path.abspath(final_output_path))
         ensure_directory(output_dir)
-        
+    
         # Generate GPX file
         return self.generate_gpx(final_output_path)

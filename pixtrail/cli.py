@@ -68,16 +68,15 @@ def main(args: List[str] = None) -> int:
         print(f"Error: Input directory does not exist: {parsed_args.input_dir}")
         return 1
     
-    # Set output path
+    # Set output path (if not specified, it will be auto-named in process_and_generate)
     output_path = parsed_args.output
-    if not output_path:
-        output_path = os.path.join(parsed_args.input_dir, "track.gpx")
     
-    # Ensure output directory exists
-    output_dir = os.path.dirname(os.path.abspath(output_path))
-    if not ensure_directory(output_dir):
-        print(f"Error: Could not create output directory: {output_dir}")
-        return 1
+    # If output path is provided, ensure its directory exists
+    if output_path:
+        output_dir = os.path.dirname(os.path.abspath(output_path))
+        if not ensure_directory(output_dir):
+            print(f"Error: Could not create output directory: {output_dir}")
+            return 1
     
     try:
         # Create PixTrail object
@@ -96,7 +95,9 @@ def main(args: List[str] = None) -> int:
         )
         
         if success:
-            print(f"GPX file created successfully: {output_path}")
+            # Get the actual output path for display
+            actual_output = output_path if output_path else get_default_output_path(parsed_args.input_dir)
+            print(f"GPX file created successfully: {actual_output}")
             return 0
         else:
             print("Failed to create GPX file")

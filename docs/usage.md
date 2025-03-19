@@ -43,6 +43,16 @@ The following options are available:
 - `-r, --recursive`: Search for images recursively in subdirectories
 - `-v, --verbose`: Enable verbose output
 
+### Automatic GPX Naming
+
+If you don't specify an output file with `-o`, PixTrail will automatically name the GPX file after the directory name containing the photos:
+
+```bash
+pixtrail /path/to/Photos-Kyoto
+```
+
+This will create a GPX file named `Photos_Paris.gpx` in the same directory.
+
 ### Examples
 
 Process photos in a directory and save the GPX file to a custom location:
