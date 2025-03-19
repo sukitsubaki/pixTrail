@@ -90,7 +90,6 @@ class GPXGenerator:
             with open(output_path, 'w') as gpx_file:
                 gpx_file.write(gpx.to_xml())
                 
-                print(f"GPX file created successfully: {output_path}")
             return True
         except Exception as e:
             print(f"Error creating GPX file: {e}")
