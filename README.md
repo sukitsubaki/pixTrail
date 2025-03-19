@@ -120,7 +120,7 @@ Please follow these guidelines when contributing:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/pixtrail.git
+git clone https://github.com/sukitsubaki/pixtrail.git
 cd pixtrail
 
 # Create a virtual environment
