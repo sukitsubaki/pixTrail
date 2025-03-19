@@ -143,4 +143,4 @@ pytest
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-The [example photos](examples/example_photos) are licensed under CC BY 4.0 by Anil Öztas.
+The [example photos](examples/example_photos) are licensed under CC BY 4.0 by <a href="https://anil-oeztas.de" target="_blank">Anil Öztas</a>.
