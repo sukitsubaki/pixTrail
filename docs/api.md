@@ -80,6 +80,42 @@ def process_and_generate(self, input_dir, output_path=None, recursive=False):
     """
 ```
 
+#### `process_single(pixtrail, args)`
+
+Process a single directory and generate a GPX file.
+
+```python
+def process_single(pixtrail: PixTrail, args: argparse.Namespace) -> int:
+    """
+    Process a single directory and generate a GPX file.
+    
+    Args:
+        pixtrail: PixTrail object
+        args: Parsed arguments
+        
+    Returns:
+        Exit code (0 for success, non-zero for failure)
+    """
+```
+
+#### `process_batch(pixtrail, args)`
+
+Process multiple directories and generate GPX files for each.
+
+```python
+def process_batch(pixtrail: PixTrail, args: argparse.Namespace) -> int:
+    """
+    Process multiple directories and generate GPX files for each.
+    
+    Args:
+        pixtrail: PixTrail object
+        args: Parsed arguments
+        
+    Returns:
+        Exit code (0 for success, non-zero for failure)
+    """
+```
+
 ## EXIF Reader Module
 
 The `exif_reader` module provides functionality for extracting EXIF data from image files.
