@@ -17,6 +17,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
+    license="MIT",
     python_requires=">=3.6",
     install_requires=[
         "exifread>=3.0.0",
