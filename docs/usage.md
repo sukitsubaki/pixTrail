@@ -53,6 +53,30 @@ pixtrail /path/to/Photos-Kyoto
 
 This will create a GPX file named `Photos_Paris.gpx` in the same directory.
 
+### Batch Processing
+
+PixTrail supports processing multiple directories at once with separate GPX outputs:
+
+```bash
+# Process multiple directories
+pixtrail -b /path/to/photos1 /path/to/photos2 /path/to/photos3
+
+# Process multiple directories and save GPX files to a specific directory
+pixtrail -b /path/to/photos1 /path/to/photos2 -d /path/to/output_dir
+
+# Process multiple directories recursively
+pixtrail -b /path/to/photos1 /path/to/photos2 -r
+
+# Process multiple directories with verbose output
+pixtrail -b /path/to/photos1 /path/to/photos2 -v
+```
+
+When using batch mode:
+- Each directory will be processed separately
+- A GPX file will be created for each directory, automatically named after the directory
+- You can optionally specify an output directory for all GPX files with `-d`
+- The recursive option `-r` applies to all directories in the batch
+
 ### Examples
 
 Process photos in a directory and save the GPX file to a custom location:
