@@ -44,16 +44,22 @@ python /path/to/pixtrail/setup.py
 
 ```bash
 # Basic usage
-pixtrail /path/to/photos
+pixtrail -i /path/to/photos
 
 # Specify output file
-pixtrail /path/to/photos -o /path/to/output.gpx
+pixtrail -i /path/to/photos -o /path/to/output.gpx
 
 # Search recursively in subdirectories
-pixtrail /path/to/photos -r
+pixtrail -i /path/to/photos -r
 
 # Enable verbose output
-pixtrail /path/to/photos -v
+pixtrail -i /path/to/photos -v
+
+# Batch process multiple directories
+pixtrail -b /path/to/photos1 /path/to/photos2 /path/to/photos3
+
+# Batch process with a common output directory
+pixtrail -b /path/to/photos1 /path/to/photos2 -d /path/to/gpx_output
 ```
 
 ### Python API
@@ -94,7 +100,6 @@ After running PixTrail on a directory of geotagged photos, you'll get a GPX file
 
 Here are some features we're planning to add in future releases:
 
-- **Automatic GPX Naming**: Name GPX files automatically after the photo directory
 - **Local Web Interface**: A browser-based interface running entirely on your device
   - Processes photos locally without any server uploads
   - Displays the extracted route on OpenStreetMap while keeping all data on your device
@@ -103,7 +108,6 @@ Here are some features we're planning to add in future releases:
 - **Time-based Filtering**: Process only photos within specific time windows
 - **Route Smoothing**: Algorithm to reduce GPS inaccuracies
 - **Statistics**: Calculate and display statistics like total distance, average speed, elevation profile
-- **Batch Processing**: Process multiple directories at once with separate GPX outputs
 - **Video Support**: Extract GPS data from video files
 
 ## Contributing
