@@ -1,6 +1,32 @@
+# pixtrail/pyproject.toml
 [build-system]
 requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "pixtrail"
+version = "1.0.2"
+description = "Extract GPS data from photos and create GPX files"
+readme = "README.md"
+authors = [{name = "Suki Tsubaki"}]
+license = {text = "MIT"}
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "exifread>=3.0.0",
+    "gpxpy>=1.5.0",
+    "pillow>=9.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/sukitsubaki/pixtrail"
+Issues = "https://github.com/sukitsubaki/pixtrail/issues"
+
+[project.scripts]
+pixtrail = "pixtrail.cli:main"
 
 [tool.black]
 line-length = 88
