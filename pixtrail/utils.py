@@ -62,17 +62,27 @@ def ensure_directory(directory: str) -> bool:
         return False
 
 
-def get_default_output_path(input_dir: str, filename: str = "track.gpx") -> str:
+def get_default_output_path(input_dir: str, filename: str = None) -> str:
     """
     Generate a default output path for the GPX file based on the input directory.
     
     Args:
         input_dir: Input directory path
-        filename: Name of the output file
+        filename: Name of the output file (if None, use directory name)
         
     Returns:
         Default output path for the GPX file
     """
+    if filename is None:
+        # Extract the directory name and use it for the GPX file
+        dir_name = os.path.basename(os.path.normpath(input_dir))
+        # Remove any invalid characters for filenames
+        dir_name = ''.join(c for c in dir_name if c.isalnum() or c in (' ', '_', '-'))
+        filename = f"{dir_name.strip()}.gpx"
+        # If directory name is empty or results in empty filename, use default
+        if not filename or filename == ".gpx":
+            filename = "PixTrail.gpx"
+    
     return os.path.join(input_dir, filename)
 
 
