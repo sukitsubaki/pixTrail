@@ -314,7 +314,7 @@ button:active {
 
 /* Status messages */
 #status-messages {
-    margin-top: 20px;
+    margin: 15px 0;
 }
 
 .status-message {
