@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/badge/version-1.3.0-blue)
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 # PixTrail
@@ -17,7 +17,9 @@ I wanted to see the path I wandered through a city, the trails I hiked in the mo
 - Support for various image formats: JPG, PNG, TIFF, BMP
 - Support for various RAW formats: CR2, NEF, ARW, ORF, RW2, PEF, SRW, DNG (Canon, Nikon, Sony, Olympus, Panasonic, Pentax, Samsung, digital negative)
 - Command-line interface for easy use
+- Web interface for browser-based operation
 - Support for recursive directory processing
+- Visualize routes on OpenStreetMap
 
 ## Privacy
 
@@ -25,20 +27,24 @@ PixTrail processes all photo metadata locally on your device. No data is uploade
 
 ## Installation
 
+### Basic Installation
+
 ```bash
 pip install pixtrail
 ```
 
-Or install from source:
+### Installation with Web Interface
+
+```bash
+pip install pixtrail[web]
+```
+
+### Install from Source
+
 ```bash
 git clone https://github.com/sukitsubaki/pixtrail.git
 cd pixtrail
 pip install -e .
-```
-
-Or install from local package:
-```bash
-python /path/to/pixtrail/setup.py
 ```
 
 ## Usage
@@ -63,7 +69,30 @@ pixtrail -b /path/to/photos1 /path/to/photos2 /path/to/photos3
 
 # Batch process with a common output directory
 pixtrail -b /path/to/photos1 /path/to/photos2 -d /path/to/gpx_output
+
+# Start the web interface
+pixtrail -w
+
+# Start the web interface on a specific host and port
+pixtrail -w --host 0.0.0.0 --port 8080
+
+# Start the web interface without automatically opening a browser
+pixtrail -w --no-browser
 ```
+
+### Web Interface
+
+The web interface provides a user-friendly way to upload photos, extract GPS data, visualize routes on a map, and download GPX files:
+
+1. Start the web interface:
+   ```bash
+   pixtrail -w
+   ```
+
+2. Your browser will automatically open to the PixTrail interface
+3. Upload your photos using the file selector
+4. PixTrail will process the photos and display the route on a map
+5. Download the GPX file for use in other applications
 
 ### Python API
 
@@ -89,6 +118,7 @@ pt.process_and_generate("/path/to/photos", "/path/to/output.gpx", recursive=True
 - exifread
 - gpxpy
 - Pillow
+- Flask (for web interface)
 
 ## Example
 
@@ -103,15 +133,14 @@ After running PixTrail on a directory of geotagged photos, you'll get a GPX file
 
 Here are some features we're planning to add in future releases:
 
-- **Local Web Interface**: A browser-based interface running entirely on your device
-  - Processes photos locally without any server uploads
-  - Displays the extracted route on OpenStreetMap while keeping all data on your device
-  - Creates GPX files directly on your computer
-  - Allows sharing only the generated GPX file (never your original photos or personal metadata)
 - **Time-based Filtering**: Process only photos within specific time windows
 - **Route Smoothing**: Algorithm to reduce GPS inaccuracies
 - **Statistics**: Calculate and display statistics like total distance, average speed, elevation profile
 - **Video Support**: Extract GPS data from video files
+- **Map Enhancements**: 
+  - Support for multiple map providers
+  - Customizable map styles 
+  - More detailed route information
 
 ## Contributing
 
@@ -140,7 +169,7 @@ python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install development dependencies
-pip install -e ".[dev]"
+pip install -e ".[dev,web]"
 
 # Run tests
 pytest
