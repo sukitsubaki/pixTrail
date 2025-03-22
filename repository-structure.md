@@ -1,71 +1,142 @@
 # Repository Structure
 
-```html
+```
 .
-├── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/LICENSE">LICENSE</a>
-├── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/README.md">README.md</a>
-├── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/build_docs.py">build_docs.py</a>
-├── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/create_tree_with_links.py">create_tree_with_links.py</a>
-├── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/docs">docs</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   ├── api.md">   ├── api.md</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   ├── index.md">   ├── index.md</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   ├── usage.md">   ├── usage.md</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   └── web_interface.md">   └── web_interface.md</a>
-├── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/examples">examples</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   ├── README.md">   ├── README.md</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   ├── example_output">   ├── example_output</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── track.gpx">   │   ├── track.gpx</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   └── track2.gpx">   │   └── track2.gpx</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   ├── example_photos">   ├── example_photos</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0015.jpg">   │   ├── BDH_10_1I_0015.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0127.jpg">   │   ├── BDH_10_1I_0127.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0163.jpg">   │   ├── BDH_10_1I_0163.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0174.jpg">   │   ├── BDH_10_1I_0174.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0180.jpg">   │   ├── BDH_10_1I_0180.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0181.jpg">   │   ├── BDH_10_1I_0181.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0196.jpg">   │   ├── BDH_10_1I_0196.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0382.jpg">   │   ├── BDH_10_1I_0382.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0384.jpg">   │   ├── BDH_10_1I_0384.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0452.jpg">   │   ├── BDH_10_1I_0452.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0472.jpg">   │   ├── BDH_10_1I_0472.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0477.jpg">   │   ├── BDH_10_1I_0477.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0499.jpg">   │   ├── BDH_10_1I_0499.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0511.jpg">   │   ├── BDH_10_1I_0511.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0557.jpg">   │   ├── BDH_10_1I_0557.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0617.jpg">   │   ├── BDH_10_1I_0617.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0651.jpg">   │   ├── BDH_10_1I_0651.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0676.jpg">   │   ├── BDH_10_1I_0676.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   ├── BDH_10_1I_0732.jpg">   │   ├── BDH_10_1I_0732.jpg</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   │   └── LICENSE.txt">   │   └── LICENSE.txt</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   └── example_script.py">   └── example_script.py</a>
-├── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/mkdocs.yml">mkdocs.yml</a>
-├── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/pixtrail">pixtrail</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   ├── __init__.py">   ├── __init__.py</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   ├── __main__.py">   ├── __main__.py</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   ├── cli.py">   ├── cli.py</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   ├── core.py">   ├── core.py</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   ├── exif_reader.py">   ├── exif_reader.py</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   ├── gpx_generator.py">   ├── gpx_generator.py</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   ├── utils.py">   ├── utils.py</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/   └── web">   └── web</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/       ├── __init__.py">       ├── __init__.py</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/       ├── routes.py">       ├── routes.py</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/       ├── server.py">       ├── server.py</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/       ├── static">       ├── static</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/       │   ├── css">       │   ├── css</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/       │   │   └── style.css">       │   │   └── style.css</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/       │   └── js">       │   └── js</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/       │       └── main.js">       │       └── main.js</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/       └── templates">       └── templates</a>
-│<a href="https://github.com/sukitsubaki/pixTrail/blob/main/           └── index.html">           └── index.html</a>
-├── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/pyproject.toml">pyproject.toml</a>
-├── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/repository-structure.md">repository-structure.md</a>
-├── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/requirements.txt">requirements.txt</a>
-├── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/setup.py">setup.py</a>
-└── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/tests">tests</a>
-    ├── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/__init__.py">__init__.py</a>
-    ├── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/test_core.py">test_core.py</a>
-    ├── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/test_exif_reader.py">test_exif_reader.py</a>
-    ├── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/test_gpx_generator.py">test_gpx_generator.py</a>
-    └── <a href="https://github.com/sukitsubaki/pixTrail/blob/main/test_utils.py">test_utils.py</a>
+```
+```
+├── ```[LICENSE](https://github.com/sukitsubaki/pixTrail/blob/main/LICENSE)
+```
+├── ```[README.md](https://github.com/sukitsubaki/pixTrail/blob/main/README.md)
+```
+├── ```[build_docs.py](https://github.com/sukitsubaki/pixTrail/blob/main/build_docs.py)
+```
+├── ```[create_tree_with_links.py](https://github.com/sukitsubaki/pixTrail/blob/main/create_tree_with_links.py)
+```
+├── ```[docs](https://github.com/sukitsubaki/pixTrail/blob/main/docs)
+```
+│   ├── ```[api.md](https://github.com/sukitsubaki/pixTrail/blob/main/api.md)
+```
+│   ├── ```[index.md](https://github.com/sukitsubaki/pixTrail/blob/main/index.md)
+```
+│   ├── ```[usage.md](https://github.com/sukitsubaki/pixTrail/blob/main/usage.md)
+```
+│   └── ```[web_interface.md](https://github.com/sukitsubaki/pixTrail/blob/main/web_interface.md)
+```
+├── ```[examples](https://github.com/sukitsubaki/pixTrail/blob/main/examples)
+```
+│   ├── ```[README.md](https://github.com/sukitsubaki/pixTrail/blob/main/README.md)
+```
+│   ├── ```[example_output](https://github.com/sukitsubaki/pixTrail/blob/main/example_output)
+```
+│   │   ├── ```[track.gpx](https://github.com/sukitsubaki/pixTrail/blob/main/track.gpx)
+```
+│   │   └── ```[track2.gpx](https://github.com/sukitsubaki/pixTrail/blob/main/track2.gpx)
+```
+│   ├── ```[example_photos](https://github.com/sukitsubaki/pixTrail/blob/main/example_photos)
+```
+│   │   ├── ```[BDH_10_1I_0015.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0015.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0127.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0127.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0163.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0163.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0174.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0174.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0180.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0180.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0181.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0181.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0196.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0196.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0382.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0382.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0384.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0384.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0452.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0452.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0472.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0472.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0477.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0477.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0499.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0499.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0511.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0511.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0557.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0557.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0617.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0617.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0651.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0651.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0676.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0676.jpg)
+```
+│   │   ├── ```[BDH_10_1I_0732.jpg](https://github.com/sukitsubaki/pixTrail/blob/main/BDH_10_1I_0732.jpg)
+```
+│   │   └── ```[LICENSE.txt](https://github.com/sukitsubaki/pixTrail/blob/main/LICENSE.txt)
+```
+│   └── ```[example_script.py](https://github.com/sukitsubaki/pixTrail/blob/main/example_script.py)
+```
+├── ```[mkdocs.yml](https://github.com/sukitsubaki/pixTrail/blob/main/mkdocs.yml)
+```
+├── ```[pixtrail](https://github.com/sukitsubaki/pixTrail/blob/main/pixtrail)
+```
+│   ├── ```[__init__.py](https://github.com/sukitsubaki/pixTrail/blob/main/__init__.py)
+```
+│   ├── ```[__main__.py](https://github.com/sukitsubaki/pixTrail/blob/main/__main__.py)
+```
+│   ├── ```[cli.py](https://github.com/sukitsubaki/pixTrail/blob/main/cli.py)
+```
+│   ├── ```[core.py](https://github.com/sukitsubaki/pixTrail/blob/main/core.py)
+```
+│   ├── ```[exif_reader.py](https://github.com/sukitsubaki/pixTrail/blob/main/exif_reader.py)
+```
+│   ├── ```[gpx_generator.py](https://github.com/sukitsubaki/pixTrail/blob/main/gpx_generator.py)
+```
+│   ├── ```[utils.py](https://github.com/sukitsubaki/pixTrail/blob/main/utils.py)
+```
+│   └── ```[web](https://github.com/sukitsubaki/pixTrail/blob/main/web)
+```
+│       ├── ```[__init__.py](https://github.com/sukitsubaki/pixTrail/blob/main/__init__.py)
+```
+│       ├── ```[routes.py](https://github.com/sukitsubaki/pixTrail/blob/main/routes.py)
+```
+│       ├── ```[server.py](https://github.com/sukitsubaki/pixTrail/blob/main/server.py)
+```
+│       ├── ```[static](https://github.com/sukitsubaki/pixTrail/blob/main/static)
+```
+│       │   ├── ```[css](https://github.com/sukitsubaki/pixTrail/blob/main/css)
+```
+│       │   │   └── ```[style.css](https://github.com/sukitsubaki/pixTrail/blob/main/style.css)
+```
+│       │   └── ```[js](https://github.com/sukitsubaki/pixTrail/blob/main/js)
+```
+│       │       └── ```[main.js](https://github.com/sukitsubaki/pixTrail/blob/main/main.js)
+```
+│       └── ```[templates](https://github.com/sukitsubaki/pixTrail/blob/main/templates)
+```
+│           └── ```[index.html](https://github.com/sukitsubaki/pixTrail/blob/main/index.html)
+```
+├── ```[pyproject.toml](https://github.com/sukitsubaki/pixTrail/blob/main/pyproject.toml)
+```
+├── ```[repository-structure.md](https://github.com/sukitsubaki/pixTrail/blob/main/repository-structure.md)
+```
+├── ```[requirements.txt](https://github.com/sukitsubaki/pixTrail/blob/main/requirements.txt)
+```
+├── ```[setup.py](https://github.com/sukitsubaki/pixTrail/blob/main/setup.py)
+```
+└── ```[tests](https://github.com/sukitsubaki/pixTrail/blob/main/tests)
+```
+    ├── __init__.py
+```
+```
+    ├── test_core.py
+```
+```
+    ├── test_exif_reader.py
+```
+```
+    ├── test_gpx_generator.py
+```
+```
+    └── test_utils.py
 ```
