@@ -31,12 +31,16 @@ jobs:
           # Get repository name as root directory
           REPO_NAME=$(basename $(pwd))
           
-          # Generate tree structure without extra formatting
-          echo "${REPO_NAME}/" > repository-structure.md
-          tree -I ".git|.github|repository-structure.md" --noreport --charset=ascii | tail -n +2 >> repository-structure.md
+          # Start with Markdown code block and root directory
+          echo '```' > repository-structure.md
+          echo "${REPO_NAME}/" >> repository-structure.md
           
-          # Fix directory formatting to match example (add trailing slash)
-          sed -i -E 's/([^ ]+)\/$/\1\//' repository-structure.md
+          # Generate tree structure with Unix-style characters
+          # Use -C to ensure proper UTF-8 characters instead of ASCII
+          tree -I ".git|.github|repository-structure.md" --noreport -C | tail -n +2 >> repository-structure.md
+          
+          # Close the Markdown code block
+          echo '```' >> repository-structure.md
           
       - name: Commit and Push if changed
         run: |
