@@ -1,5 +1,8 @@
-![Version](https://img.shields.io/badge/version-2.2.0-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
+<a href="https://github.com/sukitsubaki/pixTrail/releases">![Version](https://img.shields.io/badge/version-2.2.0-blue)</a>
+<a href="https://github.com/sukitsubaki/pixTrail/blob/main/LICENSE">![License](https://img.shields.io/badge/license-MIT-green)</a>
+<a href="https://github.com/sukitsubaki/pixTrail/blob/main/pyproject.toml">![Python](https://img.shields.io/badge/python-3.6%2B-blue)</a>
+<a href="https://pypi.org/project/pixtrail/">![PyPI](https://img.shields.io/pypi/dm/pixtrail)</a>
+<a href="https://github.com/sukitsubaki/pixTrail/tree/main/docs">![Documentation](https://img.shields.io/badge/docs-passing-brightgreen)</a>
 
 # PixTrail
 
