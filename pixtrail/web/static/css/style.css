@@ -109,7 +109,8 @@ input[type="file"] {
     background-color: var(--mid-gray);
 }
 
-#selected-files-count {
+#selected-files-count,
+#selected-directory {
     margin-left: 10px;
     color: var(--dark-gray);
 }
@@ -149,6 +150,121 @@ button:active {
 
 .secondary-button:hover {
     background-color: var(--mid-gray);
+}
+
+/* Tab navigation styles */
+.input-selector {
+    margin-bottom: 20px;
+}
+
+.selector-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--mid-gray);
+    margin-bottom: 15px;
+}
+
+.selector-tab {
+    background: transparent;
+    border: none;
+    padding: 10px 15px;
+    margin-right: 5px;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    font-weight: normal;
+    color: var(--dark-gray);
+    transition: all 0.2s ease;
+}
+
+.selector-tab:hover {
+    background-color: var(--light-gray);
+}
+
+.selector-tab.active {
+    font-weight: 600;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    margin-bottom: -1px;
+}
+
+.selector-content {
+    display: none;
+}
+
+.selector-content.active {
+    display: block;
+}
+
+/* Recursive options styles */
+.recursive-options {
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid var(--mid-gray);
+    border-radius: 4px;
+    background-color: var(--light-gray);
+}
+
+.option-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.option-row:last-child {
+    margin-bottom: 0;
+}
+
+.option-row input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.depth-selector {
+    margin-left: 25px;
+    display: none;
+}
+
+.depth-selector.visible {
+    display: flex;
+}
+
+.depth-selector label {
+    margin-right: 10px;
+}
+
+.depth-selector select {
+    padding: 5px;
+    border: 1px solid var(--mid-gray);
+    border-radius: 4px;
+    background-color: white;
+}
+
+/* Drop areas for drag and drop */
+.drop-area {
+    border: 2px dashed var(--mid-gray);
+    border-radius: 4px;
+    padding: 30px 20px;
+    margin-top: 15px;
+    text-align: center;
+    background-color: var(--light-gray);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.drop-area.drag-over {
+    border-color: var(--primary-color);
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.drop-message {
+    color: var(--dark-gray);
+}
+
+.drop-icon {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.drop-area p {
+    margin: 0;
 }
 
 /* Progress bar */

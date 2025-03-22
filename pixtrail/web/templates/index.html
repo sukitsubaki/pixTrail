@@ -27,10 +27,60 @@
                 <p>Choose photos with GPS data to process and generate a route</p>
                 
                 <form id="process-form" enctype="multipart/form-data">
-                    <div class="file-input-container">
-                        <label for="photo-input" class="custom-file-button">Select Photos</label>
-                        <input type="file" id="photo-input" name="photos" multiple accept="image/*">
-                        <span id="selected-files-count">No files selected</span>
+                    <div class="input-selector">
+                        <div class="selector-tabs">
+                            <button type="button" class="selector-tab active" data-target="file-selector">Files</button>
+                            <button type="button" class="selector-tab" data-target="directory-selector">Directory</button>
+                        </div>
+                        
+                        <div id="file-selector" class="selector-content active">
+                            <div class="file-input-container">
+                                <label for="photo-input" class="custom-file-button">Select Photos</label>
+                                <input type="file" id="photo-input" name="photos" multiple accept="image/*">
+                                <span id="selected-files-count">No files selected</span>
+                            </div>
+                            
+                            <div class="drop-area" id="file-drop-area">
+                                <div class="drop-message">
+                                    <div class="drop-icon">📁</div>
+                                    <p>Drag and drop image files here</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="directory-selector" class="selector-content">
+                            <div class="file-input-container">
+                                <label for="directory-input" class="custom-file-button">Select Directory</label>
+                                <input type="file" id="directory-input" name="directory" webkitdirectory directory>
+                                <span id="selected-directory">No directory selected</span>
+                            </div>
+                            
+                            <div class="recursive-options">
+                                <div class="option-row">
+                                    <input type="checkbox" id="recursive-checkbox" name="recursive">
+                                    <label for="recursive-checkbox">Process subdirectories recursively</label>
+                                </div>
+                                
+                                <div class="option-row depth-selector" id="depth-selector">
+                                    <label for="recursive-depth">Depth level:</label>
+                                    <select id="recursive-depth" name="depth">
+                                        <option value="0">All levels</option>
+                                        <option value="1">1 level</option>
+                                        <option value="2">2 levels</option>
+                                        <option value="3">3 levels</option>
+                                        <option value="4">4 levels</option>
+                                        <option value="5">5 levels</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="drop-area" id="directory-drop-area">
+                                <div class="drop-message">
+                                    <div class="drop-icon">📂</div>
+                                    <p>Drag and drop a folder here</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <button type="submit" class="primary-button" id="process-button" disabled>Process Photos</button>
@@ -71,4 +121,3 @@
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
-        

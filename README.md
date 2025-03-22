@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![Version](https://img.shields.io/badge/version-2.1.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 # PixTrail
@@ -18,7 +18,8 @@ I wanted to see the path I wandered through a city, the trails I hiked in the mo
 - Support for various RAW formats: CR2, NEF, ARW, ORF, RW2, PEF, SRW, DNG (Canon, Nikon, Sony, Olympus, Panasonic, Pentax, Samsung, digital negative)
 - Command-line interface for easy use
 - Web interface for browser-based operation
-- Support for recursive directory processing
+- Directory selection and recursive processing support
+- Drag & drop interface for files and directories
 - Visualize routes on OpenStreetMap
 
 ## Privacy
@@ -90,9 +91,13 @@ The web interface provides a user-friendly way to upload photos, extract GPS dat
    ```
 
 2. Your browser will automatically open to the PixTrail interface
-3. Upload your photos using the file selector
-4. PixTrail will process the photos and display the route on a map
-5. Download the GPX file for use in other applications
+3. Select photos using one of the following methods:
+   - Click "Select Photos" to choose individual files
+   - Click "Select Directory" to choose an entire folder
+   - Drag and drop images directly into the interface
+4. For directory processing, you can enable recursive subdirectory scanning
+5. PixTrail will process the photos and display the route on a map
+6. Download the GPX file for use in other applications
 
 ### Python API
 
