@@ -34,6 +34,8 @@ setup(
             "black>=21.5b2",
             "mypy>=0.812",
             "isort>=5.9.1",
+            "mkdocs>=1.4.0",
+            "mkdocs-material>=8.0.0",
         ],
     },
     entry_points={
