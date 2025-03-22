@@ -47,6 +47,25 @@
                                 <input type="file" id="directory-input" name="directory" webkitdirectory directory>
                                 <span id="selected-directory">No directory selected</span>
                             </div>
+                            
+                            <div class="recursive-options">
+                                <div class="option-row">
+                                    <input type="checkbox" id="recursive-checkbox" name="recursive">
+                                    <label for="recursive-checkbox">Process subdirectories recursively</label>
+                                </div>
+                                
+                                <div class="option-row depth-selector" id="depth-selector">
+                                    <label for="recursive-depth">Depth level:</label>
+                                    <select id="recursive-depth" name="depth">
+                                        <option value="0">All levels</option>
+                                        <option value="1">1 level</option>
+                                        <option value="2">2 levels</option>
+                                        <option value="3">3 levels</option>
+                                        <option value="4">4 levels</option>
+                                        <option value="5">5 levels</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
