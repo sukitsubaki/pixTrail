@@ -29,18 +29,20 @@ jobs:
           echo '```' > repository-structure.md
           echo "sukitsubaki/pixTrail/" >> repository-structure.md
           
-          # Generate proper tree with correct Unicode characters
-          # First create a list of all files and directories
-          find . -not -path "*/\.*" -not -path "./repository-structure.md" | sort > all_entries.txt
-          
-          # Process the entries to create a proper tree
-          cat > create_tree.py << 'EOF'
+          # Create a Python script to generate the tree
+          cat > generate_tree.py << 'EOF'
           import os
-          import sys
+          import subprocess
           
-          # Read all entries
-          with open('all_entries.txt', 'r') as f:
-              entries = [line.strip() for line in f.readlines()]
+          # Run find command to get all entries and pipe to Python
+          find_process = subprocess.run(
+              ['find', '.', '-not', '-path', '*/\\.*', '-not', '-path', './repository-structure.md'],
+              capture_output=True, 
+              text=True
+          )
+          
+          # Get all entries from the find command output
+          entries = find_process.stdout.strip().split('\n')
           
           # Remove "./" prefix
           entries = [entry[2:] if entry.startswith('./') else entry for entry in entries]
@@ -157,7 +159,7 @@ jobs:
           EOF
           
           # Run the Python script to generate the tree
-          python3 create_tree.py >> repository-structure.md
+          python3 generate_tree.py >> repository-structure.md
           
           # Close the code block
           echo '```' >> repository-structure.md
