@@ -166,7 +166,12 @@ def process_photos(session_id):
         })
     
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        import traceback
+        error_details = str(e)
+        traceback_details = traceback.format_exc()
+        print(f"Error processing photos: {error_details}")
+        print(f"Traceback: {traceback_details}")
+        return jsonify({'error': f"Processing failed: {error_details}", 'success': False}), 500
 
 
 @main_bp.route('/api/download/<session_id>/<filename>', methods=['GET'])
