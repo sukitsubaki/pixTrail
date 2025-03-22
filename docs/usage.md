@@ -4,13 +4,25 @@ This guide explains how to use PixTrail, a tool for extracting GPS data from pho
 
 ## Installation
 
+### Basic Installation
+
 You can install PixTrail using pip:
 
 ```bash
 pip install pixtrail
 ```
 
-Or you can install it from source:
+### Installation with Web Interface
+
+If you want to use the web interface, install with the web extras:
+
+```bash
+pip install pixtrail[web]
+```
+
+### Install from Source
+
+You can also install it from source:
 
 ```bash
 git clone https://github.com/sukitsubaki/pixtrail.git
@@ -20,7 +32,7 @@ pip install -e .
 
 Or you can install it from your local package:
 ```bash
-python /path/to/pixtrail/setup.py
+python /path/to/pixtrail/setup.py install
 ```
 
 ## Command Line Interface
@@ -30,28 +42,33 @@ PixTrail provides a simple command-line interface for processing photos and gene
 ### Basic Usage
 
 ```bash
-pixtrail /path/to/photos
+pixtrail -i /path/to/photos
 ```
 
-This will process all photos in the specified directory and create a GPX file named `track.gpx` in the same directory.
+This will process all photos in the specified directory and create a GPX file in the same directory.
 
 ### Options
 
 The following options are available:
 
+- `-i, --input-dir`: Directory containing photos with GPS data
 - `-o, --output`: Specify the output GPX file path
 - `-r, --recursive`: Search for images recursively in subdirectories
 - `-v, --verbose`: Enable verbose output
+- `-w, --web`: Start the web interface
+- `--host`: Host for the web interface (default: 127.0.0.1)
+- `--port`: Port for the web interface (default: 5000)
+- `--no-browser`: Don't automatically open a browser when starting the web interface
 
 ### Automatic GPX Naming
 
 If you don't specify an output file with `-o`, PixTrail will automatically name the GPX file after the directory name containing the photos:
 
 ```bash
-pixtrail /path/to/Photos-Kyoto
+pixtrail -i /path/to/Photos-Kyoto
 ```
 
-This will create a GPX file named `Photos_Paris.gpx` in the same directory.
+This will create a GPX file named `Photos_Kyoto.gpx` in the same directory.
 
 ### Batch Processing
 
@@ -77,24 +94,54 @@ When using batch mode:
 - You can optionally specify an output directory for all GPX files with `-d`
 - The recursive option `-r` applies to all directories in the batch
 
+### Web Interface
+
+PixTrail includes a browser-based web interface that allows you to upload photos, visualize routes, and generate GPX files, all while keeping your data on your local device:
+
+```bash
+# Start the web interface with default settings
+pixtrail -w
+
+# Start the web interface on a specific host and port
+pixtrail -w --host 0.0.0.0 --port 8080
+
+# Start the web interface without automatically opening a browser
+pixtrail -w --no-browser
+```
+
+When using the web interface:
+
+1. Your browser will open to the PixTrail interface
+2. Upload your photos using the file selector
+3. The photos will be processed locally on your device
+4. The extracted route will be displayed on an OpenStreetMap
+5. You can download the GPX file for use in other applications
+6. All data remains on your device - no photos or location data are uploaded to any server
+
 ### Examples
 
 Process photos in a directory and save the GPX file to a custom location:
 
 ```bash
-pixtrail /path/to/photos -o /path/to/output.gpx
+pixtrail -i /path/to/photos -o /path/to/output.gpx
 ```
 
 Process photos recursively in a directory and its subdirectories:
 
 ```bash
-pixtrail /path/to/photos -r
+pixtrail -i /path/to/photos -r
 ```
 
 Enable verbose output:
 
 ```bash
-pixtrail /path/to/photos -v
+pixtrail -i /path/to/photos -v
+```
+
+Start the web interface:
+
+```bash
+pixtrail -w
 ```
 
 ## Using the Python API
@@ -147,6 +194,27 @@ filtered_data = [point for point in gps_data if point["altitude"] > 100]
 
 # Generate a GPX file with the filtered data
 GPXGenerator.create_gpx(filtered_data, "/path/to/output.gpx")
+```
+
+### Starting the Web Interface Programmatically
+
+You can also start the web interface from Python code:
+
+```python
+from pixtrail.web import start_server
+
+# Start the web interface
+app, server = start_server(host="127.0.0.1", port=5000, open_browser=True)
+
+# The server runs in a background thread, so your code can continue
+# Keep your program running to keep the server running
+import time
+try:
+    while True:
+        time.sleep(1)
+except KeyboardInterrupt:
+    # Shutdown the server when Ctrl+C is pressed
+    server.shutdown()
 ```
 
 ## Handling Errors
