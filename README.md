@@ -1,8 +1,9 @@
-<a href="https://github.com/sukitsubaki/pixTrail/releases">![Version](https://img.shields.io/badge/version-2.2.0-blue)</a>
-<a href="https://github.com/sukitsubaki/pixTrail/blob/main/LICENSE">![License](https://img.shields.io/badge/license-MIT-green)</a>
-<a href="https://github.com/sukitsubaki/pixTrail/blob/main/pyproject.toml">![Python](https://img.shields.io/badge/python-3.6%2B-blue)</a>
+<!-- hello, world -->
+<a href="https://github.com/sukitsubaki/pixTrail/releases">![Version](https://img.shields.io/badge/version-2.2.0-cc3399)</a>
+<a href="https://github.com/sukitsubaki/pixTrail/blob/main/LICENSE">![License](https://img.shields.io/badge/license-MIT-669999)</a>
+<a href="https://github.com/sukitsubaki/pixTrail/blob/main/pyproject.toml">![Python](https://img.shields.io/badge/python-3.6%2B-4584b6)</a>
 <a href="https://pypi.org/project/pixtrail/">![PyPI](https://img.shields.io/pypi/dm/pixtrail)</a>
-<a href="https://github.com/sukitsubaki/pixTrail/tree/main/docs">![Documentation](https://img.shields.io/badge/docs-passing-brightgreen)</a>
+<a href="https://github.com/sukitsubaki/pixTrail/tree/main/docs">![Documentation](https://img.shields.io/badge/docs-passing-5d6cc0)</a>
 
 # PixTrail
 
