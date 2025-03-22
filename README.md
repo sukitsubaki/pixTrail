@@ -1,5 +1,5 @@
 <!-- hello, world -->
-<a href="https://github.com/sukitsubaki/pixTrail/releases">![Version](https://img.shields.io/badge/version-2.3.0-cc3399)</a>
+<a href="https://github.com/sukitsubaki/pixTrail/releases">![Version](https://img.shields.io/badge/version-2.3.1-cc3399)</a>
 <a href="https://github.com/sukitsubaki/pixTrail/blob/main/LICENSE">![License](https://img.shields.io/badge/license-MIT-669999)</a>
 <a href="https://github.com/sukitsubaki/pixTrail/blob/main/pyproject.toml">![Python](https://img.shields.io/badge/python-3.6%2B-4584b6)</a>
 <a href="https://pypi.org/project/pixtrail/">![PyPI](https://img.shields.io/pypi/dm/pixtrail)</a>
