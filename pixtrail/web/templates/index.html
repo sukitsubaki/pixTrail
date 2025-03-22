@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PixTrail - GPS Photo Tracker</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PixTrail</h1>
+            <p>Extract GPS data from photos and create GPX files</p>
+        </header>
+        
+        <main>
+            <div class="section upload-section">
+                <h2>Upload Photos</h2>
+                <p>Select photos with GPS data to generate a route</p>
+                
+                <form id="upload-form" enctype="multipart/form-data">
+                    <div class="file-input-container">
+                        <label for="photo-input" class="custom-file-button">Select Photos</label>
+                        <input type="file" id="photo-input" name="photos" multiple accept="image/*">
+                        <span id="selected-files-count">No files selected</span>
+                    </div>
+                    
+                    <button type="submit" class="primary-button" id="upload-button" disabled>Upload and Process</button>
+                </form>
+                
+                <div id="upload-progress" class="progress-container hidden">
+                    <div class="progress-bar"></div>
+                    <span class="progress-text">Uploading...</span>
+                </div>
+            </div>
+            
+            <div class="section map-section hidden" id="map-container">
+                <h2>Route Map</h2>
+                <div id="map"></div>
+                
+                <div class="map-controls">
+                    <button id="download-gpx" class="primary-button">Download GPX</button>
+                    <button id="clear-data" class="secondary-button">Clear Data</button>
+                </div>
+            </div>
+            
+            <div id="status-messages"></div>
+        </main>
+        
+        <footer>
+            <p>PixTrail - A GPS Photo Tracker<br />
+            <a href="https://github.com/sukitsubaki" target="_blank" class="footer__link">Suki Tsubaki</a> &lt;/&gt; Hosted on <a href="https://github.com/sukitsubaki/pixTrail" target="_blank" class="footer__link">GitHub</a></p>
+            <p class="privacy-note">All processing happens locally on your device. Your photos and location data never leave your computer.</p>
+        </footer>
+    </div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

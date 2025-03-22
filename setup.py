@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="pixtrail",
-    version="1.3.0",
+    version="2.0.0",
     author="Suki Tsubaki",
     description="Extract GPS data from photos and create GPX files",
     long_description=long_description,
@@ -24,9 +24,30 @@ setup(
         "gpxpy>=1.5.0",
         "pillow>=9.0.0",
     ],
+    extras_require={
+        "web": [
+            "flask>=2.0.0",
+            "werkzeug>=2.0.0",
+        ],
+        "dev": [
+            "pytest>=6.0.0",
+            "black>=21.5b2",
+            "mypy>=0.812",
+            "isort>=5.9.1",
+        ],
+    },
     entry_points={
         "console_scripts": [
             "pixtrail=pixtrail.cli:main",
+        ],
+    },
+    include_package_data=True,
+    package_data={
+        "pixtrail.web": [
+            "templates/*.html",
+            "static/css/*.css",
+            "static/js/*.js",
+            "static/img/*.png",
         ],
     },
 )
