@@ -109,14 +109,7 @@ pixtrail -w --host 0.0.0.0 --port 8080
 pixtrail -w --no-browser
 ```
 
-When using the web interface:
-
-1. Your browser will open to the PixTrail interface
-2. Upload your photos using the file selector
-3. The photos will be processed locally on your device
-4. The extracted route will be displayed on an OpenStreetMap
-5. You can download the GPX file for use in other applications
-6. All data remains on your device - no photos or location data are uploaded to any server
+For more details on the web interface, see the [Web Interface Documentation](web_interface.md).
 
 ### Examples
 
@@ -157,7 +150,8 @@ from pixtrail.core import PixTrail
 pt = PixTrail()
 
 # Process a directory of images
-gps_data = pt.process_directory("/path/to/photos")
+result = pt.process_directory("/path/to/photos")
+gps_data = result["gps_data"]
 
 # Generate a GPX file
 pt.generate_gpx("/path/to/output.gpx")
@@ -187,7 +181,8 @@ from pixtrail.gpx_generator import GPXGenerator
 pt = PixTrail()
 
 # Process a directory of images
-gps_data = pt.process_directory("/path/to/photos")
+result = pt.process_directory("/path/to/photos")
+gps_data = result["gps_data"]
 
 # Manipulate the GPS data as needed
 filtered_data = [point for point in gps_data if point["altitude"] > 100]

@@ -8,7 +8,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Elements
     const photoInput = document.getElementById('photo-input');
+    const directoryInput = document.getElementById('directory-input');
     const selectedFilesCount = document.getElementById('selected-files-count');
+    const selectedDirectory = document.getElementById('selected-directory');
     const processForm = document.getElementById('process-form');
     const processButton = document.getElementById('process-button');
     const processProgress = document.getElementById('process-progress');
@@ -18,6 +20,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const downloadButton = document.getElementById('download-gpx');
     const clearButton = document.getElementById('clear-data');
     const statusMessages = document.getElementById('status-messages');
+    const selectorTabs = document.querySelectorAll('.selector-tab');
+    const recursiveCheckbox = document.getElementById('recursive-checkbox');
+    const depthSelector = document.getElementById('depth-selector');
+    const fileDropArea = document.getElementById('file-drop-area');
+    const directoryDropArea = document.getElementById('directory-drop-area');
     
     // State
     let map = null;
@@ -25,16 +32,56 @@ document.addEventListener('DOMContentLoaded', function() {
     let routeLine = null;
     let sessionId = null;
     let gpxFilename = null;
+    let activeInput = 'file'; // 'file' or 'directory'
     
     // Initialize
     initEventListeners();
+    initDragAndDrop();
     
     /**
      * Set up event listeners
      */
     function initEventListeners() {
+        // Tab navigation
+        selectorTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                selectorTabs.forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Get target content
+                const target = this.getAttribute('data-target');
+                
+                // Hide all content
+                document.querySelectorAll('.selector-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Show target content
+                document.getElementById(target).classList.add('active');
+                
+                // Update active input
+                activeInput = target === 'file-selector' ? 'file' : 'directory';
+                
+                // Update button state
+                updateProcessButtonState();
+            });
+        });
+        
         // File selection
         photoInput.addEventListener('change', handleFileSelection);
+        directoryInput.addEventListener('change', handleDirectorySelection);
+        
+        // Recursive checkbox
+        recursiveCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                depthSelector.classList.add('visible');
+            } else {
+                depthSelector.classList.remove('visible');
+            }
+        });
         
         // Form submission
         processForm.addEventListener('submit', handleFormSubmit);
@@ -45,16 +92,171 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     /**
+     * Initialize drag and drop functionality
+     */
+    function initDragAndDrop() {
+        // File drop area
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            fileDropArea.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            fileDropArea.addEventListener(eventName, () => {
+                fileDropArea.classList.add('drag-over');
+            }, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            fileDropArea.addEventListener(eventName, () => {
+                fileDropArea.classList.remove('drag-over');
+            }, false);
+        });
+        
+        fileDropArea.addEventListener('drop', handleFilesDrop, false);
+        
+        // Directory drop area
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            directoryDropArea.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            directoryDropArea.addEventListener(eventName, () => {
+                directoryDropArea.classList.add('drag-over');
+            }, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            directoryDropArea.addEventListener(eventName, () => {
+                directoryDropArea.classList.remove('drag-over');
+            }, false);
+        });
+        
+        directoryDropArea.addEventListener('drop', handleDirectoryDrop, false);
+        
+        // Clicking on drop areas should trigger file input
+        fileDropArea.addEventListener('click', () => photoInput.click());
+        directoryDropArea.addEventListener('click', () => directoryInput.click());
+    }
+    
+    /**
+     * Prevent default browser behavior for drag and drop events
+     */
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    
+    /**
+     * Handle files dropped into the file drop area
+     */
+    function handleFilesDrop(e) {
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            // Filter for image files
+            const imageFiles = Array.from(files).filter(file => {
+                return file.type.startsWith('image/');
+            });
+            
+            if (imageFiles.length === 0) {
+                showStatusMessage('No valid image files found in the dropped items', 'warning');
+                return;
+            }
+            
+            // Create a new FileList-like object with only image files
+            const dataTransfer = new DataTransfer();
+            imageFiles.forEach(file => dataTransfer.items.add(file));
+            
+            // Set the files to the input element
+            photoInput.files = dataTransfer.files;
+            
+            // Trigger the change event
+            const event = new Event('change');
+            photoInput.dispatchEvent(event);
+            
+            // Switch to files tab if not active
+            if (activeInput !== 'file') {
+                document.querySelector('.selector-tab[data-target="file-selector"]').click();
+            }
+        }
+    }
+    
+    /**
+     * Handle directory dropped into the directory drop area
+     */
+    function handleDirectoryDrop(e) {
+        const items = e.dataTransfer.items;
+        if (items.length > 0) {
+            // Check if any item is a directory
+            let hasDirectory = false;
+            
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                if (item.webkitGetAsEntry && item.webkitGetAsEntry().isDirectory) {
+                    hasDirectory = true;
+                    break;
+                }
+            }
+            
+            if (!hasDirectory) {
+                showStatusMessage('No directories found in the dropped items. Please drop a folder.', 'warning');
+                return;
+            }
+            
+            // Unfortunately, setting directoryInput.files directly doesn't work with directories
+            // We need to show a message to the user to use the directory selector instead
+            showStatusMessage('Directory drop detected. Due to browser limitations, please use the "Select Directory" button.', 'info');
+            
+            // Switch to directory tab if not active
+            if (activeInput !== 'directory') {
+                document.querySelector('.selector-tab[data-target="directory-selector"]').click();
+            }
+        }
+    }
+    
+    /**
      * Handle file selection
      */
     function handleFileSelection() {
         const files = photoInput.files;
         if (files.length > 0) {
             selectedFilesCount.textContent = `${files.length} file(s) selected`;
-            processButton.disabled = false;
+            if (activeInput === 'file') {
+                processButton.disabled = false;
+            }
         } else {
             selectedFilesCount.textContent = 'No files selected';
-            processButton.disabled = true;
+            if (activeInput === 'file') {
+                processButton.disabled = true;
+            }
+        }
+    }
+    
+    /**
+     * Handle directory selection
+     */
+    function handleDirectorySelection() {
+        const files = directoryInput.files;
+        if (files.length > 0) {
+            selectedDirectory.textContent = `Directory with ${files.length} file(s) selected`;
+            if (activeInput === 'directory') {
+                processButton.disabled = false;
+            }
+        } else {
+            selectedDirectory.textContent = 'No directory selected';
+            if (activeInput === 'directory') {
+                processButton.disabled = true;
+            }
+        }
+    }
+    
+    /**
+     * Update process button state based on active input
+     */
+    function updateProcessButtonState() {
+        if (activeInput === 'file') {
+            processButton.disabled = photoInput.files.length === 0;
+        } else {
+            processButton.disabled = directoryInput.files.length === 0;
         }
     }
     
@@ -64,15 +266,37 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleFormSubmit(event) {
         event.preventDefault();
         
-        if (photoInput.files.length === 0) {
-            showStatusMessage('Please select photos to process', 'error');
-            return;
+        let selectedFiles;
+        if (activeInput === 'file') {
+            selectedFiles = photoInput.files;
+            if (selectedFiles.length === 0) {
+                showStatusMessage('Please select photos to process', 'error');
+                return;
+            }
+        } else {
+            selectedFiles = directoryInput.files;
+            if (selectedFiles.length === 0) {
+                showStatusMessage('Please select a directory to process', 'error');
+                return;
+            }
         }
         
         // Prepare form data
         const formData = new FormData();
-        for (const file of photoInput.files) {
+        for (const file of selectedFiles) {
             formData.append('photos', file);
+        }
+        
+        // Add source type (file or directory)
+        formData.append('source_type', activeInput);
+        
+        // Add recursive options if directory mode is selected
+        if (activeInput === 'directory') {
+            formData.append('recursive', recursiveCheckbox.checked ? '1' : '0');
+            if (recursiveCheckbox.checked) {
+                const depthValue = document.getElementById('recursive-depth').value;
+                formData.append('depth', depthValue);
+            }
         }
         
         // Show progress
@@ -170,7 +394,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     processProgress.classList.add('hidden');
                     processButton.disabled = false;
                     photoInput.value = '';
+                    directoryInput.value = '';
                     selectedFilesCount.textContent = 'No files selected';
+                    selectedDirectory.textContent = 'No directory selected';
+                    recursiveCheckbox.checked = false;
+                    depthSelector.classList.remove('visible');
                 }, 1500);
             } else {
                 // Show error message with statistics if available
@@ -305,7 +533,11 @@ document.addEventListener('DOMContentLoaded', function() {
         processProgress.classList.add('hidden');
         processButton.disabled = true;
         photoInput.value = '';
+        directoryInput.value = '';
         selectedFilesCount.textContent = 'No files selected';
+        selectedDirectory.textContent = 'No directory selected';
+        recursiveCheckbox.checked = false;
+        depthSelector.classList.remove('visible');
         
         // Clear state
         sessionId = null;
