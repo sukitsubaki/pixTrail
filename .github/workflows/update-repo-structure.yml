@@ -28,13 +28,15 @@ jobs:
       
       - name: Generate Repository Structure
         run: |
-          # Generate repository structure in tree format
-          echo "# Repository Structure" > repository-structure.md
-          echo "" >> repository-structure.md
-          echo "```" >> repository-structure.md
-          # Run tree command, excluding .git and .github directories
-          tree -I ".git|.github" --noreport >> repository-structure.md
-          echo "```" >> repository-structure.md
+          # Get repository name as root directory
+          REPO_NAME=$(basename $(pwd))
+          
+          # Generate tree structure without extra formatting
+          echo "${REPO_NAME}/" > repository-structure.md
+          tree -I ".git|.github|repository-structure.md" --noreport --charset=ascii | tail -n +2 >> repository-structure.md
+          
+          # Fix directory formatting to match example (add trailing slash)
+          sed -i -E 's/([^ ]+)\/$/\1\//' repository-structure.md
           
       - name: Commit and Push if changed
         run: |
@@ -42,7 +44,7 @@ jobs:
             echo "No changes to repository-structure.md"
           else
             git add repository-structure.md
-            git commit -m "automatic update"
+            git commit -m "automatic update on push"
             # Use elevated permissions for pushing
             git remote set-url origin https://x-access-token:${{ secrets.REPO_STRUCTURE_PAT }}@github.com/${{ github.repository }}
             git push
