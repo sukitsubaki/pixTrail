@@ -1,19 +1,11 @@
 ```
-pixTrail/
-├── LICENSE
-├── README.md
-├── build_docs.py
-├── docs
+sukitsubaki/pixTrail/
+
+│   ├── __init__.py
+│       ├── __init__.py
+    ├── __init__.py
+│   ├── __main__.py
 │   ├── api.md
-│   ├── index.md
-│   ├── usage.md
-│   └── web_interface.md
-├── examples
-│   ├── README.md
-│   ├── example_output
-│   │   ├── track.gpx
-│   │   └── track2.gpx
-│   ├── example_photos
 │   │   ├── BDH_10_1I_0015.jpg
 │   │   ├── BDH_10_1I_0127.jpg
 │   │   ├── BDH_10_1I_0163.jpg
@@ -33,35 +25,45 @@ pixTrail/
 │   │   ├── BDH_10_1I_0651.jpg
 │   │   ├── BDH_10_1I_0676.jpg
 │   │   ├── BDH_10_1I_0732.jpg
-│   │   └── LICENSE.txt
-│   └── example_script.py
-├── mkdocs.yml
-├── pixtrail
-│   ├── __init__.py
-│   ├── __main__.py
+├── build_docs.py
 │   ├── cli.py
 │   ├── core.py
+│       │   ├── css
+├── docs
+│   ├── example_output
+│   ├── example_photos
+│   └── example_script.py
+├── examples
 │   ├── exif_reader.py
 │   ├── gpx_generator.py
-│   ├── utils.py
-│   └── web
-│       ├── __init__.py
+│           └── index.html
+│   ├── index.md
+│       │   └── js
+├── LICENSE
+│   │   └── LICENSE.txt
+│       │       └── main.js
+├── mkdocs.yml
+├── pixtrail
+├── pyproject.toml
+├── README.md
+│   ├── README.md
+├── requirements.txt
 │       ├── routes.py
 │       ├── server.py
-│       ├── static
-│       │   ├── css
-│       │   │   └── style.css
-│       │   └── js
-│       │       └── main.js
-│       └── templates
-│           └── index.html
-├── pyproject.toml
-├── requirements.txt
 ├── setup.py
-└── tests
-    ├── __init__.py
+├── sort_tree.py
+│       ├── static
+│       │   │   └── style.css
+│       └── templates
     ├── test_core.py
     ├── test_exif_reader.py
     ├── test_gpx_generator.py
     └── test_utils.py
+└── tests
+│   │   ├── track.gpx
+│   │   └── track2.gpx
+│   ├── usage.md
+│   ├── utils.py
+│   └── web
+│   └── web_interface.md
 ```
