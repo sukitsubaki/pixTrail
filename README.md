@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/badge/version-2.1.0-blue)
+![Version](https://img.shields.io/badge/version-2.2.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 # PixTrail
@@ -14,6 +14,9 @@ I wanted to see the path I wandered through a city, the trails I hiked in the mo
 
 - Extract GPS coordinates and timestamps from EXIF metadata in photos
 - Generate GPX files with waypoints and tracks
+- Hybrid processing approach:
+  - JPEG/TIFF files are processed directly in your browser for faster performance
+  - RAW/PNG and other formats are processed on the server with full metadata extraction
 - Support for various image formats: JPG, PNG, TIFF, BMP
 - Support for various RAW formats: CR2, NEF, ARW, ORF, RW2, PEF, SRW, DNG (Canon, Nikon, Sony, Olympus, Panasonic, Pentax, Samsung, digital negative)
 - Command-line interface for easy use
@@ -21,10 +24,16 @@ I wanted to see the path I wandered through a city, the trails I hiked in the mo
 - Directory selection and recursive processing support
 - Drag & drop interface for files and directories
 - Visualize routes on OpenStreetMap
+- Automatic cleanup of temporary files to save disk space
 
 ## Privacy
 
 PixTrail processes all photo metadata locally on your device. No data is uploaded to any server, shared with third parties, or sent anywhere outside your computer. Your location data and photos remain completely private and under your control at all times.
+
+When using the web interface:
+- JPEG/TIFF files are processed entirely in your browser - only extracted GPS coordinates are sent to the local server
+- RAW/PNG files are temporarily cached (local) during processing and automatically deleted afterward
+- Only the generated GPX files are stored (local)
 
 ## Installation
 
