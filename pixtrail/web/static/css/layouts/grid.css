@@ -1,0 +1,68 @@
+/**
+ * PixTrail - Grid Layouts
+ * Grid and flexbox layout utilities
+ */
+
+/* Simple grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-gap: var(--spacing-md);
+}
+
+/* Responsive grid that adapts to screen size */
+.responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: var(--spacing-md);
+}
+
+/* Two column layout */
+.two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: var(--spacing-md);
+}
+
+/* Three column layout */
+.three-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: var(--spacing-md);
+}
+
+/* Flexbox row */
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Flexbox column */
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Space between items */
+.space-between {
+    justify-content: space-between;
+}
+
+/* Center align */
+.items-center {
+    align-items: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .two-columns,
+    .three-columns {
+        grid-template-columns: 1fr;
+    }
+    
+    .flex-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

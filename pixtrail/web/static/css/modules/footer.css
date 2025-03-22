@@ -1,0 +1,28 @@
+/**
+ * PixTrail - Footer Module
+ * Styles for the application footer
+ */
+
+footer {
+    margin-top: var(--spacing-xl);
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+    text-align: center;
+    padding: var(--spacing-md) 0;
+}
+
+.footer__link {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+.footer__link:hover {
+    text-decoration: underline;
+}
+
+.privacy-note {
+    font-size: var(--font-size-xs);
+    font-style: italic;
+    margin-top: var(--spacing-sm);
+    color: var(--text-muted);
+}

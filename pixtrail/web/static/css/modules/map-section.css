@@ -1,0 +1,85 @@
+/**
+ * PixTrail - Map Section Module
+ * Styles for the map visualization section
+ */
+
+.map-section {
+    padding: 0;
+    overflow: hidden;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    background-color: white;
+    margin-bottom: var(--spacing-xl);
+}
+
+.map-section h2 {
+    padding: var(--spacing-md) var(--spacing-md) 0 var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+}
+
+#map {
+    height: 500px;
+    width: 100%;
+}
+
+.map-controls {
+    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md) var(--spacing-md);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+}
+
+.map-toggle-controls {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.cluster-options {
+    background-color: var(--bg-medium);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--border-medium);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+}
+
+.cluster-options label {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+}
+
+#radius-value {
+    font-size: var(--font-size-sm);
+    min-width: 45px;
+}
+
+@media (max-width: 768px) {
+    #map {
+        height: 350px;
+    }
+    
+    .map-controls {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .map-controls button,
+    .map-toggle-controls,
+    .cluster-options {
+        width: 100%;
+    }
+    
+    .map-toggle-controls {
+        order: 1;
+    }
+    
+    .cluster-options {
+        order: 2;
+        flex-wrap: wrap;
+    }
+}
