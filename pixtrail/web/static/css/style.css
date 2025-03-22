@@ -48,14 +48,6 @@ footer {
     font-size: 0.9em;
 }
 
-.footer__link {
-    text-decoration: none;
-}
-
-.footer__link:hover {
-    text-decoration: underline;
-}
-
 .privacy-note {
     font-size: 0.8em;
     font-style: italic;
