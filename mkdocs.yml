@@ -1,0 +1,40 @@
+site_name: PixTrail Documentation
+site_description: Documentation for PixTrail - GPS Photo to GPX Tracker
+site_author: Suki Tsubaki
+repo_url: https://github.com/sukitsubaki/pixtrail
+repo_name: sukitsubaki/pixtrail
+
+theme:
+  name: material
+  palette:
+    primary: indigo
+    accent: blue
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - search.highlight
+    - search.share
+
+nav:
+  - Home: index.md
+  - User Guide: usage.md
+  - Web Interface: web_interface.md
+  - API Reference: api.md
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed
+  - pymdownx.critic
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - admonition
+  - toc:
+      permalink: true
+
+plugins:
+  - search
