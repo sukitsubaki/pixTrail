@@ -170,7 +170,7 @@ jobs:
             echo "No changes to repository-structure.md"
           else
             git add repository-structure.md
-            git commit -m "Update Repository Structure"
+            git commit -m "automated update on push"
             # Use elevated permissions for pushing
             git remote set-url origin https://x-access-token:${{ secrets.REPO_STRUCTURE_PAT }}@github.com/${{ github.repository }}
             git push
