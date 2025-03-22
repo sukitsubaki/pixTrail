@@ -95,43 +95,28 @@ document.addEventListener('DOMContentLoaded', function () {
      * Initialize drag and drop functionality
      */
     function initDragAndDrop() {
-        // File drop area
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            fileDropArea.addEventListener(eventName, preventDefaults, false);
+        // Setup both drop areas with common preventDefaults
+        [fileDropArea, directoryDropArea].forEach(dropArea => {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => {
+                    dropArea.classList.add('drag-over');
+                }, false);
+            });
+
+            ['dragleave'].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => {
+                    dropArea.classList.remove('drag-over');
+                }, false);
+            });
         });
 
-        ['dragenter', 'dragover'].forEach(eventName => {
-            fileDropArea.addEventListener(eventName, () => {
-                fileDropArea.classList.add('drag-over');
-            }, false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-            fileDropArea.addEventListener(eventName, () => {
-                fileDropArea.classList.remove('drag-over');
-            }, false);
-        });
-
-        fileDropArea.addEventListener('drop', handleFilesDrop, false);
-
-        // Directory drop area
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            directoryDropArea.addEventListener(eventName, preventDefaults, false);
-        });
-
-        ['dragenter', 'dragover'].forEach(eventName => {
-            directoryDropArea.addEventListener(eventName, () => {
-                directoryDropArea.classList.add('drag-over');
-            }, false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-            directoryDropArea.addEventListener(eventName, () => {
-                directoryDropArea.classList.remove('drag-over');
-            }, false);
-        });
-
-        directoryDropArea.addEventListener('drop', handleDirectoryDrop, false);
+        // Universal drop handler that detects content type
+        fileDropArea.addEventListener('drop', handleUniversalDrop, false);
+        directoryDropArea.addEventListener('drop', handleUniversalDrop, false);
 
         // Clicking on drop areas should trigger file input
         fileDropArea.addEventListener('click', () => photoInput.click());
@@ -147,70 +132,97 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /**
-     * Handle files dropped into the file drop area
+     * Universal drop handler that automatically detects if dropped content is files or directory
+     * and switches to the appropriate tab
      */
-    function handleFilesDrop(e) {
+    function handleUniversalDrop(e) {
+        preventDefaults(e);
+        
+        // Remove drag-over class from both drop areas
+        fileDropArea.classList.remove('drag-over');
+        directoryDropArea.classList.remove('drag-over');
+
+        const items = e.dataTransfer.items;
         const files = e.dataTransfer.files;
-        if (files.length > 0) {
-            // Filter for image files
-            const imageFiles = Array.from(files).filter(file => {
-                return file.type.startsWith('image/');
-            });
+        
+        if (!items || items.length === 0) {
+            showStatusMessage('No items detected in the drop', 'warning');
+            return;
+        }
 
-            if (imageFiles.length === 0) {
-                showStatusMessage('No valid image files found in the dropped items', 'warning');
-                return;
+        // Check if we have any directories
+        let hasDirectory = false;
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            const entry = item.webkitGetAsEntry && item.webkitGetAsEntry();
+            if (entry && entry.isDirectory) {
+                hasDirectory = true;
+                break;
             }
+        }
 
-            // Create a new FileList-like object with only image files
-            const dataTransfer = new DataTransfer();
-            imageFiles.forEach(file => dataTransfer.items.add(file));
-
-            // Set the files to the input element
-            photoInput.files = dataTransfer.files;
-
-            // Trigger the change event
-            const event = new Event('change');
-            photoInput.dispatchEvent(event);
-
-            // Switch to files tab if not active
-            if (activeInput !== 'file') {
-                document.querySelector('.selector-tab[data-target="file-selector"]').click();
-            }
+        if (hasDirectory) {
+            // Handle as directory
+            handleAsDirectory(e);
+        } else {
+            // Handle as files
+            handleAsFiles(e);
         }
     }
 
     /**
-     * Handle directory dropped into the directory drop area
+     * Handle dropped content as files
      */
-    function handleDirectoryDrop(e) {
-        const items = e.dataTransfer.items;
-        if (items.length > 0) {
-            // Check if any item is a directory
-            let hasDirectory = false;
+    function handleAsFiles(e) {
+        const files = e.dataTransfer.files;
+        
+        // Filter for image files
+        const imageFiles = Array.from(files).filter(file => {
+            return file.type.startsWith('image/');
+        });
 
-            for (let i = 0; i < items.length; i++) {
-                const item = items[i];
-                if (item.webkitGetAsEntry && item.webkitGetAsEntry().isDirectory) {
-                    hasDirectory = true;
-                    break;
-                }
-            }
-
-            if (!hasDirectory) {
-                showStatusMessage('No directories found in the dropped items. Please drop a folder.', 'warning');
-                return;
-            }
-
-            // Unfortunately, setting directoryInput.files directly doesn't work with directories
-            // We need to show a message to the user to use the directory selector instead
-            showStatusMessage('Directory drop detected. Due to browser limitations, please use the "Select Directory" button.', 'info');
-
-            // Switch to directory tab if not active
-            if (activeInput !== 'directory') {
-                document.querySelector('.selector-tab[data-target="directory-selector"]').click();
-            }
+        if (imageFiles.length === 0) {
+            showStatusMessage('No valid image files found in the dropped items', 'warning');
+            return;
         }
+
+        // Switch to files tab if not already active
+        if (activeInput !== 'file') {
+            document.querySelector('.selector-tab[data-target="file-selector"]').click();
+        }
+
+        // Create a new FileList-like object with only image files
+        const dataTransfer = new DataTransfer();
+        imageFiles.forEach(file => dataTransfer.items.add(file));
+
+        // Set the files to the input element
+        photoInput.files = dataTransfer.files;
+
+        // Trigger the change event
+        const event = new Event('change');
+        photoInput.dispatchEvent(event);
+        
+        showStatusMessage(`${imageFiles.length} image files ready to process`, 'info');
+    }
+
+    /**
+     * Handle dropped content as directory
+     */
+    function handleAsDirectory(e) {
+        // Switch to directory tab if not already active
+        if (activeInput !== 'directory') {
+            document.querySelector('.selector-tab[data-target="directory-selector"]').click();
+        }
+
+        // Due to browser security restrictions, we can't directly access the directory contents via JS
+        // We need the user to use the directory input, but we can make it easier by:
+        // 1. Auto-switching to the directory tab (done above)
+        // 2. Auto-opening the directory selector
+
+        // Trigger the directory input click
+        directoryInput.click();
+        
+        showStatusMessage('Directory detected. Please select it in the file browser that opened.', 'info');
     }
 
     /**
