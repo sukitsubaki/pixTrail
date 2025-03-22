@@ -66,6 +66,48 @@ After processing, PixTrail will:
 3. Show a timeline of the journey based on photo timestamps
 4. Provide statistics about the processed photos
 
+## Advanced Visualization Features
+
+### Heat Map
+
+The heat map feature visualizes where you spent the most time during your journey:
+
+1. Click the "Show Heatmap" button in the map controls to toggle the heat map
+2. Areas with higher intensity (red/yellow) indicate:
+   - More photos taken at that location
+   - Longer time spent at that location (based on photo timestamps)
+3. Areas with lower intensity (blue/green) indicate brief or single-photo stops
+4. The heat map can be enabled simultaneously with the clustering feature
+
+### Marker Clustering
+
+For routes with many photos, clustering helps keep the map clean and navigable:
+
+1. Click the "Enable Clustering" button to group nearby photos into clusters
+2. Each cluster shows the number of photos it contains
+3. Click a cluster to zoom in and see individual photos
+4. Use the radius slider to adjust how aggressively photos are grouped
+   - Smaller radius: More individual markers, fewer clusters
+   - Larger radius: Fewer, larger clusters
+5. The clustering feature works well for dense city tours or locations with many photos
+
+### Route Statistics
+
+The statistics panel provides detailed metrics about your journey:
+
+1. Click the "Show Statistics" button to open the statistics panel
+2. View summary statistics:
+   - Total distance traveled
+   - Journey duration
+   - Average and maximum speeds
+   - Elevation data (min/max elevation and total elevation gain)
+   - Start and end times
+   - Total number of photos
+3. Interactive charts visualize:
+   - Elevation profile throughout your journey
+   - Speed variations between waypoints
+4. These calculations are based on the GPS coordinates and timestamps from your photos
+
 ## Downloading GPX Files
 
 You can download the generated GPX file by clicking the "Download GPX" button. This file can be imported into:
@@ -88,5 +130,6 @@ The PixTrail web interface runs entirely on your local machine. No photo data is
 
 - The web interface is built with Flask and modern web technologies
 - The client-side uses JavaScript and the EXIF.js library for metadata extraction
+- Chart visualizations are powered by Chart.js
 - The server runs only on your local machine (not on the internet)
 - The interface is responsive and works on various screen sizes
