@@ -16,9 +16,9 @@
 
     <!-- Leaflet.heat Plugin -->
     <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
-
-    <!-- Leaflet.heat Plugin -->
-    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+    
+    <!-- Chart.js for statistics visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -116,6 +116,7 @@
                     <div class="map-toggle-controls">
                         <button id="toggle-heatmap" class="secondary-button">Show Heatmap</button>
                         <button id="toggle-clustering" class="secondary-button">Enable Clustering</button>
+                        <button id="toggle-statistics" class="secondary-button">Show Statistics</button>
                     </div>
                     <div id="cluster-options" class="cluster-options hidden">
                         <label for="cluster-radius">Cluster Radius:</label>
@@ -123,6 +124,69 @@
                         <span id="radius-value">80px</span>
                     </div>
                     <button id="clear-data" class="secondary-button">Clear Data</button>
+                </div>
+            </div>
+            
+            <!-- Statistics Panel -->
+            <div class="section statistics-section hidden" id="statistics-container">
+                <h2>Route Statistics</h2>
+                <div class="statistics-content">
+                    <div class="statistics-summary">
+                        <h3>Summary</h3>
+                        <table class="statistics-table">
+                            <tr>
+                                <td>Total Distance:</td>
+                                <td id="total-distance">-</td>
+                            </tr>
+                            <tr>
+                                <td>Total Duration:</td>
+                                <td id="total-duration">-</td>
+                            </tr>
+                            <tr>
+                                <td>Start Time:</td>
+                                <td id="start-time">-</td>
+                            </tr>
+                            <tr>
+                                <td>End Time:</td>
+                                <td id="end-time">-</td>
+                            </tr>
+                            <tr>
+                                <td>Avg. Speed:</td>
+                                <td id="avg-speed">-</td>
+                            </tr>
+                            <tr>
+                                <td>Max. Speed:</td>
+                                <td id="max-speed">-</td>
+                            </tr>
+                            <tr>
+                                <td>Min Elevation:</td>
+                                <td id="min-elevation">-</td>
+                            </tr>
+                            <tr>
+                                <td>Max Elevation:</td>
+                                <td id="max-elevation">-</td>
+                            </tr>
+                            <tr>
+                                <td>Elevation Gain:</td>
+                                <td id="elevation-gain">-</td>
+                            </tr>
+                            <tr>
+                                <td>Photo Count:</td>
+                                <td id="photo-count">-</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="statistics-charts">
+                        <div class="chart-container">
+                            <h3>Elevation Profile</h3>
+                            <canvas id="elevation-chart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Speed Profile</h3>
+                            <canvas id="speed-chart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
