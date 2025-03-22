@@ -28,59 +28,68 @@ jobs:
       
       - name: Generate Repository Structure with Links
         run: |
-          # Create a python script to process the tree output and add links
+          # Create a python script to process the tree output and add markdown links
           cat > create_tree_with_links.py << 'EOF'
           import os
           import re
+          import subprocess
           
-          # Run tree command and capture output
-          tree_output = os.popen("tree -I '.git|.github' --noreport").read()
-          lines = tree_output.split('\n')
+          # Get repository information
+          repo = os.environ['GITHUB_REPOSITORY']
+          repo_url = f"https://github.com/{repo}/blob/main/"
           
-          # Repository URL
-          repo_url = f"https://github.com/{os.environ['GITHUB_REPOSITORY']}/blob/main/"
-          
-          # Process each line to add links
-          linked_lines = []
-          current_path = []
-          
-          for line in lines:
-              if not line.strip():
-                  continue
-                  
-              # Count the indentation level
-              indent_match = re.match(r'^([ │├└─┬┼]+)(.+)$', line)
-              if indent_match:
-                  indent, content = indent_match.groups()
-                  
-                  # Determine the depth based on the number of directory symbols
-                  depth = indent.count('├') + indent.count('└')
-                  
-                  # Adjust the current path based on depth
-                  current_path = current_path[:depth]
-                  
-                  # If it's a directory (ends with a colon)
-                  if content.endswith(':'):
-                      dir_name = content[:-1]
-                      current_path.append(dir_name)
-                      linked_lines.append(line)
-                  else:
-                      # It's a file, add it to the path and create a link
-                      file_path = '/'.join(current_path + [content])
-                      link = f'<a href="{repo_url}{file_path}">{content}</a>'
-                      linked_lines.append(f"{indent}{link}")
-              else:
-                  # Root directory
-                  if line.endswith(':'):
-                      current_path = [line[:-1]]
-                  linked_lines.append(line)
-          
-          # Write to the output file
+          # Create the output file
           with open('repository-structure.md', 'w') as f:
               f.write("# Repository Structure\n\n")
-              f.write("```html\n")
-              f.write('\n'.join(linked_lines))
-              f.write("\n```\n")
+          
+          # Run tree and capture its output
+          tree_process = subprocess.run(
+              ["tree", "-I", ".git|.github", "--noreport"], 
+              capture_output=True, 
+              text=True
+          )
+          tree_output = tree_process.stdout
+          
+          # Process the tree output line by line
+          current_dirs = []
+          result_lines = []
+          
+          for line in tree_output.split('\n'):
+              if not line.strip():
+                  continue
+              
+              # Check if this is the root directory line
+              if not line.startswith('│') and not line.startswith('├') and not line.startswith('└'):
+                  result_lines.append(f"```\n{line}\n```")
+                  if line.endswith(':'):
+                      current_dirs = [line[:-1]]
+                  continue
+              
+              # Extract the indent part and the content part
+              match = re.match(r'^(.*?)([^│├└─┬┼\s].*)$', line)
+              if not match:
+                  result_lines.append(f"```\n{line}\n```")
+                  continue
+                  
+              indent, content = match.groups()
+              
+              # Determine depth based on indent structure
+              depth = indent.count('├') + indent.count('└')
+              current_dirs = current_dirs[:depth]
+              
+              # If it's a directory (ends with a colon)
+              if content.endswith(':'):
+                  dir_name = content[:-1]
+                  current_dirs.append(dir_name)
+                  result_lines.append(f"```\n{indent}{dir_name}:\n```")
+              else:
+                  # It's a file, create a markdown link
+                  file_path = '/'.join(filter(None, current_dirs + [content]))
+                  result_lines.append(f"```\n{indent}```[{content}]({repo_url}{file_path})")
+          
+          # Write the processed lines to the repository-structure.md file
+          with open('repository-structure.md', 'a') as f:
+              f.write('\n'.join(result_lines))
           EOF
           
           # Execute the Python script
