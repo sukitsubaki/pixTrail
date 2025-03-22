@@ -146,6 +146,27 @@ After running PixTrail on a directory of geotagged photos, you'll get a GPX file
 - GPX viewers
 - Mapping applications on smartphones and GPS devices
 
+## Documentation
+
+The PixTrail documentation is available in several formats:
+
+- **Online Documentation**: Visit the [documentation website](https://sukitsubaki.github.io/pixtrail/)
+- **Local Documentation**: Build the documentation locally by installing the development dependencies and running:
+  ```bash
+  # Install development dependencies
+  pip install -e ".[dev]"
+  
+  # Build documentation
+  python build_docs.py
+  
+  # OR serve locally with live reloading
+  python build_docs.py --serve
+  ```
+- **Source Documentation**: Browse the documentation in the [docs](docs/) directory:
+  - [User Guide](docs/usage.md)
+  - [Web Interface](docs/web_interface.md)
+  - [API Reference](docs/api.md)
+
 ## Future Roadmap
 
 Here are some features we're planning to add in future releases:
