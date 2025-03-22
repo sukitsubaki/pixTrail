@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const progressBar = processProgress.querySelector('.progress-bar');
     const progressText = processProgress.querySelector('.progress-text');
     const mapContainer = document.getElementById('map-container');
+    const statisticsContainer = document.getElementById('statistics-container');
     const downloadButton = document.getElementById('download-gpx');
     const clearButton = document.getElementById('clear-data');
     const statusMessages = document.getElementById('status-messages');
@@ -37,11 +38,15 @@ document.addEventListener('DOMContentLoaded', function () {
     let heatmapVisible = false;  // Status der Heatmap-Sichtbarkeit
     let markerClusterGroup = null; // For clustering markers
     let clusteringEnabled = false; // Status of clustering
+    let statisticsVisible = false; // Status of statistics panel
+    let elevationChart = null; // Chart.js instance for elevation
+    let speedChart = null; // Chart.js instance for speed
     let sessionId = null;
     let gpxFilename = null;
     let activeInput = 'file'; // 'file' or 'directory'
     let waypoints = []; // Store waypoints data
     let clusterRadius = 80; // Default cluster radius
+    let routeStatistics = null; // Store calculated statistics
 
     // Initialize
     initEventListeners();
@@ -105,6 +110,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Clustering Toggle Button
         document.getElementById('toggle-clustering').addEventListener('click', toggleClustering);
         
+        // Statistics Toggle Button
+        document.getElementById('toggle-statistics').addEventListener('click', toggleStatistics);     
+
         // Cluster Radius Slider
         clusterRadiusSlider.addEventListener('input', function() {
             clusterRadius = parseInt(this.value);
@@ -758,6 +766,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         // Store waypoints for later use
                         waypoints = response.waypoints;
+                        
+                        // Calculate statistics
+                        calculateRouteStatistics(waypoints);
 
                         // Show the map and plot the route
                         showMap(waypoints);
@@ -924,11 +935,22 @@ document.addEventListener('DOMContentLoaded', function () {
             toggleClusteringButton.classList.remove('active');
         }
         
+        // Reset statistics button
+        const toggleStatisticsButton = document.getElementById('toggle-statistics');
+        if (toggleStatisticsButton) {
+            toggleStatisticsButton.textContent = 'Show Statistics';
+            toggleStatisticsButton.classList.remove('active');
+        }
+        
         // Hide cluster options
         clusterOptions.classList.add('hidden');
         
-        // Reset clustering status
+        // Hide statistics panel
+        statisticsContainer.classList.add('hidden');
+        
+        // Reset status variables
         clusteringEnabled = false;
+        statisticsVisible = false;
     }
     
     /**
@@ -1207,6 +1229,339 @@ document.addEventListener('DOMContentLoaded', function () {
         // Add new cluster group to map
         map.addLayer(markerClusterGroup);
     }
+    
+    /**
+     * Toggle statistics panel
+     */
+    function toggleStatistics() {
+        const toggleButton = document.getElementById('toggle-statistics');
+        
+        if (statisticsVisible) {
+            // Hide statistics
+            statisticsContainer.classList.add('hidden');
+            toggleButton.textContent = 'Show Statistics';
+            toggleButton.classList.remove('active');
+            statisticsVisible = false;
+        } else {
+            // Show statistics
+            if (!routeStatistics) {
+                calculateRouteStatistics(waypoints);
+            }
+            updateStatisticsPanel();
+            statisticsContainer.classList.remove('hidden');
+            toggleButton.textContent = 'Hide Statistics';
+            toggleButton.classList.add('active');
+            statisticsVisible = true;
+            
+            // Scroll to statistics
+            statisticsContainer.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    }
+    
+    /**
+     * Calculate route statistics from waypoints
+     */
+    function calculateRouteStatistics(waypoints) {
+        if (!waypoints || waypoints.length < 2) {
+            console.log("Not enough waypoints for statistics");
+            return;
+        }
+        
+        // Sort waypoints by timestamp
+        const sortedWaypoints = [...waypoints].sort((a, b) => {
+            const timeA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+            const timeB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
+            return timeA - timeB;
+        });
+        
+        // Initialize statistics object
+        const stats = {
+            totalDistance: 0,
+            totalDuration: 0,
+            startTime: null,
+            endTime: null,
+            avgSpeed: 0,
+            maxSpeed: 0,
+            speeds: [],
+            minElevation: Infinity,
+            maxElevation: -Infinity,
+            elevationGain: 0,
+            photoCount: sortedWaypoints.length,
+            elevationProfile: [],
+            speedProfile: []
+        };
+        
+        // Collect timestamps and start/end times
+        stats.startTime = new Date(sortedWaypoints[0].timestamp);
+        stats.endTime = new Date(sortedWaypoints[sortedWaypoints.length - 1].timestamp);
+        stats.totalDuration = (stats.endTime - stats.startTime) / 1000; // in seconds
+        
+        // Process waypoints for distance, elevation, and speed
+        let prevPoint = null;
+        let prevElevation = null;
+        
+        for (let i = 0; i < sortedWaypoints.length; i++) {
+            const point = sortedWaypoints[i];
+            const timestamp = new Date(point.timestamp);
+            
+            // Track min/max elevation
+            const elevation = point.altitude || 0;
+            stats.minElevation = Math.min(stats.minElevation, elevation);
+            stats.maxElevation = Math.max(stats.maxElevation, elevation);
+            
+            // Calculate elevation gain
+            if (prevElevation !== null && elevation > prevElevation) {
+                stats.elevationGain += (elevation - prevElevation);
+            }
+            prevElevation = elevation;
+            
+            // Add to elevation profile (distance, elevation)
+            stats.elevationProfile.push({
+                index: i,
+                elevation: elevation
+            });
+            
+            // Calculate distance and speed if we have a previous point
+            if (prevPoint) {
+                const distance = calculateDistance(
+                    prevPoint.latitude, prevPoint.longitude,
+                    point.latitude, point.longitude
+                );
+                
+                const timeDiff = (timestamp - new Date(prevPoint.timestamp)) / 1000; // in seconds
+                
+                // Only add distance if it's reasonable (avoid GPS jumps)
+                if (distance < 10) { // Don't count jumps over 10km
+                    stats.totalDistance += distance;
+                
+                    // Calculate speed if time difference is valid
+                    if (timeDiff > 0) {
+                        const speed = distance / timeDiff * 3600; // km/h
+                        
+                        // Only count reasonable speeds (avoid GPS errors)
+                        if (speed < 300) { // Max 300 km/h
+                            stats.speeds.push(speed);
+                            stats.maxSpeed = Math.max(stats.maxSpeed, speed);
+                            
+                            // Add to speed profile (distance, speed)
+                            stats.speedProfile.push({
+                                index: i,
+                                speed: speed
+                            });
+                        }
+                    }
+                }
+            }
+            
+            prevPoint = point;
+        }
+        
+        // Calculate average speed (if we have valid speeds)
+        if (stats.speeds.length > 0) {
+            stats.avgSpeed = stats.speeds.reduce((sum, speed) => sum + speed, 0) / stats.speeds.length;
+        } else if (stats.totalDistance > 0 && stats.totalDuration > 0) {
+            // Fallback: calculate average speed from total distance and duration
+            stats.avgSpeed = stats.totalDistance / (stats.totalDuration / 3600); // km/h
+        }
+        
+        // If no elevation changes were found, reset min/max
+        if (stats.minElevation === Infinity) stats.minElevation = 0;
+        if (stats.maxElevation === -Infinity) stats.maxElevation = 0;
+        
+        // Store statistics
+        routeStatistics = stats;
+        
+        return stats;
+    }
+    
+    /**
+     * Calculate distance between two GPS points using Haversine formula (in km)
+     */
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371; // Earth's radius in km
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLon/2) * Math.sin(dLon/2);
+        
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+    }
+    
+    /**
+     * Format duration in seconds to human-readable format (HH:MM:SS)
+     */
+    function formatDuration(durationInSeconds) {
+        if (!durationInSeconds) return '-';
+        
+        const hours = Math.floor(durationInSeconds / 3600);
+        const minutes = Math.floor((durationInSeconds % 3600) / 60);
+        const seconds = Math.floor(durationInSeconds % 60);
+        
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+    
+    /**
+     * Update statistics panel with calculated data
+     */
+    function updateStatisticsPanel() {
+        if (!routeStatistics) {
+            showStatusMessage('No statistics available', 'warning');
+            return;
+        }
+        
+        // Update summary statistics
+        document.getElementById('total-distance').textContent = `${routeStatistics.totalDistance.toFixed(2)} km`;
+        document.getElementById('total-duration').textContent = formatDuration(routeStatistics.totalDuration);
+        document.getElementById('start-time').textContent = routeStatistics.startTime.toLocaleString();
+        document.getElementById('end-time').textContent = routeStatistics.endTime.toLocaleString();
+        document.getElementById('avg-speed').textContent = `${routeStatistics.avgSpeed.toFixed(2)} km/h`;
+        document.getElementById('max-speed').textContent = `${routeStatistics.maxSpeed.toFixed(2)} km/h`;
+        document.getElementById('min-elevation').textContent = `${routeStatistics.minElevation.toFixed(1)} m`;
+        document.getElementById('max-elevation').textContent = `${routeStatistics.maxElevation.toFixed(1)} m`;
+        document.getElementById('elevation-gain').textContent = `${routeStatistics.elevationGain.toFixed(1)} m`;
+        document.getElementById('photo-count').textContent = routeStatistics.photoCount.toString();
+        
+        // Create charts
+        createElevationChart();
+        createSpeedChart();
+    }
+    
+    /**
+     * Create elevation profile chart
+     */
+    function createElevationChart() {
+        const ctx = document.getElementById('elevation-chart').getContext('2d');
+        
+        // Destroy existing chart if it exists
+        if (elevationChart) {
+            elevationChart.destroy();
+        }
+        
+        // Create labels for x-axis (photo indices or timestamps)
+        const labels = routeStatistics.elevationProfile.map((point, index) => index + 1);
+        
+        // Create chart data
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Elevation (m)',
+                data: routeStatistics.elevationProfile.map(point => point.elevation),
+                fill: true,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 2,
+                tension: 0.4
+            }]
+        };
+        
+        // Chart options
+        const options = {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    title: {
+                        display: true,
+                        text: 'Elevation (m)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Photo Index'
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `Elevation: ${context.raw.toFixed(1)} m`;
+                        }
+                    }
+                }
+            }
+        };
+        
+        // Create chart
+        elevationChart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: options
+        });
+    }
+    
+    /**
+     * Create speed profile chart
+     */
+    function createSpeedChart() {
+        const ctx = document.getElementById('speed-chart').getContext('2d');
+        
+        // Destroy existing chart if it exists
+        if (speedChart) {
+            speedChart.destroy();
+        }
+        
+        // Create labels for x-axis (photo indices)
+        const labels = routeStatistics.speedProfile.map((point, index) => index + 1);
+        
+        // Create chart data
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Speed (km/h)',
+                data: routeStatistics.speedProfile.map(point => point.speed),
+                fill: false,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 2,
+                tension: 0.1
+            }]
+        };
+        
+        // Chart options
+        const options = {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Speed (km/h)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Segment Index'
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `Speed: ${context.raw.toFixed(1)} km/h`;
+                        }
+                    }
+                }
+            }
+        };
+        
+        // Create chart
+        speedChart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: options
+        });
+    }
 
     /**
      * Handle GPX download
@@ -1248,6 +1603,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         mapContainer.classList.add('hidden');
+        statisticsContainer.classList.add('hidden');
         processProgress.classList.add('hidden');
         processButton.disabled = true;
         photoInput.value = '';
@@ -1261,6 +1617,7 @@ document.addEventListener('DOMContentLoaded', function () {
         sessionId = null;
         gpxFilename = null;
         waypoints = [];
+        routeStatistics = null;
         
         // Reset heatmap
         if (heatLayer) {
@@ -1276,6 +1633,21 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('toggle-clustering').textContent = 'Enable Clustering';
         document.getElementById('toggle-clustering').classList.remove('active');
         clusterOptions.classList.add('hidden');
+        
+        // Reset statistics
+        statisticsVisible = false;
+        document.getElementById('toggle-statistics').textContent = 'Show Statistics';
+        document.getElementById('toggle-statistics').classList.remove('active');
+        
+        // Destroy charts
+        if (elevationChart) {
+            elevationChart.destroy();
+            elevationChart = null;
+        }
+        if (speedChart) {
+            speedChart.destroy();
+            speedChart = null;
+        }
 
         // Clear status messages
         statusMessages.innerHTML = '';
