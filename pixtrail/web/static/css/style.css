@@ -109,7 +109,8 @@ input[type="file"] {
     background-color: var(--mid-gray);
 }
 
-#selected-files-count {
+#selected-files-count,
+#selected-directory {
     margin-left: 10px;
     color: var(--dark-gray);
 }
@@ -149,6 +150,48 @@ button:active {
 
 .secondary-button:hover {
     background-color: var(--mid-gray);
+}
+
+/* Tab navigation styles */
+.input-selector {
+    margin-bottom: 20px;
+}
+
+.selector-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--mid-gray);
+    margin-bottom: 15px;
+}
+
+.selector-tab {
+    background: transparent;
+    border: none;
+    padding: 10px 15px;
+    margin-right: 5px;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    font-weight: normal;
+    color: var(--dark-gray);
+    transition: all 0.2s ease;
+}
+
+.selector-tab:hover {
+    background-color: var(--light-gray);
+}
+
+.selector-tab.active {
+    font-weight: 600;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    margin-bottom: -1px;
+}
+
+.selector-content {
+    display: none;
+}
+
+.selector-content.active {
+    display: block;
 }
 
 /* Progress bar */
