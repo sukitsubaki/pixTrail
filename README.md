@@ -150,7 +150,7 @@ After running PixTrail on a directory of geotagged photos, you'll get a GPX file
 
 The PixTrail documentation is available in several formats:
 
-- **Online Documentation**: Visit the [documentation website](https://sukitsubaki.github.io/pixtrail/)
+- **Online Documentation**: Visit the [documentation website](https://sukitsubaki.github.io/pixTrail/)
 - **Local Documentation**: Build the documentation locally by installing the development dependencies and running:
   ```bash
   # Install development dependencies
