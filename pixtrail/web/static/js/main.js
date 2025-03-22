@@ -261,6 +261,223 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /**
+     * Extract GPS data from images directly in the browser
+     * This avoids uploading the entire image files to the local server
+     */
+    function extractGpsDataFromImages(files) {
+        return new Promise((resolve, reject) => {
+            const gpsDataList = [];
+            let processedCount = 0;
+            let totalFiles = files.length;
+            
+            if (totalFiles === 0) {
+                resolve([]);
+                return;
+            }
+            
+            // Update the UI to show extraction progress
+            progressText.textContent = 'Extracting GPS data...';
+            
+            // Process each file sequentially to avoid memory issues
+            const processFile = (index) => {
+                if (index >= totalFiles) {
+                    resolve(gpsDataList);
+                    return;
+                }
+                
+                const file = files[index];
+                
+                // Skip non-image files
+                if (!file.type.startsWith('image/')) {
+                    processedCount++;
+                    updateProgressBar(processedCount, totalFiles);
+                    processFile(index + 1);
+                    return;
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        // Use EXIF.js to extract EXIF data
+                        const exifReader = new FileReader();
+                        
+                        exifReader.onload = function() {
+                            try {
+                                const tags = EXIF.readFromBinaryFile(this.result);
+                                
+                                // Extract GPS data if available
+                                if (tags) {
+                                    const gpsData = extractGpsFromExif(tags, file);
+                                    
+                                    if (gpsData) {
+                                        gpsDataList.push(gpsData);
+                                    }
+                                }
+                            } catch (exifErr) {
+                                console.error(`Error reading EXIF from ${file.name}:`, exifErr);
+                            }
+                            
+                            // Process next file
+                            processedCount++;
+                            updateProgressBar(processedCount, totalFiles);
+                            processFile(index + 1);
+                        };
+                        
+                        exifReader.onerror = function() {
+                            console.error(`Error reading EXIF binary data from ${file.name}`);
+                            processedCount++;
+                            updateProgressBar(processedCount, totalFiles);
+                            processFile(index + 1);
+                        };
+                        
+                        // Read file as binary for EXIF.js
+                        exifReader.readAsArrayBuffer(file);
+                    } catch (err) {
+                        console.error(`Error setting up EXIF reader for ${file.name}:`, err);
+                        processedCount++;
+                        updateProgressBar(processedCount, totalFiles);
+                        processFile(index + 1);
+                    }
+                };
+                
+                reader.onerror = function() {
+                    console.error(`Error reading file ${file.name}`);
+                    processedCount++;
+                    updateProgressBar(processedCount, totalFiles);
+                    processFile(index + 1);
+                };
+                
+                reader.readAsDataURL(file);
+            };
+            
+            // Start processing with the first file
+            processFile(0);
+        });
+    }
+    
+    /**
+     * Extract GPS data from EXIF metadata
+     */
+    function extractGpsFromExif(tags, file) {
+        // EXIF GPS data
+        if (!tags || !tags.GPSLatitude || !tags.GPSLongitude) {
+            return null;
+        }
+        
+        // Get reference (N/S, E/W)
+        const latRef = tags.GPSLatitudeRef || "N";
+        const lonRef = tags.GPSLongitudeRef || "E";
+        
+        // Convert to decimal degrees
+        let latitude = convertDMSToDD(
+            tags.GPSLatitude[0],
+            tags.GPSLatitude[1],
+            tags.GPSLatitude[2],
+            latRef
+        );
+        
+        let longitude = convertDMSToDD(
+            tags.GPSLongitude[0],
+            tags.GPSLongitude[1],
+            tags.GPSLongitude[2],
+            lonRef
+        );
+        
+        // Get altitude if available
+        let altitude = 0;
+        if (tags.GPSAltitude) {
+            altitude = tags.GPSAltitude;
+            if (tags.GPSAltitudeRef && tags.GPSAltitudeRef === 1) {
+                altitude = -altitude;
+            }
+        }
+        
+        // Get timestamp
+        let timestamp;
+        if (tags.DateTime) {
+            try {
+                // EXIF DateTime format: 'YYYY:MM:DD HH:MM:SS'
+                const parts = tags.DateTime.split(' ');
+                const dateParts = parts[0].split(':');
+                const timeParts = parts[1].split(':');
+                timestamp = new Date(
+                    parseInt(dateParts[0]),
+                    parseInt(dateParts[1]) - 1,
+                    parseInt(dateParts[2]),
+                    parseInt(timeParts[0]),
+                    parseInt(timeParts[1]),
+                    parseInt(timeParts[2])
+                ).toISOString();
+            } catch (e) {
+                console.error("Error parsing timestamp:", e);
+                timestamp = file.lastModified 
+                    ? new Date(file.lastModified).toISOString() 
+                    : new Date().toISOString();
+            }
+        } else {
+            // Use file modified date as fallback
+            timestamp = file.lastModified 
+                ? new Date(file.lastModified).toISOString() 
+                : new Date().toISOString();
+        }
+        
+        return {
+            name: file.name,
+            latitude: latitude,
+            longitude: longitude,
+            altitude: altitude,
+            timestamp: timestamp
+        };
+    }
+    
+    /**
+     * Convert degrees, minutes, seconds to decimal degrees
+     */
+    function convertDMSToDD(degrees, minutes, seconds, direction) {
+        let dd = degrees + (minutes / 60.0) + (seconds / 3600.0);
+        
+        if (direction === "S" || direction === "W") {
+            dd = -dd;
+        }
+        
+        return dd;
+    }
+    
+    /**
+     * Update progress bar based on processing progress
+     */
+    function updateProgressBar(current, total) {
+        const percentComplete = Math.round((current / total) * 100);
+        progressBar.style.width = percentComplete + '%';
+        progressText.textContent = `Processing... ${percentComplete}%`;
+    }
+    
+    /**
+     * Send just the GPS data to the local server instead of full image files
+     */
+    function sendGpsDataToServer(gpsDataList) {
+        return fetch('/api/create-gpx', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ gps_data: gpsDataList })
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    throw new Error(data.error || `Server returned status ${response.status}`);
+                })
+                .catch(jsonError => {
+                    throw new Error(`Processing failed: Server error (${response.status})`);
+                });
+            }
+            return response.json();
+        });
+    }
+
+    /**
      * Handle form submission
      */
     function handleFormSubmit(event) {
@@ -281,121 +498,37 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        // Prepare form data
-        const formData = new FormData();
-        for (const file of selectedFiles) {
-            formData.append('photos', file);
-        }
-
-        // Add source type (file or directory)
-        formData.append('source_type', activeInput);
-
-        // Add recursive options if directory mode is selected
-        if (activeInput === 'directory') {
-            formData.append('recursive', recursiveCheckbox.checked ? '1' : '0');
-            if (recursiveCheckbox.checked) {
-                const depthValue = document.getElementById('recursive-depth').value;
-                formData.append('depth', depthValue);
-            }
-        }
-
         // Show progress
         processProgress.classList.remove('hidden');
         progressBar.style.width = '0%';
         progressText.textContent = 'Processing...';
         processButton.disabled = true;
 
-        // Send files for processing
-        processPhotos(formData);
-    }
-
-    /**
-     * Send photos to the server for processing
-     */
-    function processPhotos(formData) {
-        const xhr = new XMLHttpRequest();
-
-        // Progress tracking
-        // Local file transfer progress (browser API uses the term "upload")
-        xhr.upload.addEventListener('progress', function (event) {
-            if (event.lengthComputable) {
-                const percentComplete = Math.round((event.loaded / event.total) * 100);
-                progressBar.style.width = percentComplete + '%';
-                progressText.textContent = `Processing... ${percentComplete}%`;
-            }
-        });
-
-        // Handle completion
-        xhr.addEventListener('load', function () {
-            if (xhr.status === 200) {
-                const response = JSON.parse(xhr.responseText);
-                sessionId = response.session_id;
-
-                progressText.textContent = 'Extracting GPS data...';
-                progressBar.style.width = '75%';
-
-                // Process the submitted photos
-                extractGpsData(sessionId);
-            } else {
-                try {
-                    const response = JSON.parse(xhr.responseText);
-                    handleError(response.error || `Processing failed: Server returned status ${xhr.status}`);
-                } catch (e) {
-                    handleError(`Processing failed: Server returned status ${xhr.status}`);
+        // Process files client-side to extract GPS data
+        extractGpsDataFromImages(selectedFiles)
+            .then(gpsDataList => {
+                if (gpsDataList.length === 0) {
+                    throw new Error('No GPS data found in any of the submitted photos');
                 }
-            }
-        });
-
-        // Handle errors
-        xhr.addEventListener('error', function () {
-            handleError('Processing failed: Network error. Please check your connection.');
-        });
-
-        // Send the request
-        xhr.open('POST', '/api/submit');
-        xhr.send(formData);
-    }
-
-    /**
-     * Send photos to the server for processing
-     */
-    function extractGpsData(sessionId) {
-        fetch(`/api/process/${sessionId}`, {
-                method: 'POST'
+                
+                // Send only the extracted GPS data to local server
+                return sendGpsDataToServer(gpsDataList);
             })
             .then(response => {
-                if (!response.ok) {
-                    return response.json().then(data => {
-                            throw new Error(data.error || 'Processing failed: Unknown server error');
-                        })
-                        .catch(jsonError => {
-                            // If JSON parsing fails, throw the original response status text
-                            throw new Error(`Processing failed: ${response.statusText || 'Server error'}`);
-                        });
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
+                if (response.success) {
                     // Processing succeeded
-                    gpxFilename = data.gpx_file;
+                    sessionId = response.session_id;
+                    gpxFilename = response.gpx_file;
 
                     // Update UI
                     progressBar.style.width = '100%';
                     progressText.textContent = 'Processing complete!';
 
                     // Show the map and plot the route
-                    showMap(data.waypoints);
+                    showMap(response.waypoints);
 
                     // Show success message with statistics
-                    let statsMessage = 'Photos processed successfully! ';
-                    if (data.stats) {
-                        statsMessage += `${data.stats.processed} photos with GPS data processed`;
-                        if (data.stats.skipped > 0) {
-                            statsMessage += `, ${data.stats.skipped} photos without GPS data skipped`;
-                        }
-                        statsMessage += '. GPX file created.';
-                    }
+                    const statsMessage = `Photos processed successfully! ${response.waypoints.length} photos with GPS data processed. GPX file created.`;
                     showStatusMessage(statsMessage, 'success');
 
                     // Reset form
@@ -410,12 +543,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         depthSelector.classList.remove('visible');
                     }, 1500);
                 } else {
-                    // Show error message with statistics if available
-                    let errorMessage = data.error || 'Processing failed: No error details provided';
-                    if (data.stats) {
-                        errorMessage += ` (${data.stats.total} total files, ${data.stats.processed} with GPS data, ${data.stats.skipped} without GPS data)`;
-                    }
-                    handleError(errorMessage);
+                    handleError(response.error || 'Processing failed: Unknown error');
                 }
             })
             .catch(error => {
