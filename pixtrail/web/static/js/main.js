@@ -111,8 +111,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('toggle-clustering').addEventListener('click', toggleClustering);
         
         // Statistics Toggle Button
-        document.getElementById('toggle-statistics').addEventListener('click', toggleStatistics);
-        
+        document.getElementById('toggle-statistics').addEventListener('click', toggleStatistics);     
+
         // Cluster Radius Slider
         clusterRadiusSlider.addEventListener('input', function() {
             clusterRadius = parseInt(this.value);
