@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectorTabs = document.querySelectorAll('.selector-tab');
     const recursiveCheckbox = document.getElementById('recursive-checkbox');
     const depthSelector = document.getElementById('depth-selector');
+    const fileDropArea = document.getElementById('file-drop-area');
+    const directoryDropArea = document.getElementById('directory-drop-area');
     
     // State
     let map = null;
@@ -34,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize
     initEventListeners();
+    initDragAndDrop();
     
     /**
      * Set up event listeners
@@ -86,6 +89,128 @@ document.addEventListener('DOMContentLoaded', function() {
         // Map controls
         downloadButton.addEventListener('click', handleDownload);
         clearButton.addEventListener('click', handleClear);
+    }
+    
+    /**
+     * Initialize drag and drop functionality
+     */
+    function initDragAndDrop() {
+        // File drop area
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            fileDropArea.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            fileDropArea.addEventListener(eventName, () => {
+                fileDropArea.classList.add('drag-over');
+            }, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            fileDropArea.addEventListener(eventName, () => {
+                fileDropArea.classList.remove('drag-over');
+            }, false);
+        });
+        
+        fileDropArea.addEventListener('drop', handleFilesDrop, false);
+        
+        // Directory drop area
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            directoryDropArea.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            directoryDropArea.addEventListener(eventName, () => {
+                directoryDropArea.classList.add('drag-over');
+            }, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            directoryDropArea.addEventListener(eventName, () => {
+                directoryDropArea.classList.remove('drag-over');
+            }, false);
+        });
+        
+        directoryDropArea.addEventListener('drop', handleDirectoryDrop, false);
+        
+        // Clicking on drop areas should trigger file input
+        fileDropArea.addEventListener('click', () => photoInput.click());
+        directoryDropArea.addEventListener('click', () => directoryInput.click());
+    }
+    
+    /**
+     * Prevent default browser behavior for drag and drop events
+     */
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    
+    /**
+     * Handle files dropped into the file drop area
+     */
+    function handleFilesDrop(e) {
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            // Filter for image files
+            const imageFiles = Array.from(files).filter(file => {
+                return file.type.startsWith('image/');
+            });
+            
+            if (imageFiles.length === 0) {
+                showStatusMessage('No valid image files found in the dropped items', 'warning');
+                return;
+            }
+            
+            // Create a new FileList-like object with only image files
+            const dataTransfer = new DataTransfer();
+            imageFiles.forEach(file => dataTransfer.items.add(file));
+            
+            // Set the files to the input element
+            photoInput.files = dataTransfer.files;
+            
+            // Trigger the change event
+            const event = new Event('change');
+            photoInput.dispatchEvent(event);
+            
+            // Switch to files tab if not active
+            if (activeInput !== 'file') {
+                document.querySelector('.selector-tab[data-target="file-selector"]').click();
+            }
+        }
+    }
+    
+    /**
+     * Handle directory dropped into the directory drop area
+     */
+    function handleDirectoryDrop(e) {
+        const items = e.dataTransfer.items;
+        if (items.length > 0) {
+            // Check if any item is a directory
+            let hasDirectory = false;
+            
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                if (item.webkitGetAsEntry && item.webkitGetAsEntry().isDirectory) {
+                    hasDirectory = true;
+                    break;
+                }
+            }
+            
+            if (!hasDirectory) {
+                showStatusMessage('No directories found in the dropped items. Please drop a folder.', 'warning');
+                return;
+            }
+            
+            // Unfortunately, setting directoryInput.files directly doesn't work with directories
+            // We need to show a message to the user to use the directory selector instead
+            showStatusMessage('Directory drop detected. Due to browser limitations, please use the "Select Directory" button.', 'info');
+            
+            // Switch to directory tab if not active
+            if (activeInput !== 'directory') {
+                document.querySelector('.selector-tab[data-target="directory-selector"]').click();
+            }
+        }
     }
     
     /**
@@ -272,6 +397,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     directoryInput.value = '';
                     selectedFilesCount.textContent = 'No files selected';
                     selectedDirectory.textContent = 'No directory selected';
+                    recursiveCheckbox.checked = false;
+                    depthSelector.classList.remove('visible');
                 }, 1500);
             } else {
                 // Show error message with statistics if available
