@@ -25,6 +25,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const depthSelector = document.getElementById('depth-selector');
     const fileDropArea = document.getElementById('file-drop-area');
     const directoryDropArea = document.getElementById('directory-drop-area');
+    const clusterOptions = document.getElementById('cluster-options');
+    const clusterRadiusSlider = document.getElementById('cluster-radius');
+    const radiusValueDisplay = document.getElementById('radius-value');
 
     // State
     let map = null;
@@ -32,9 +35,13 @@ document.addEventListener('DOMContentLoaded', function () {
     let routeLine = null;
     let heatLayer = null;  // Für die Heatmap
     let heatmapVisible = false;  // Status der Heatmap-Sichtbarkeit
+    let markerClusterGroup = null; // For clustering markers
+    let clusteringEnabled = false; // Status of clustering
     let sessionId = null;
     let gpxFilename = null;
     let activeInput = 'file'; // 'file' or 'directory'
+    let waypoints = []; // Store waypoints data
+    let clusterRadius = 80; // Default cluster radius
 
     // Initialize
     initEventListeners();
@@ -94,6 +101,19 @@ document.addEventListener('DOMContentLoaded', function () {
         
         // Heatmap Toggle Button
         document.getElementById('toggle-heatmap').addEventListener('click', toggleHeatmap);
+        
+        // Clustering Toggle Button
+        document.getElementById('toggle-clustering').addEventListener('click', toggleClustering);
+        
+        // Cluster Radius Slider
+        clusterRadiusSlider.addEventListener('input', function() {
+            clusterRadius = parseInt(this.value);
+            radiusValueDisplay.textContent = `${clusterRadius}px`;
+            
+            if (clusteringEnabled && markerClusterGroup) {
+                updateClusterRadius();
+            }
+        });
     }
 
     /**
@@ -736,8 +756,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         progressBar.style.width = '100%';
                         progressText.textContent = 'Processing complete!';
 
+                        // Store waypoints for later use
+                        waypoints = response.waypoints;
+
                         // Show the map and plot the route
-                        showMap(response.waypoints);
+                        showMap(waypoints);
 
                         // Show success message with statistics
                         const statsMessage = `Photos processed successfully! ${response.waypoints.length} photos with GPS data processed. GPX file created.`;
@@ -792,6 +815,15 @@ document.addEventListener('DOMContentLoaded', function () {
             // Clear existing markers and route
             clearMapLayers();
         }
+        
+        // Initialize marker cluster group even if not immediately visible
+        markerClusterGroup = L.markerClusterGroup({
+            maxClusterRadius: clusterRadius,
+            spiderfyOnMaxZoom: true,
+            showCoverageOnHover: true,
+            zoomToBoundsOnClick: true,
+            chunkedLoading: true
+        });
 
         // Add markers for each waypoint
         const latLngs = [];
@@ -800,9 +832,8 @@ document.addEventListener('DOMContentLoaded', function () {
             latLngs.push(latLng);
 
             // Create marker with popup
-            const marker = L.marker(latLng).addTo(map);
-            markers.push(marker);
-
+            const marker = L.marker(latLng);
+            
             // Format timestamp if available
             let timestampStr = 'Unknown time';
             if (point.timestamp) {
@@ -817,7 +848,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 Lng: ${point.longitude.toFixed(6)}<br>
                 Time: ${timestampStr}
             `);
+            
+            // Add to appropriate container
+            if (clusteringEnabled) {
+                markerClusterGroup.addLayer(marker);
+            } else {
+                marker.addTo(map);
+                markers.push(marker);
+            }
         });
+        
+        // If clustering is enabled, add the cluster group to the map
+        if (clusteringEnabled) {
+            map.addLayer(markerClusterGroup);
+            clusterOptions.classList.remove('hidden');
+        }
 
         // Add route line
         routeLine = L.polyline(latLngs, {
@@ -826,9 +871,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }).addTo(map);
 
         // Fit map to the route
-        map.fitBounds(routeLine.getBounds(), {
-            padding: [30, 30]
-        });
+        if (routeLine.getBounds().isValid()) {
+            map.fitBounds(routeLine.getBounds(), {
+                padding: [30, 30]
+            });
+        }
 
         // Scroll to map
         mapContainer.scrollIntoView({
@@ -840,9 +887,15 @@ document.addEventListener('DOMContentLoaded', function () {
      * Clear map layers (markers and route)
      */
     function clearMapLayers() {
-        // Remove markers
+        // Remove individual markers
         markers.forEach(marker => map.removeLayer(marker));
         markers = [];
+
+        // Remove marker cluster group if it exists
+        if (markerClusterGroup) {
+            map.removeLayer(markerClusterGroup);
+            markerClusterGroup = null;
+        }
 
         // Remove route line
         if (routeLine) {
@@ -858,11 +911,24 @@ document.addEventListener('DOMContentLoaded', function () {
         heatmapVisible = false;
         
         // Reset heatmap button
-        const toggleButton = document.getElementById('toggle-heatmap');
-        if (toggleButton) {
-            toggleButton.textContent = 'Show Heatmap';
-            toggleButton.classList.remove('active');
+        const toggleHeatmapButton = document.getElementById('toggle-heatmap');
+        if (toggleHeatmapButton) {
+            toggleHeatmapButton.textContent = 'Show Heatmap';
+            toggleHeatmapButton.classList.remove('active');
         }
+        
+        // Reset clustering button
+        const toggleClusteringButton = document.getElementById('toggle-clustering');
+        if (toggleClusteringButton) {
+            toggleClusteringButton.textContent = 'Enable Clustering';
+            toggleClusteringButton.classList.remove('active');
+        }
+        
+        // Hide cluster options
+        clusterOptions.classList.add('hidden');
+        
+        // Reset clustering status
+        clusteringEnabled = false;
     }
     
     /**
@@ -899,7 +965,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         
         // We need waypoints to create a heatmap
-        if (!markers || markers.length === 0) {
+        if (!waypoints || waypoints.length === 0) {
             showStatusMessage('No GPS data available for heatmap', 'warning');
             return;
         }
@@ -913,29 +979,21 @@ document.addEventListener('DOMContentLoaded', function () {
         const locationGroups = {};
         
         // Group photos by location (using a grid approach to group nearby points)
-        markers.forEach(marker => {
-            const latlng = marker.getLatLng();
-            const popup = marker.getPopup();
-            
-            // Extract timestamp from popup content if available
+        waypoints.forEach(point => {
+            // Extract timestamp from waypoint data
             let timestamp = null;
-            if (popup) {
-                const content = popup._content;
-                // Extract timestamp from popup content (assumes format Time: YYYY-MM-DD HH:MM:SS)
-                const timeMatch = content.match(/Time: ([\d-]+\s[\d:]+)/);
-                if (timeMatch && timeMatch[1]) {
-                    timestamp = new Date(timeMatch[1]);
-                }
+            if (point.timestamp) {
+                timestamp = new Date(point.timestamp);
             }
             
             // Create a grid key by rounding coordinates (groups nearby points)
             // Using 5 decimal places (~1m precision at the equator)
-            const gridKey = `${Math.round(latlng.lat * 100000) / 100000},${Math.round(latlng.lng * 100000) / 100000}`;
+            const gridKey = `${Math.round(point.latitude * 100000) / 100000},${Math.round(point.longitude * 100000) / 100000}`;
             
             if (!locationGroups[gridKey]) {
                 locationGroups[gridKey] = {
-                    lat: latlng.lat,
-                    lng: latlng.lng,
+                    lat: point.latitude,
+                    lng: point.longitude,
                     count: 0,
                     timestamps: []
                 };
@@ -980,6 +1038,174 @@ document.addEventListener('DOMContentLoaded', function () {
                 1.0: 'red'
             }
         }).addTo(map);
+    }
+    
+    /**
+     * Toggle marker clustering
+     */
+    function toggleClustering() {
+        const toggleButton = document.getElementById('toggle-clustering');
+        
+        if (clusteringEnabled) {
+            // Disable clustering
+            disableClustering();
+            toggleButton.textContent = 'Enable Clustering';
+            toggleButton.classList.remove('active');
+            clusterOptions.classList.add('hidden');
+            clusteringEnabled = false;
+        } else {
+            // Enable clustering
+            enableClustering();
+            toggleButton.textContent = 'Disable Clustering';
+            toggleButton.classList.add('active');
+            clusterOptions.classList.remove('hidden');
+            clusteringEnabled = true;
+        }
+    }
+    
+    /**
+     * Enable marker clustering
+     */
+    function enableClustering() {
+        // If no waypoints, nothing to do
+        if (!waypoints || waypoints.length === 0) {
+            showStatusMessage('No GPS data available for clustering', 'warning');
+            return;
+        }
+        
+        // Remove individual markers from map
+        markers.forEach(marker => map.removeLayer(marker));
+        markers = [];
+        
+        // Create marker cluster group if it doesn't exist
+        if (!markerClusterGroup) {
+            markerClusterGroup = L.markerClusterGroup({
+                maxClusterRadius: clusterRadius,
+                spiderfyOnMaxZoom: true,
+                showCoverageOnHover: true,
+                zoomToBoundsOnClick: true,
+                chunkedLoading: true
+            });
+        }
+        
+        // Add markers to cluster group
+        waypoints.forEach(point => {
+            const latLng = L.latLng(point.latitude, point.longitude);
+            
+            // Create marker with popup
+            const marker = L.marker(latLng);
+            
+            // Format timestamp if available
+            let timestampStr = 'Unknown time';
+            if (point.timestamp) {
+                const timestamp = new Date(point.timestamp);
+                timestampStr = timestamp.toLocaleString();
+            }
+            
+            // Create popup content
+            marker.bindPopup(`
+                <strong>${point.name}</strong><br>
+                Lat: ${point.latitude.toFixed(6)}<br>
+                Lng: ${point.longitude.toFixed(6)}<br>
+                Time: ${timestampStr}
+            `);
+            
+            // Add to cluster group
+            markerClusterGroup.addLayer(marker);
+        });
+        
+        // Add cluster group to map
+        map.addLayer(markerClusterGroup);
+    }
+    
+    /**
+     * Disable marker clustering
+     */
+    function disableClustering() {
+        // If no waypoints, nothing to do
+        if (!waypoints || waypoints.length === 0) {
+            return;
+        }
+        
+        // Remove cluster group from map
+        if (markerClusterGroup) {
+            map.removeLayer(markerClusterGroup);
+        }
+        
+        // Add individual markers to map
+        waypoints.forEach(point => {
+            const latLng = L.latLng(point.latitude, point.longitude);
+            
+            // Create marker with popup
+            const marker = L.marker(latLng).addTo(map);
+            markers.push(marker);
+            
+            // Format timestamp if available
+            let timestampStr = 'Unknown time';
+            if (point.timestamp) {
+                const timestamp = new Date(point.timestamp);
+                timestampStr = timestamp.toLocaleString();
+            }
+            
+            // Create popup content
+            marker.bindPopup(`
+                <strong>${point.name}</strong><br>
+                Lat: ${point.latitude.toFixed(6)}<br>
+                Lng: ${point.longitude.toFixed(6)}<br>
+                Time: ${timestampStr}
+            `);
+        });
+    }
+    
+    /**
+     * Update cluster radius when slider changes
+     */
+    function updateClusterRadius() {
+        // If clustering not enabled or no cluster group, nothing to do
+        if (!clusteringEnabled || !markerClusterGroup) {
+            return;
+        }
+        
+        // Remove existing cluster group
+        map.removeLayer(markerClusterGroup);
+        
+        // Create new cluster group with updated radius
+        markerClusterGroup = L.markerClusterGroup({
+            maxClusterRadius: clusterRadius,
+            spiderfyOnMaxZoom: true,
+            showCoverageOnHover: true,
+            zoomToBoundsOnClick: true,
+            chunkedLoading: true
+        });
+        
+        // Add markers to new cluster group
+        waypoints.forEach(point => {
+            const latLng = L.latLng(point.latitude, point.longitude);
+            
+            // Create marker with popup
+            const marker = L.marker(latLng);
+            
+            // Format timestamp if available
+            let timestampStr = 'Unknown time';
+            if (point.timestamp) {
+                const timestamp = new Date(point.timestamp);
+                timestampStr = timestamp.toLocaleString();
+            }
+            
+            // Create popup content
+            marker.bindPopup(`
+                <strong>${point.name}</strong><br>
+                Lat: ${point.latitude.toFixed(6)}<br>
+                Lng: ${point.longitude.toFixed(6)}<br>
+                Time: ${timestampStr}
+            `);
+            
+            // Add to cluster group
+            markerClusterGroup.addLayer(marker);
+        });
+        
+        // Add new cluster group to map
+        map.addLayer(markerClusterGroup);
     }
 
     /**
@@ -1034,6 +1260,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Clear state
         sessionId = null;
         gpxFilename = null;
+        waypoints = [];
         
         // Reset heatmap
         if (heatLayer) {
@@ -1043,6 +1270,12 @@ document.addEventListener('DOMContentLoaded', function () {
         heatmapVisible = false;
         document.getElementById('toggle-heatmap').textContent = 'Show Heatmap';
         document.getElementById('toggle-heatmap').classList.remove('active');
+        
+        // Reset clustering
+        clusteringEnabled = false;
+        document.getElementById('toggle-clustering').textContent = 'Enable Clustering';
+        document.getElementById('toggle-clustering').classList.remove('active');
+        clusterOptions.classList.add('hidden');
 
         // Clear status messages
         statusMessages.innerHTML = '';

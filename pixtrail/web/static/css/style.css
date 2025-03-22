@@ -309,7 +309,66 @@ button:active {
 .map-controls {
     padding: 10px 20px 20px 20px;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.map-toggle-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Cluster options styles */
+.cluster-options {
+    background-color: var(--light-gray);
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid var(--mid-gray);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.cluster-options label {
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.cluster-options .slider {
+    width: 150px;
+    height: 5px;
+    -webkit-appearance: none;
+    background: var(--mid-gray);
+    outline: none;
+    border-radius: 5px;
+}
+
+.cluster-options .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+}
+
+.cluster-options .slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    border: none;
+}
+
+#radius-value {
+    font-size: 0.9em;
+    min-width: 45px;
 }
 
 /* Status messages */
@@ -354,7 +413,8 @@ button:active {
 }
 
 /* Heatmap button styles */
-#toggle-heatmap.active {
+#toggle-heatmap.active,
+#toggle-clustering.active {
     background-color: var(--info-color);
     color: white;
     border-color: var(--info-color);
@@ -368,11 +428,22 @@ button:active {
     
     .map-controls {
         flex-direction: column;
-        gap: 10px;
+        gap: 15px;
     }
     
-    .map-controls button {
+    .map-controls button,
+    .map-toggle-controls,
+    .cluster-options {
         width: 100%;
+    }
+    
+    .map-toggle-controls {
+        order: 1;
+    }
+    
+    .cluster-options {
+        order: 2;
+        flex-wrap: wrap;
     }
     
     #map {
