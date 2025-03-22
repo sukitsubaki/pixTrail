@@ -261,6 +261,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /**
+     * Determine if a file can be processed client-side
+     */
+    function canProcessClientSide(file) {
+        // JPEG/JFIF and TIFF files can be processed client-side
+        const jpegTypes = ['image/jpeg', 'image/jpg'];
+        const tiffTypes = ['image/tiff', 'image/tif'];
+        
+        // JPEG and TIFF files with EXIF in browser
+        return jpegTypes.includes(file.type) || tiffTypes.includes(file.type);
+    }
+
+    /**
      * Extract GPS data from images directly in the browser
      * This avoids uploading the entire image files to the local server
      */
@@ -478,7 +490,27 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /**
-     * Handle form submission
+     * Extract GPS data from server-processed files
+     */
+    function extractGpsData(sessionId) {
+        return fetch(`/api/process/${sessionId}`, {
+            method: 'POST'
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    throw new Error(data.error || 'Unknown server error');
+                })
+                .catch(jsonError => {
+                    throw new Error(`Server error: ${response.statusText || 'Unknown'}`);
+                });
+            }
+            return response.json();
+        });
+    }
+
+    /**
+     * Handle form submission with hybrid processing approach
      */
     function handleFormSubmit(event) {
         event.preventDefault();
@@ -504,52 +536,219 @@ document.addEventListener('DOMContentLoaded', function () {
         progressText.textContent = 'Processing...';
         processButton.disabled = true;
 
-        // Process files client-side to extract GPS data
-        extractGpsDataFromImages(selectedFiles)
-            .then(gpsDataList => {
-                if (gpsDataList.length === 0) {
-                    throw new Error('No GPS data found in any of the submitted photos');
+        // Sort files into client-side and server-side processable
+        const clientSideFiles = [];
+        const serverSideFiles = [];
+        
+        Array.from(selectedFiles).forEach(file => {
+            if (canProcessClientSide(file)) {
+                clientSideFiles.push(file);
+            } else {
+                serverSideFiles.push(file);
+            }
+        });
+        
+        console.log(`Files to process - Client-side: ${clientSideFiles.length}, Server-side: ${serverSideFiles.length}`);
+        
+        // Initialize arrays for GPS data
+        let clientSideGpsData = [];
+        let serverSideGpsData = [];
+        
+        // Start with client-side processing
+        const processClientSide = () => {
+            if (clientSideFiles.length === 0) {
+                progressBar.style.width = '50%';
+                progressText.textContent = 'Processing server-side images...';
+                processServerSide();
+                return;
+            }
+            
+            progressText.textContent = 'Extracting GPS data from JPEG/TIFF files...';
+            
+            extractGpsDataFromImages(clientSideFiles)
+                .then(gpsData => {
+                    clientSideGpsData = gpsData;
+                    progressBar.style.width = '50%';
+                    
+                    if (serverSideFiles.length > 0) {
+                        progressText.textContent = 'Processing RAW/PNG files...';
+                        processServerSide();
+                    } else {
+                        // Only client-side files, create GPX directly
+                        finalizeProcessing();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error processing client-side files:', error);
+                    
+                    if (serverSideFiles.length > 0) {
+                        // Process server-side files even if client-side fails
+                        progressText.textContent = 'Processing RAW/PNG files...';
+                        processServerSide();
+                    } else {
+                        handleError(error.message);
+                    }
+                });
+        };
+        
+        // Server-side processing
+        const processServerSide = () => {
+            if (serverSideFiles.length === 0) {
+                finalizeProcessing();
+                return;
+            }
+            
+            // Prepare form data
+            const formData = new FormData();
+            for (const file of serverSideFiles) {
+                formData.append('photos', file);
+            }
+            
+            // Add source type (file or directory)
+            formData.append('source_type', activeInput);
+            
+            // Add recursive options if directory mode is selected
+            if (activeInput === 'directory') {
+                formData.append('recursive', recursiveCheckbox.checked ? '1' : '0');
+                if (recursiveCheckbox.checked) {
+                    const depthValue = document.getElementById('recursive-depth').value;
+                    formData.append('depth', depthValue);
                 }
-                
-                // Send only the extracted GPS data to local server
-                return sendGpsDataToServer(gpsDataList);
-            })
-            .then(response => {
-                if (response.success) {
-                    // Processing succeeded
-                    sessionId = response.session_id;
-                    gpxFilename = response.gpx_file;
-
-                    // Update UI
-                    progressBar.style.width = '100%';
-                    progressText.textContent = 'Processing complete!';
-
-                    // Show the map and plot the route
-                    showMap(response.waypoints);
-
-                    // Show success message with statistics
-                    const statsMessage = `Photos processed successfully! ${response.waypoints.length} photos with GPS data processed. GPX file created.`;
-                    showStatusMessage(statsMessage, 'success');
-
-                    // Reset form
-                    setTimeout(() => {
-                        processProgress.classList.add('hidden');
-                        processButton.disabled = false;
-                        photoInput.value = '';
-                        directoryInput.value = '';
-                        selectedFilesCount.textContent = 'No files selected';
-                        selectedDirectory.textContent = 'No directory selected';
-                        recursiveCheckbox.checked = false;
-                        depthSelector.classList.remove('visible');
-                    }, 1500);
-                } else {
-                    handleError(response.error || 'Processing failed: Unknown error');
+            }
+            
+            // Send files to server
+            const xhr = new XMLHttpRequest();
+            
+            // Progress tracking
+            xhr.upload.addEventListener('progress', function (event) {
+                if (event.lengthComputable) {
+                    const percentComplete = Math.round((event.loaded / event.total) * 25); // 25% for upload
+                    progressBar.style.width = (50 + percentComplete) + '%';
+                    progressText.textContent = `Uploading RAW/PNG files... ${percentComplete}%`;
                 }
-            })
-            .catch(error => {
-                console.error('Error processing photos:', error);
-                handleError(error.message);
             });
+            
+            xhr.addEventListener('load', function () {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    sessionId = response.session_id;
+                    
+                    progressText.textContent = 'Processing RAW/PNG files on server...';
+                    progressBar.style.width = '75%';
+                    
+                    extractGpsData(sessionId)
+                        .then(serverData => {
+                            if (serverData.success) {
+                                serverSideGpsData = serverData.waypoints;
+                                finalizeProcessing();
+                            } else {
+                                throw new Error(serverData.error || 'Error processing server-side files');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error processing server-side files:', error);
+                            
+                            if (clientSideGpsData.length > 0) {
+                                // Continue with client-side data if server-side fails
+                                finalizeProcessing();
+                            } else {
+                                handleError(error.message);
+                            }
+                        });
+                } else {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        console.error('Server error:', response);
+                        
+                        if (clientSideGpsData.length > 0) {
+                            // Continue with client-side data if server-side fails
+                            finalizeProcessing();
+                        } else {
+                            handleError(response.error || `Processing failed: Server returned status ${xhr.status}`);
+                        }
+                    } catch (e) {
+                        console.error('Error parsing server response:', e);
+                        
+                        if (clientSideGpsData.length > 0) {
+                            // Continue with client-side data if server-side fails
+                            finalizeProcessing();
+                        } else {
+                            handleError(`Processing failed: Server returned status ${xhr.status}`);
+                        }
+                    }
+                }
+            });
+            
+            xhr.addEventListener('error', function () {
+                console.error('Network error during upload');
+                
+                if (clientSideGpsData.length > 0) {
+                    // Continue with client-side data if server-side fails
+                    finalizeProcessing();
+                } else {
+                    handleError('Processing failed: Network error. Please check your connection.');
+                }
+            });
+            
+            xhr.open('POST', '/api/submit');
+            xhr.send(formData);
+        };
+        
+        // Finalize processing with all collected GPS data
+        const finalizeProcessing = () => {
+            // Combine client- and server-side GPS data
+            const allGpsData = [...clientSideGpsData, ...serverSideGpsData];
+            
+            if (allGpsData.length === 0) {
+                handleError('No GPS data found in any of the submitted photos');
+                return;
+            }
+            
+            // Send all GPS data to create GPX
+            progressText.textContent = 'Creating GPX file...';
+            progressBar.style.width = '90%';
+            
+            sendGpsDataToServer(allGpsData)
+                .then(response => {
+                    if (response.success) {
+                        // Processing succeeded
+                        sessionId = response.session_id;
+                        gpxFilename = response.gpx_file;
+
+                        // Update UI
+                        progressBar.style.width = '100%';
+                        progressText.textContent = 'Processing complete!';
+
+                        // Show the map and plot the route
+                        showMap(response.waypoints);
+
+                        // Show success message with statistics
+                        const statsMessage = `Photos processed successfully! ${response.waypoints.length} photos with GPS data processed. GPX file created.`;
+                        showStatusMessage(statsMessage, 'success');
+
+                        // Reset form
+                        setTimeout(() => {
+                            processProgress.classList.add('hidden');
+                            processButton.disabled = false;
+                            photoInput.value = '';
+                            directoryInput.value = '';
+                            selectedFilesCount.textContent = 'No files selected';
+                            selectedDirectory.textContent = 'No directory selected';
+                            recursiveCheckbox.checked = false;
+                            depthSelector.classList.remove('visible');
+                        }, 1500);
+                    } else {
+                        handleError(response.error || 'Processing failed: Unknown error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error creating GPX:', error);
+                    handleError(error.message);
+                });
+        };
+        
+        // Start the process
+        processClientSide();
     }
 
     /**
