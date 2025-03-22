@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let map = null;
     let markers = [];
     let routeLine = null;
+    let heatLayer = null;  // Für die Heatmap
+    let heatmapVisible = false;  // Status der Heatmap-Sichtbarkeit
     let sessionId = null;
     let gpxFilename = null;
     let activeInput = 'file'; // 'file' or 'directory'
@@ -89,6 +91,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Map controls
         downloadButton.addEventListener('click', handleDownload);
         clearButton.addEventListener('click', handleClear);
+        
+        // Heatmap Toggle Button
+        document.getElementById('toggle-heatmap').addEventListener('click', toggleHeatmap);
     }
 
     /**
@@ -844,6 +849,137 @@ document.addEventListener('DOMContentLoaded', function () {
             map.removeLayer(routeLine);
             routeLine = null;
         }
+        
+        // Remove heatmap if exists
+        if (heatLayer) {
+            map.removeLayer(heatLayer);
+            heatLayer = null;
+        }
+        heatmapVisible = false;
+        
+        // Reset heatmap button
+        const toggleButton = document.getElementById('toggle-heatmap');
+        if (toggleButton) {
+            toggleButton.textContent = 'Show Heatmap';
+            toggleButton.classList.remove('active');
+        }
+    }
+    
+    /**
+     * Toggle the heatmap visibility
+     */
+    function toggleHeatmap() {
+        const toggleButton = document.getElementById('toggle-heatmap');
+        
+        if (heatmapVisible) {
+            // Hide heatmap
+            if (heatLayer) {
+                map.removeLayer(heatLayer);
+                heatLayer = null;
+            }
+            toggleButton.textContent = 'Show Heatmap';
+            toggleButton.classList.remove('active');
+            heatmapVisible = false;
+        } else {
+            // Show heatmap
+            createHeatmap();
+            toggleButton.textContent = 'Hide Heatmap';
+            toggleButton.classList.add('active');
+            heatmapVisible = true;
+        }
+    }
+
+    /**
+     * Create a heatmap based on the GPS data points
+     */
+    function createHeatmap() {
+        // Remove existing heatmap if it exists
+        if (heatLayer) {
+            map.removeLayer(heatLayer);
+        }
+        
+        // We need waypoints to create a heatmap
+        if (!markers || markers.length === 0) {
+            showStatusMessage('No GPS data available for heatmap', 'warning');
+            return;
+        }
+        
+        // Prepare data points for the heatmap
+        // We'll use the same locations as the markers, but calculate intensity based on:
+        // 1. Photos taken at the same location (higher intensity)
+        // 2. Time spent at a location (calculated from timestamps)
+        
+        const heatData = [];
+        const locationGroups = {};
+        
+        // Group photos by location (using a grid approach to group nearby points)
+        markers.forEach(marker => {
+            const latlng = marker.getLatLng();
+            const popup = marker.getPopup();
+            
+            // Extract timestamp from popup content if available
+            let timestamp = null;
+            if (popup) {
+                const content = popup._content;
+                // Extract timestamp from popup content (assumes format Time: YYYY-MM-DD HH:MM:SS)
+                const timeMatch = content.match(/Time: ([\d-]+\s[\d:]+)/);
+                if (timeMatch && timeMatch[1]) {
+                    timestamp = new Date(timeMatch[1]);
+                }
+            }
+            
+            // Create a grid key by rounding coordinates (groups nearby points)
+            // Using 5 decimal places (~1m precision at the equator)
+            const gridKey = `${Math.round(latlng.lat * 100000) / 100000},${Math.round(latlng.lng * 100000) / 100000}`;
+            
+            if (!locationGroups[gridKey]) {
+                locationGroups[gridKey] = {
+                    lat: latlng.lat,
+                    lng: latlng.lng,
+                    count: 0,
+                    timestamps: []
+                };
+            }
+            
+            locationGroups[gridKey].count++;
+            if (timestamp) {
+                locationGroups[gridKey].timestamps.push(timestamp);
+            }
+        });
+        
+        // Calculate duration for each location group and prepare heatmap data
+        Object.values(locationGroups).forEach(group => {
+            let intensity = group.count; // Base intensity on number of photos
+            
+            // If we have timestamps, calculate duration
+            if (group.timestamps.length > 1) {
+                // Sort timestamps
+                group.timestamps.sort((a, b) => a - b);
+                
+                // Calculate time span in minutes
+                const duration = (group.timestamps[group.timestamps.length - 1] - group.timestamps[0]) / (1000 * 60);
+                
+                // Add duration to intensity (more time spent = higher intensity)
+                // Cap duration contribution to avoid extreme values
+                intensity += Math.min(duration / 10, 10);
+            }
+            
+            // Add to heatmap data with calculated intensity
+            heatData.push([group.lat, group.lng, intensity]);
+        });
+        
+        // Create the heatmap layer
+        heatLayer = L.heatLayer(heatData, {
+            radius: 25,
+            blur: 15,
+            maxZoom: 17,
+            gradient: {
+                0.4: 'blue',
+                0.6: 'lime',
+                0.8: 'yellow',
+                1.0: 'red'
+            }
+        }).addTo(map);
     }
 
     /**
@@ -898,6 +1034,15 @@ document.addEventListener('DOMContentLoaded', function () {
         // Clear state
         sessionId = null;
         gpxFilename = null;
+        
+        // Reset heatmap
+        if (heatLayer) {
+            map.removeLayer(heatLayer);
+            heatLayer = null;
+        }
+        heatmapVisible = false;
+        document.getElementById('toggle-heatmap').textContent = 'Show Heatmap';
+        document.getElementById('toggle-heatmap').classList.remove('active');
 
         // Clear status messages
         statusMessages.innerHTML = '';
