@@ -1,0 +1,99 @@
+name: Update Repository Structure
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'repository-structure.md'
+  workflow_dispatch: 
+jobs:
+  update-structure:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.REPO_STRUCTURE_PAT }}
+      
+      - name: Setup Git Identity
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      
+      - name: Install tree
+        run: sudo apt-get install -y tree
+      
+      - name: Generate Repository Structure with Links
+        run: |
+          # Create a python script to process the tree output and add links
+          cat > create_tree_with_links.py << 'EOF'
+          import os
+          import re
+          
+          # Run tree command and capture output
+          tree_output = os.popen("tree -I '.git|.github' --noreport").read()
+          lines = tree_output.split('\n')
+          
+          # Repository URL
+          repo_url = f"https://github.com/{os.environ['GITHUB_REPOSITORY']}/blob/main/"
+          
+          # Process each line to add links
+          linked_lines = []
+          current_path = []
+          
+          for line in lines:
+              if not line.strip():
+                  continue
+                  
+              # Count the indentation level
+              indent_match = re.match(r'^([ │├└─┬┼]+)(.+)$', line)
+              if indent_match:
+                  indent, content = indent_match.groups()
+                  
+                  # Determine the depth based on the number of directory symbols
+                  depth = indent.count('├') + indent.count('└')
+                  
+                  # Adjust the current path based on depth
+                  current_path = current_path[:depth]
+                  
+                  # If it's a directory (ends with a colon)
+                  if content.endswith(':'):
+                      dir_name = content[:-1]
+                      current_path.append(dir_name)
+                      linked_lines.append(line)
+                  else:
+                      # It's a file, add it to the path and create a link
+                      file_path = '/'.join(current_path + [content])
+                      link = f'<a href="{repo_url}{file_path}">{content}</a>'
+                      linked_lines.append(f"{indent}{link}")
+              else:
+                  # Root directory
+                  if line.endswith(':'):
+                      current_path = [line[:-1]]
+                  linked_lines.append(line)
+          
+          # Write to the output file
+          with open('repository-structure.md', 'w') as f:
+              f.write("# Repository Structure\n\n")
+              f.write("```html\n")
+              f.write('\n'.join(linked_lines))
+              f.write("\n```\n")
+          EOF
+          
+          # Execute the Python script
+          python3 create_tree_with_links.py
+          
+      - name: Commit and Push if changed
+        run: |
+          if git diff --exit-code repository-structure.md; then
+            echo "No changes to repository-structure.md"
+          else
+            git add repository-structure.md
+            git commit -m "automatic update"
+            # Use elevated permissions for pushing
+            git remote set-url origin https://x-access-token:${{ secrets.REPO_STRUCTURE_PAT }}@github.com/${{ github.repository }}
+            git push
+          fi
