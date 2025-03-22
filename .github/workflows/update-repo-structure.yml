@@ -1,0 +1,175 @@
+name: Update Repository Structure
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'repository-structure.md'
+  workflow_dispatch: 
+jobs:
+  update-structure:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.REPO_STRUCTURE_PAT }}
+      
+      - name: Setup Git Identity
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      
+      - name: Generate Repository Structure
+        run: |
+          # Create repository-structure.md with proper tree formatting
+          echo '```' > repository-structure.md
+          echo "sukitsubaki/pixTrail/" >> repository-structure.md
+          
+          # Generate proper tree with correct Unicode characters
+          # First create a list of all files and directories
+          find . -not -path "*/\.*" -not -path "./repository-structure.md" | sort > all_entries.txt
+          
+          # Process the entries to create a proper tree
+          cat > create_tree.py << 'EOF'
+          import os
+          import sys
+          
+          # Read all entries
+          with open('all_entries.txt', 'r') as f:
+              entries = [line.strip() for line in f.readlines()]
+          
+          # Remove "./" prefix
+          entries = [entry[2:] if entry.startswith('./') else entry for entry in entries]
+          
+          # Remove empty entries and root directory
+          entries = [entry for entry in entries if entry and entry != '.']
+          
+          # Separate files and directories
+          files = []
+          dirs = []
+          for entry in entries:
+              if os.path.isdir(entry):
+                  dirs.append(entry)
+              else:
+                  files.append(entry)
+          
+          # Function to build tree representation
+          def build_tree(path_list, prefix=''):
+              # Sort files and directories at this level
+              current_files = []
+              current_dirs = {}
+              
+              for path in path_list:
+                  parts = path.split('/', 1)
+                  name = parts[0]
+                  
+                  if len(parts) == 1:  # It's a file at this level
+                      current_files.append(name)
+                  else:  # It's a directory or a file in a subdirectory
+                      rest = parts[1]
+                      if name not in current_dirs:
+                          current_dirs[name] = []
+                      current_dirs[name].append(rest)
+              
+              # Sort files and directory names
+              current_files.sort()
+              dir_names = sorted(current_dirs.keys())
+              
+              # Process files first
+              lines = []
+              for i, file in enumerate(current_files):
+                  if i == len(current_files) - 1 and not dir_names:
+                      lines.append(f"{prefix}└── {file}")
+                  else:
+                      lines.append(f"{prefix}├── {file}")
+              
+              # Then process directories
+              for i, dir_name in enumerate(dir_names):
+                  is_last = (i == len(dir_names) - 1)
+                  if is_last:
+                      lines.append(f"{prefix}└── {dir_name}/")
+                      sub_prefix = f"{prefix}    "
+                  else:
+                      lines.append(f"{prefix}├── {dir_name}/")
+                      sub_prefix = f"{prefix}│   "
+                  
+                  sub_lines = build_tree(current_dirs[dir_name], sub_prefix)
+                  lines.extend(sub_lines)
+              
+              return lines
+          
+          # Group entries by directory
+          entries_by_dir = {}
+          for entry in entries:
+              parts = entry.split('/')
+              current = ''
+              for i, part in enumerate(parts):
+                  if i < len(parts) - 1:
+                      current = os.path.join(current, part) if current else part
+                      if current not in entries_by_dir:
+                          entries_by_dir[current] = []
+          
+          # Create root level entries
+          root_entries = []
+          for entry in entries:
+              if '/' not in entry:
+                  root_entries.append(entry)
+              else:
+                  dir_name = entry.split('/', 1)[0]
+                  if dir_name not in entries_by_dir:
+                      entries_by_dir[dir_name] = []
+                  entries_by_dir[dir_name].append(entry.split('/', 1)[1])
+          
+          # Separate files and directories at root level
+          root_files = [entry for entry in root_entries if not os.path.isdir(entry)]
+          root_dirs = [entry for entry in root_entries if os.path.isdir(entry)]
+          
+          # Sort both lists
+          root_files.sort()
+          root_dirs.sort()
+          
+          # Print files first
+          for i, file in enumerate(root_files):
+              if i == len(root_files) - 1 and not root_dirs:
+                  print(f"└── {file}")
+              else:
+                  print(f"├── {file}")
+          
+          # Then print directories
+          for i, dir_name in enumerate(root_dirs):
+              is_last = (i == len(root_dirs) - 1)
+              if is_last:
+                  print(f"└── {dir_name}/")
+                  prefix = "    "
+              else:
+                  print(f"├── {dir_name}/")
+                  prefix = "│   "
+              
+              # Process subdirectories and files
+              if dir_name in entries_by_dir:
+                  sub_tree = build_tree(entries_by_dir[dir_name], prefix)
+                  for line in sub_tree:
+                      print(line)
+          EOF
+          
+          # Run the Python script to generate the tree
+          python3 create_tree.py >> repository-structure.md
+          
+          # Close the code block
+          echo '```' >> repository-structure.md
+          
+      - name: Commit and Push if changed
+        run: |
+          if git diff --exit-code repository-structure.md; then
+            echo "No changes to repository-structure.md"
+          else
+            git add repository-structure.md
+            git commit -m "Update Repository Structure"
+            # Use elevated permissions for pushing
+            git remote set-url origin https://x-access-token:${{ secrets.REPO_STRUCTURE_PAT }}@github.com/${{ github.repository }}
+            git push
+          fi
