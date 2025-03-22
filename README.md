@@ -1,3 +1,6 @@
+![Version](https://img.shields.io/badge/version-1.3.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+
 # PixTrail
 
 PixTrail is a simple yet powerful tool that extracts the GPS information stored in your photos' EXIF metadata and converts it into standard GPX format that can be used in various mapping applications, allowing you to visualize and share your journeys.
