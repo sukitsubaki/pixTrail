@@ -2,8 +2,8 @@
 sukitsubaki/pixTrail/
 ├── LICENSE
 ├── README.md
-├── all_entries.txt
 ├── build_docs.py
+├── generate_tree.py
 ├── mkdocs.yml
 ├── pyproject.toml
 ├── requirements.txt
