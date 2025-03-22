@@ -1,5 +1,5 @@
 <!-- hello, world -->
-<a href="https://github.com/sukitsubaki/pixTrail/releases">![Version](https://img.shields.io/badge/version-2.2.0-cc3399)</a>
+<a href="https://github.com/sukitsubaki/pixTrail/releases">![Version](https://img.shields.io/badge/version-2.3.0-cc3399)</a>
 <a href="https://github.com/sukitsubaki/pixTrail/blob/main/LICENSE">![License](https://img.shields.io/badge/license-MIT-669999)</a>
 <a href="https://github.com/sukitsubaki/pixTrail/blob/main/pyproject.toml">![Python](https://img.shields.io/badge/python-3.6%2B-4584b6)</a>
 <a href="https://pypi.org/project/pixtrail/">![PyPI](https://img.shields.io/pypi/dm/pixtrail)</a>
@@ -16,19 +16,34 @@ I wanted to see the path I wandered through a city, the trails I hiked in the mo
 
 ## Features
 
-- Extract GPS coordinates and timestamps from EXIF metadata in photos
-- Generate GPX files with waypoints and tracks
-- Hybrid processing approach:
+### Core Functionality
+- **GPS Data Extraction:** Extract GPS coordinates and timestamps from EXIF metadata in photos
+- **Route Generation:** Create GPX files with waypoints and tracks for use in mapping applications
+- **OpenStreetMap Integration:** Visualize routes directly on interactive maps
+
+### Processing Capabilities
+- **Hybrid Processing Approach:**
   - JPEG/TIFF files are processed directly in your browser for faster performance
   - RAW/PNG and other formats are processed on the server with full metadata extraction
-- Support for various image formats: JPG, PNG, TIFF, BMP
-- Support for various RAW formats: CR2, NEF, ARW, ORF, RW2, PEF, SRW, DNG (Canon, Nikon, Sony, Olympus, Panasonic, Pentax, Samsung, digital negative)
-- Command-line interface for easy use
-- Web interface for browser-based operation
-- Directory selection and recursive processing support
-- Drag & drop interface for files and directories
-- Visualize routes on OpenStreetMap
-- Automatic cleanup of temporary files to save disk space
+- **Wide Format Support:**
+  - Standard Formats: JPG, PNG, TIFF, BMP
+  - Professional RAW Formats: CR2, NEF, ARW, ORF, RW2, PEF, SRW, DNG (Canon, Nikon, Sony, Olympus, Panasonic, Pentax, Samsung, digital negative)
+- **Automated File Management:** Automatic cleanup of temporary files to save disk space
+
+### User Interface
+- **Multiple Access Methods:**
+  - Command-line interface for quick scripting and batch operations
+  - Web interface for browser-based visual operation
+- **Advanced File Management:**
+  - Directory selection with recursive processing support
+  - Intuitive drag & drop interface for files and directories
+  - Batch processing of multiple photo collections
+
+### Advanced Visualization Features
+- **Heat Map Visualization:** See where you spent the most time on your journey with color-coded intensity maps
+- **Marker Clustering:** Group nearby photos for cleaner map displays with adjustable radius
+- **Statistical Analysis:** View distance, elevation, speed, and time metrics for your journey
+- **Interactive Charts:** Visualize elevation profiles and speed variations throughout your route
 
 ## Privacy
 
@@ -110,7 +125,11 @@ The web interface provides a user-friendly way to upload photos, extract GPS dat
    - Drag and drop images directly into the interface
 4. For directory processing, you can enable recursive subdirectory scanning
 5. PixTrail will process the photos and display the route on a map
-6. Download the GPX file for use in other applications
+6. Use the map controls to:
+   - Toggle the heatmap to visualize dwell time
+   - Enable clustering for better visibility of dense photo areas
+   - View statistics and charts for distance, elevation, and speed
+7. Download the GPX file for use in other applications
 
 ### Python API
 
@@ -137,6 +156,7 @@ pt.process_and_generate("/path/to/photos", "/path/to/output.gpx", recursive=True
 - gpxpy
 - Pillow
 - Flask (for web interface)
+- Chart.js (automatically included in web interface)
 
 ## Example
 
@@ -174,8 +194,12 @@ Here are some features we're planning to add in future releases:
 
 - **Time-based Filtering**: Process only photos within specific time windows
 - **Route Smoothing**: Algorithm to reduce GPS inaccuracies
-- **Statistics**: Calculate and display statistics like total distance, average speed, elevation profile
+- **Custom Map Styles**: Support for different map providers and styles
 - **Video Support**: Extract GPS data from video files
+- **Offline Map Functionality**: Preloadable maps for use without internet connection
+- **Multilingual Support**: Internationalization of the user interface
+- **Interactive Web Export**: Share routes as standalone HTML pages with embedded photos
+- **Map Screenshot Export**: Save the current map view as an image file
 - **Map Enhancements**: 
   - Support for multiple map providers
   - Customizable map styles 
