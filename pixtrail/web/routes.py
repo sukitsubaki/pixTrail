@@ -25,16 +25,16 @@ def index():
     return render_template('index.html')
 
 
-@main_bp.route('/api/upload', methods=['POST'])
-def upload_photos():
+@main_bp.route('/api/submit', methods=['POST'])
+def receive_photos():
     """
-    Handle photo uploads.
+    Handle photo submissions.
     
-    Receives uploaded photos, saves them to a temporary directory,
+    Receives submitted photos, saves them to a temporary directory,
     and returns a session ID for further processing.
     """
     if 'photos' not in request.files:
-        return jsonify({'error': 'No files uploaded'}), 400
+        return jsonify({'error': 'No files submitted'}), 400
     
     files = request.files.getlist('photos')
     if not files or all(not f.filename for f in files):
@@ -42,18 +42,18 @@ def upload_photos():
     
     # Create a session ID based on timestamp
     session_id = datetime.now().strftime('%Y%m%d%H%M%S')
-    upload_dir = os.path.join(current_app.config['UPLOAD_FOLDER'], session_id)
+    process_dir = os.path.join(current_app.config['PIXTRAIL_DATA_DIR'], session_id)
     
     try:
-        # Create upload directory
-        os.makedirs(upload_dir, exist_ok=True)
+        # Create processing directory
+        os.makedirs(process_dir, exist_ok=True)
         
-        # Save uploaded files
+        # Save submitted files
         saved_files = []
         for file in files:
             if file and file.filename:
                 filename = secure_filename(file.filename)
-                file_path = os.path.join(upload_dir, filename)
+                file_path = os.path.join(process_dir, filename)
                 file.save(file_path)
                 saved_files.append({
                     'name': filename,
@@ -63,49 +63,53 @@ def upload_photos():
         return jsonify({
             'success': True,
             'session_id': session_id,
-            'message': f'Successfully uploaded {len(saved_files)} files',
+            'message': f'Successfully received {len(saved_files)} files',
             'file_count': len(saved_files)
         })
     
     except Exception as e:
         # Clean up on error
-        if os.path.exists(upload_dir):
-            shutil.rmtree(upload_dir)
+        if os.path.exists(process_dir):
+            shutil.rmtree(process_dir)
         return jsonify({'error': str(e)}), 500
 
 
 @main_bp.route('/api/process/<session_id>', methods=['POST'])
 def process_photos(session_id):
     """
-    Process uploaded photos and extract GPS data.
+    Process submitted photos and extract GPS data.
     
     Args:
-        session_id: Session ID from the upload step
+        session_id: Session ID from the submission step
     """
-    upload_dir = os.path.join(current_app.config['UPLOAD_FOLDER'], session_id)
+    process_dir = os.path.join(current_app.config['PIXTRAIL_DATA_DIR'], session_id)
     
-    if not os.path.exists(upload_dir):
+    if not os.path.exists(process_dir):
         return jsonify({'error': 'Session not found'}), 404
     
     try:
-        # Process photos in the upload directory
+        # Process photos in the directory
         pixtrail = PixTrail()
-        gps_data = pixtrail.process_directory(upload_dir)
+        result = pixtrail.process_directory(process_dir)
+        gps_data = result['gps_data']
+        stats = result['stats']
         
         if not gps_data:
             return jsonify({
                 'success': False,
-                'error': 'No GPS data found in the uploaded photos'
+                'error': 'No GPS data found in any of the submitted photos',
+                'stats': stats
             }), 400
         
         # Generate GPX file
-        gpx_file = os.path.join(upload_dir, f"pixtrail_{session_id}.gpx")
-        success = pixtrail.generate_gpx(gpx_file)
+        gpx_file = os.path.join(process_dir, f"pixtrail_{session_id}.gpx")
+        success = pixtrail.generate_gpx(gpx_file, gps_data)
         
         if not success:
             return jsonify({
                 'success': False,
-                'error': 'Failed to generate GPX file'
+                'error': 'Failed to generate GPX file',
+                'stats': stats
             }), 500
         
         # Prepare response data
@@ -121,7 +125,8 @@ def process_photos(session_id):
             'success': True,
             'waypoints': waypoints,
             'gpx_file': os.path.basename(gpx_file),
-            'session_id': session_id
+            'session_id': session_id,
+            'stats': stats
         })
     
     except Exception as e:
@@ -138,7 +143,7 @@ def download_gpx(session_id, filename):
         filename: GPX filename
     """
     secure_name = secure_filename(filename)
-    file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], session_id, secure_name)
+    file_path = os.path.join(current_app.config['PIXTRAIL_DATA_DIR'], session_id, secure_name)
     
     if not os.path.exists(file_path):
         abort(404)
@@ -154,16 +159,16 @@ def download_gpx(session_id, filename):
 @main_bp.route('/api/cleanup/<session_id>', methods=['POST'])
 def cleanup_session(session_id):
     """
-    Clean up the session by removing uploaded files.
+    Clean up the session by removing temporary files.
     
     Args:
         session_id: Session ID to clean up
     """
-    upload_dir = os.path.join(current_app.config['UPLOAD_FOLDER'], session_id)
+    session_dir = os.path.join(current_app.config['PIXTRAIL_DATA_DIR'], session_id)
     
-    if os.path.exists(upload_dir):
+    if os.path.exists(session_dir):
         try:
-            shutil.rmtree(upload_dir)
+            shutil.rmtree(session_dir)
             return jsonify({'success': True, 'message': 'Session cleaned up successfully'})
         except Exception as e:
             return jsonify({'error': str(e)}), 500
