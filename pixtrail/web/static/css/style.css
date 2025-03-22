@@ -353,6 +353,13 @@ button:active {
     display: none !important;
 }
 
+/* Heatmap button styles */
+#toggle-heatmap.active {
+    background-color: var(--info-color);
+    color: white;
+    border-color: var(--info-color);
+}
+
 /* Responsive styles */
 @media (max-width: 768px) {
     .container {

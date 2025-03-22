@@ -10,6 +10,9 @@
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
+    <!-- Leaflet.heat Plugin -->
+    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     
@@ -103,6 +106,7 @@
 
                 <div class="map-controls">
                     <button id="download-gpx" class="primary-button">Download GPX</button>
+                    <button id="toggle-heatmap" class="secondary-button">Show Heatmap</button>
                     <button id="clear-data" class="secondary-button">Clear Data</button>
                 </div>
             </div>
