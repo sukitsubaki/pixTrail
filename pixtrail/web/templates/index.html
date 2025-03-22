@@ -1,45 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>PixTrail - GPS Photo Tracker</title>
-    
+
     <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin=""/>
-    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- EXIF JS -->
+    <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
 </head>
+
 <body>
     <div class="container">
         <header>
             <h1>PixTrail</h1>
             <p>Extract GPS data from photos and create GPX files</p>
         </header>
-        
+
         <main>
             <div class="section photo-section">
                 <h2>Select Photos</h2>
                 <p>Choose photos with GPS data to process and generate a route</p>
-                
+
                 <form id="process-form" enctype="multipart/form-data">
                     <div class="input-selector">
                         <div class="selector-tabs">
                             <button type="button" class="selector-tab active" data-target="file-selector">Files</button>
                             <button type="button" class="selector-tab" data-target="directory-selector">Directory</button>
                         </div>
-                        
+
                         <div id="file-selector" class="selector-content active">
                             <div class="file-input-container">
                                 <label for="photo-input" class="custom-file-button">Select Photos</label>
                                 <input type="file" id="photo-input" name="photos" multiple accept="image/*">
                                 <span id="selected-files-count">No files selected</span>
                             </div>
-                            
+
                             <div class="drop-area" id="file-drop-area">
                                 <div class="drop-message">
                                     <div class="drop-icon">📁</div>
@@ -47,20 +50,20 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div id="directory-selector" class="selector-content">
                             <div class="file-input-container">
                                 <label for="directory-input" class="custom-file-button">Select Directory</label>
                                 <input type="file" id="directory-input" name="directory" webkitdirectory directory>
                                 <span id="selected-directory">No directory selected</span>
                             </div>
-                            
+
                             <div class="recursive-options">
                                 <div class="option-row">
                                     <input type="checkbox" id="recursive-checkbox" name="recursive">
                                     <label for="recursive-checkbox">Process subdirectories recursively</label>
                                 </div>
-                                
+
                                 <div class="option-row depth-selector" id="depth-selector">
                                     <label for="recursive-depth">Depth level:</label>
                                     <select id="recursive-depth" name="depth">
@@ -73,7 +76,7 @@
                                     </select>
                                 </div>
                             </div>
-                            
+
                             <div class="drop-area" id="directory-drop-area">
                                 <div class="drop-message">
                                     <div class="drop-icon">📂</div>
@@ -82,42 +85,42 @@
                             </div>
                         </div>
                     </div>
-                    
+
+                    <div id="status-messages"></div>
+
                     <button type="submit" class="primary-button" id="process-button" disabled>Process Photos</button>
                 </form>
-                
+
                 <div id="process-progress" class="progress-container hidden">
                     <div class="progress-bar"></div>
                     <span class="progress-text">Processing...</span>
                 </div>
             </div>
-            
+
             <div class="section map-section hidden" id="map-container">
                 <h2>Route Map</h2>
                 <div id="map"></div>
-                
+
                 <div class="map-controls">
                     <button id="download-gpx" class="primary-button">Download GPX</button>
                     <button id="clear-data" class="secondary-button">Clear Data</button>
                 </div>
             </div>
-            
-            <div id="status-messages"></div>
         </main>
-        
+
         <footer>
             <p>PixTrail - A GPS Photo Tracker<br>
-            <a href="https://github.com/sukitsubaki" target="_blank" class="footer__link">Suki Tsubaki</a> &lt;/&gt; Hosted on <a href="https://github.com/sukitsubaki/pixTrail" target="_blank" class="footer__link">GitHub</a></p>
+                <a href="https://github.com/sukitsubaki" target="_blank" class="footer__link">Suki Tsubaki</a> &lt;/&gt; Hosted on <a href="https://github.com/sukitsubaki/pixTrail" target="_blank" class="footer__link">GitHub</a>
+            </p>
             <p class="privacy-note">All processing happens locally on your device. Your photos and location data never leave your computer.</p>
         </footer>
     </div>
-    
+
     <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script>
-    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
     <!-- Custom JS -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
+
 </html>

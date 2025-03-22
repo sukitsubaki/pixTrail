@@ -131,6 +131,8 @@ def process_photos(session_id):
         stats = result['stats']
         
         if not gps_data:
+            # No GPS data found, clear all
+            shutil.rmtree(process_dir)
             return jsonify({
                 'success': False,
                 'error': 'No GPS data found in any of the submitted photos',
@@ -142,11 +144,23 @@ def process_photos(session_id):
         success = pixtrail.generate_gpx(gpx_file, gps_data)
         
         if not success:
+            # Clear, if GPX file couldn't be generated
+            shutil.rmtree(process_dir)
             return jsonify({
                 'success': False,
                 'error': 'Failed to generate GPX file',
                 'stats': stats
             }), 500
+        
+        # Remove cached image files
+        for item in os.listdir(process_dir):
+            item_path = os.path.join(process_dir, item)
+            # Keep GPX file and session_info
+            if os.path.basename(item_path) != os.path.basename(gpx_file) and os.path.basename(item_path) != ".session_info":
+                if os.path.isfile(item_path):
+                    os.remove(item_path)
+                elif os.path.isdir(item_path):
+                    shutil.rmtree(item_path)
         
         # Prepare response data
         waypoints = [{
@@ -166,7 +180,15 @@ def process_photos(session_id):
         })
     
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        import traceback
+        error_details = str(e)
+        traceback_details = traceback.format_exc()
+        print(f"Error processing photos: {error_details}")
+        print(f"Traceback: {traceback_details}")
+        # Clear when error
+        if os.path.exists(process_dir):
+            shutil.rmtree(process_dir)
+        return jsonify({'error': f"Processing failed: {error_details}", 'success': False}), 500
 
 
 @main_bp.route('/api/download/<session_id>/<filename>', methods=['GET'])
@@ -210,3 +232,79 @@ def cleanup_session(session_id):
             return jsonify({'error': str(e)}), 500
     
     return jsonify({'success': True, 'message': 'Nothing to clean up'})
+
+
+@main_bp.route('/api/create-gpx', methods=['POST'])
+def create_gpx():
+    """
+    Create a GPX file from GPS data extracted in the browser.
+    
+    The GPS data is extracted client-side and only the coordinate information
+    is sent to the server to generate the GPX file.
+    """
+    if not request.is_json:
+        return jsonify({'error': 'No files submitted'}), 400
+    
+    data = request.get_json()
+    
+    if 'gps_data' not in data or not data['gps_data']:
+        return jsonify({'error': 'No GPS data provided'}), 400
+    
+    gps_data_list = data['gps_data']
+    
+    # Convert string timestamps to datetime objects
+    for point in gps_data_list:
+        if 'timestamp' in point and point['timestamp']:
+            try:
+                point['timestamp'] = datetime.fromisoformat(point['timestamp'].replace('Z', '+00:00'))
+            except (ValueError, TypeError):
+                point['timestamp'] = datetime.now()
+    
+    try:
+        # Create a session ID based on timestamp
+        session_id = datetime.now().strftime('%Y%m%d%H%M%S')
+        process_dir = os.path.join(current_app.config['PIXTRAIL_DATA_DIR'], session_id)
+        
+        # Create output directory only, no image files are copied
+        os.makedirs(process_dir, exist_ok=True)
+        
+        # Generate GPX file
+        pixtrail = PixTrail()
+        gpx_file = os.path.join(process_dir, f"pixtrail_{session_id}.gpx")
+        success = pixtrail.generate_gpx(gpx_file, gps_data_list)
+        
+        if not success:
+            # Clean up on error
+            if os.path.exists(process_dir):
+                shutil.rmtree(process_dir)
+            return jsonify({
+                'success': False,
+                'error': 'Failed to generate GPX file'
+            }), 500
+        
+        # Prepare response data
+        waypoints = [{
+            'latitude': point['latitude'],
+            'longitude': point['longitude'],
+            'name': point['name'],
+            'timestamp': point['timestamp'].isoformat() if isinstance(point['timestamp'], datetime) else point['timestamp'],
+            'altitude': point.get('altitude', 0)
+        } for point in gps_data_list]
+        
+        return jsonify({
+            'success': True,
+            'waypoints': waypoints,
+            'gpx_file': os.path.basename(gpx_file),
+            'session_id': session_id
+        })
+        
+    except Exception as e:
+        import traceback
+        error_details = str(e)
+        traceback_details = traceback.format_exc()
+        print(f"Error creating GPX: {error_details}")
+        print(f"Traceback: {traceback_details}")
+        # Clean up on error
+        if os.path.exists(process_dir):
+            shutil.rmtree(process_dir)
+        return jsonify({'error': f"Processing failed: {error_details}", 'success': False}), 500
