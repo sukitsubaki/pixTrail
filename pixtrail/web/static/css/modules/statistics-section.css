@@ -1,0 +1,78 @@
+/**
+ * PixTrail - Statistics Section Module
+ * Styles for the statistics visualization section
+ */
+
+.statistics-section {
+    padding: var(--spacing-md);
+    background-color: white;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--spacing-xl);
+}
+
+.statistics-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.statistics-summary {
+    flex: 1;
+    min-width: 300px;
+}
+
+.statistics-charts {
+    flex: 2;
+    min-width: 300px;
+}
+
+.statistics-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--spacing-md);
+}
+
+.statistics-table tr {
+    border-bottom: 1px solid var(--border-medium);
+}
+
+.statistics-table tr:last-child {
+    border-bottom: none;
+}
+
+.statistics-table td {
+    padding: var(--spacing-sm) var(--spacing-xs);
+}
+
+.statistics-table td:first-child {
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.statistics-table td:last-child {
+    text-align: right;
+    font-weight: 600;
+}
+
+.chart-container {
+    height: 260px;
+    margin-bottom: var(--spacing-md);
+    position: relative;
+}
+
+.chart-container h3 {
+    margin-bottom: var(--spacing-sm);
+    color: var(--primary-dark);
+    font-size: var(--font-size-lg);
+}
+
+@media (max-width: 768px) {
+    .statistics-content {
+        flex-direction: column;
+    }
+    
+    .chart-container {
+        height: 220px;
+    }
+}
