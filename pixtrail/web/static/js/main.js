@@ -616,7 +616,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
             
-            // Send files to server
+            // Send files to local server
             const xhr = new XMLHttpRequest();
             
             // Progress tracking
