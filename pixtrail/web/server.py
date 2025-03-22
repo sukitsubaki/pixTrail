@@ -27,7 +27,7 @@ def create_app():
     # Set configuration
     app.config['SECRET_KEY'] = os.urandom(24)
     app.config['MAX_CONTENT_LENGTH'] = 64 * 1024 * 1024 * 1024  # 64 GB max file size
-    app.config['PIXTRAIL_DATA_DIR'] = os.path.join(os.path.expanduser('~'), 'PixTrail_Files')
+    app.config['PIXTRAIL_DATA_DIR'] = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '__pixtrail-cache__')
     
     # Ensure storage folder exists
     os.makedirs(app.config['PIXTRAIL_DATA_DIR'], exist_ok=True)

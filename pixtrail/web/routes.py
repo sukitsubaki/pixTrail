@@ -131,6 +131,8 @@ def process_photos(session_id):
         stats = result['stats']
         
         if not gps_data:
+            # No GPS data found, clear all
+            shutil.rmtree(process_dir)
             return jsonify({
                 'success': False,
                 'error': 'No GPS data found in any of the submitted photos',
@@ -142,11 +144,23 @@ def process_photos(session_id):
         success = pixtrail.generate_gpx(gpx_file, gps_data)
         
         if not success:
+            # Clear, if GPX file couldn't be generated
+            shutil.rmtree(process_dir)
             return jsonify({
                 'success': False,
                 'error': 'Failed to generate GPX file',
                 'stats': stats
             }), 500
+        
+        # Remove cached image files
+        for item in os.listdir(process_dir):
+            item_path = os.path.join(process_dir, item)
+            # Keep GPX file and session_info
+            if os.path.basename(item_path) != os.path.basename(gpx_file) and os.path.basename(item_path) != ".session_info":
+                if os.path.isfile(item_path):
+                    os.remove(item_path)
+                elif os.path.isdir(item_path):
+                    shutil.rmtree(item_path)
         
         # Prepare response data
         waypoints = [{
@@ -171,6 +185,9 @@ def process_photos(session_id):
         traceback_details = traceback.format_exc()
         print(f"Error processing photos: {error_details}")
         print(f"Traceback: {traceback_details}")
+        # Clear when error
+        if os.path.exists(process_dir):
+            shutil.rmtree(process_dir)
         return jsonify({'error': f"Processing failed: {error_details}", 'success': False}), 500
 
 
@@ -257,6 +274,9 @@ def create_gpx():
         success = pixtrail.generate_gpx(gpx_file, gps_data_list)
         
         if not success:
+            # Clean up on error
+            if os.path.exists(process_dir):
+                shutil.rmtree(process_dir)
             return jsonify({
                 'success': False,
                 'error': 'Failed to generate GPX file'
@@ -284,4 +304,7 @@ def create_gpx():
         traceback_details = traceback.format_exc()
         print(f"Error creating GPX: {error_details}")
         print(f"Traceback: {traceback_details}")
+        # Clean up on error
+        if os.path.exists(process_dir):
+            shutil.rmtree(process_dir)
         return jsonify({'error': f"Processing failed: {error_details}", 'success': False}), 500
