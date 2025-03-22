@@ -8,7 +8,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Elements
     const photoInput = document.getElementById('photo-input');
+    const directoryInput = document.getElementById('directory-input');
     const selectedFilesCount = document.getElementById('selected-files-count');
+    const selectedDirectory = document.getElementById('selected-directory');
     const processForm = document.getElementById('process-form');
     const processButton = document.getElementById('process-button');
     const processProgress = document.getElementById('process-progress');
@@ -18,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const downloadButton = document.getElementById('download-gpx');
     const clearButton = document.getElementById('clear-data');
     const statusMessages = document.getElementById('status-messages');
+    const selectorTabs = document.querySelectorAll('.selector-tab');
     
     // State
     let map = null;
@@ -25,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let routeLine = null;
     let sessionId = null;
     let gpxFilename = null;
+    let activeInput = 'file'; // 'file' or 'directory'
     
     // Initialize
     initEventListeners();
@@ -33,8 +37,37 @@ document.addEventListener('DOMContentLoaded', function() {
      * Set up event listeners
      */
     function initEventListeners() {
+        // Tab navigation
+        selectorTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                selectorTabs.forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Get target content
+                const target = this.getAttribute('data-target');
+                
+                // Hide all content
+                document.querySelectorAll('.selector-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Show target content
+                document.getElementById(target).classList.add('active');
+                
+                // Update active input
+                activeInput = target === 'file-selector' ? 'file' : 'directory';
+                
+                // Update button state
+                updateProcessButtonState();
+            });
+        });
+        
         // File selection
         photoInput.addEventListener('change', handleFileSelection);
+        directoryInput.addEventListener('change', handleDirectorySelection);
         
         // Form submission
         processForm.addEventListener('submit', handleFormSubmit);
@@ -51,10 +84,43 @@ document.addEventListener('DOMContentLoaded', function() {
         const files = photoInput.files;
         if (files.length > 0) {
             selectedFilesCount.textContent = `${files.length} file(s) selected`;
-            processButton.disabled = false;
+            if (activeInput === 'file') {
+                processButton.disabled = false;
+            }
         } else {
             selectedFilesCount.textContent = 'No files selected';
-            processButton.disabled = true;
+            if (activeInput === 'file') {
+                processButton.disabled = true;
+            }
+        }
+    }
+    
+    /**
+     * Handle directory selection
+     */
+    function handleDirectorySelection() {
+        const files = directoryInput.files;
+        if (files.length > 0) {
+            selectedDirectory.textContent = `Directory with ${files.length} file(s) selected`;
+            if (activeInput === 'directory') {
+                processButton.disabled = false;
+            }
+        } else {
+            selectedDirectory.textContent = 'No directory selected';
+            if (activeInput === 'directory') {
+                processButton.disabled = true;
+            }
+        }
+    }
+    
+    /**
+     * Update process button state based on active input
+     */
+    function updateProcessButtonState() {
+        if (activeInput === 'file') {
+            processButton.disabled = photoInput.files.length === 0;
+        } else {
+            processButton.disabled = directoryInput.files.length === 0;
         }
     }
     
@@ -64,16 +130,29 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleFormSubmit(event) {
         event.preventDefault();
         
-        if (photoInput.files.length === 0) {
-            showStatusMessage('Please select photos to process', 'error');
-            return;
+        let selectedFiles;
+        if (activeInput === 'file') {
+            selectedFiles = photoInput.files;
+            if (selectedFiles.length === 0) {
+                showStatusMessage('Please select photos to process', 'error');
+                return;
+            }
+        } else {
+            selectedFiles = directoryInput.files;
+            if (selectedFiles.length === la0) {
+                showStatusMessage('Please select a directory to process', 'error');
+                return;
+            }
         }
         
         // Prepare form data
         const formData = new FormData();
-        for (const file of photoInput.files) {
+        for (const file of selectedFiles) {
             formData.append('photos', file);
         }
+        
+        // Add source type (file or directory)
+        formData.append('source_type', activeInput);
         
         // Show progress
         processProgress.classList.remove('hidden');
@@ -170,7 +249,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     processProgress.classList.add('hidden');
                     processButton.disabled = false;
                     photoInput.value = '';
+                    directoryInput.value = '';
                     selectedFilesCount.textContent = 'No files selected';
+                    selectedDirectory.textContent = 'No directory selected';
                 }, 1500);
             } else {
                 // Show error message with statistics if available
@@ -305,7 +386,9 @@ document.addEventListener('DOMContentLoaded', function() {
         processProgress.classList.add('hidden');
         processButton.disabled = true;
         photoInput.value = '';
+        directoryInput.value = '';
         selectedFilesCount.textContent = 'No files selected';
+        selectedDirectory.textContent = 'No directory selected';
         
         // Clear state
         sessionId = null;
