@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let map = null;
     let markers = [];
     let routeLine = null;
-    let heatLayer = null; // Für die Heatmap
-    let heatmapVisible = false; // Status der Heatmap-Sichtbarkeit
+    let heatLayer = null;  // For heatmap
+    let heatmapVisible = false;  // Status of heatmap visability
     let markerClusterGroup = null; // For clustering markers
     let clusteringEnabled = false; // Status of clustering
     let statisticsVisible = false; // Status of statistics panel
