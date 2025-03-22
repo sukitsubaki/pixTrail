@@ -105,9 +105,28 @@ def process_photos(session_id):
         return jsonify({'error': 'Session not found'}), 404
     
     try:
+        # Get processing options from session
+        session_file = os.path.join(process_dir, ".session_info")
+        processing_options = {}
+        if os.path.exists(session_file):
+            with open(session_file, 'r') as f:
+                processing_options = json.load(f)
+        
+        # Check if recursive processing is enabled
+        recursive = processing_options.get('recursive', False)
+        max_depth = processing_options.get('max_depth', None)
+        
         # Process photos in the directory
         pixtrail = PixTrail()
-        result = pixtrail.process_directory(process_dir)
+        
+        # If max_depth is provided and not 0 (all levels), customize recursive depth
+        if recursive and max_depth and int(max_depth) > 0:
+            # TODO: Implement custom max_depth in PixTrail core
+            # For now, we're just using simple recursive flag
+            result = pixtrail.process_directory(process_dir, recursive=True)
+        else:
+            result = pixtrail.process_directory(process_dir, recursive=recursive)
+            
         gps_data = result['gps_data']
         stats = result['stats']
         

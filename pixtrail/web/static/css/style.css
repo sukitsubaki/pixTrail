@@ -194,6 +194,49 @@ button:active {
     display: block;
 }
 
+/* Recursive options styles */
+.recursive-options {
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid var(--mid-gray);
+    border-radius: 4px;
+    background-color: var(--light-gray);
+}
+
+.option-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.option-row:last-child {
+    margin-bottom: 0;
+}
+
+.option-row input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.depth-selector {
+    margin-left: 25px;
+    display: none;
+}
+
+.depth-selector.visible {
+    display: flex;
+}
+
+.depth-selector label {
+    margin-right: 10px;
+}
+
+.depth-selector select {
+    padding: 5px;
+    border: 1px solid var(--mid-gray);
+    border-radius: 4px;
+    background-color: white;
+}
+
 /* Progress bar */
 .progress-container {
     margin: 15px 0;

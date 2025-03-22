@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const clearButton = document.getElementById('clear-data');
     const statusMessages = document.getElementById('status-messages');
     const selectorTabs = document.querySelectorAll('.selector-tab');
+    const recursiveCheckbox = document.getElementById('recursive-checkbox');
+    const depthSelector = document.getElementById('depth-selector');
     
     // State
     let map = null;
@@ -68,6 +70,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // File selection
         photoInput.addEventListener('change', handleFileSelection);
         directoryInput.addEventListener('change', handleDirectorySelection);
+        
+        // Recursive checkbox
+        recursiveCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                depthSelector.classList.add('visible');
+            } else {
+                depthSelector.classList.remove('visible');
+            }
+        });
         
         // Form submission
         processForm.addEventListener('submit', handleFormSubmit);
@@ -139,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } else {
             selectedFiles = directoryInput.files;
-            if (selectedFiles.length === la0) {
+            if (selectedFiles.length === 0) {
                 showStatusMessage('Please select a directory to process', 'error');
                 return;
             }
@@ -153,6 +164,15 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Add source type (file or directory)
         formData.append('source_type', activeInput);
+        
+        // Add recursive options if directory mode is selected
+        if (activeInput === 'directory') {
+            formData.append('recursive', recursiveCheckbox.checked ? '1' : '0');
+            if (recursiveCheckbox.checked) {
+                const depthValue = document.getElementById('recursive-depth').value;
+                formData.append('depth', depthValue);
+            }
+        }
         
         // Show progress
         processProgress.classList.remove('hidden');
@@ -389,6 +409,8 @@ document.addEventListener('DOMContentLoaded', function() {
         directoryInput.value = '';
         selectedFilesCount.textContent = 'No files selected';
         selectedDirectory.textContent = 'No directory selected';
+        recursiveCheckbox.checked = false;
+        depthSelector.classList.remove('visible');
         
         // Clear state
         sessionId = null;
