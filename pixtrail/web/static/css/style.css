@@ -237,6 +237,36 @@ button:active {
     background-color: white;
 }
 
+/* Drop areas for drag and drop */
+.drop-area {
+    border: 2px dashed var(--mid-gray);
+    border-radius: 4px;
+    padding: 30px 20px;
+    margin-top: 15px;
+    text-align: center;
+    background-color: var(--light-gray);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.drop-area.drag-over {
+    border-color: var(--primary-color);
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.drop-message {
+    color: var(--dark-gray);
+}
+
+.drop-icon {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.drop-area p {
+    margin: 0;
+}
+
 /* Progress bar */
 .progress-container {
     margin: 15px 0;
