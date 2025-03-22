@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let map = null;
     let markers = [];
     let routeLine = null;
-    let heatLayer = null;  // Für die Heatmap
-    let heatmapVisible = false;  // Status der Heatmap-Sichtbarkeit
+    let heatLayer = null; // Für die Heatmap
+    let heatmapVisible = false; // Status der Heatmap-Sichtbarkeit
     let markerClusterGroup = null; // For clustering markers
     let clusteringEnabled = false; // Status of clustering
     let statisticsVisible = false; // Status of statistics panel
@@ -103,21 +103,21 @@ document.addEventListener('DOMContentLoaded', function () {
         // Map controls
         downloadButton.addEventListener('click', handleDownload);
         clearButton.addEventListener('click', handleClear);
-        
+
         // Heatmap Toggle Button
         document.getElementById('toggle-heatmap').addEventListener('click', toggleHeatmap);
-        
+
         // Clustering Toggle Button
         document.getElementById('toggle-clustering').addEventListener('click', toggleClustering);
-        
+
         // Statistics Toggle Button
-        document.getElementById('toggle-statistics').addEventListener('click', toggleStatistics);     
+        document.getElementById('toggle-statistics').addEventListener('click', toggleStatistics);
 
         // Cluster Radius Slider
-        clusterRadiusSlider.addEventListener('input', function() {
+        clusterRadiusSlider.addEventListener('input', function () {
             clusterRadius = parseInt(this.value);
             radiusValueDisplay.textContent = `${clusterRadius}px`;
-            
+
             if (clusteringEnabled && markerClusterGroup) {
                 updateClusterRadius();
             }
@@ -170,14 +170,14 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     function handleUniversalDrop(e) {
         preventDefaults(e);
-        
+
         // Remove drag-over class from both drop areas
         fileDropArea.classList.remove('drag-over');
         directoryDropArea.classList.remove('drag-over');
 
         const items = e.dataTransfer.items;
         const files = e.dataTransfer.files;
-        
+
         if (!items || items.length === 0) {
             showStatusMessage('No items detected in the drop', 'warning');
             return;
@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     function handleAsFiles(e) {
         const files = e.dataTransfer.files;
-        
+
         // Filter for image files
         const imageFiles = Array.from(files).filter(file => {
             return file.type.startsWith('image/');
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Trigger the change event
         const event = new Event('change');
         photoInput.dispatchEvent(event);
-        
+
         showStatusMessage(`${imageFiles.length} image files ready to process`, 'info');
     }
 
@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Trigger the directory input click
         directoryInput.click();
-        
+
         showStatusMessage('Directory detected. Please select it in the file browser that opened.', 'info');
     }
 
@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // JPEG/JFIF and TIFF files can be processed client-side
         const jpegTypes = ['image/jpeg', 'image/jpg'];
         const tiffTypes = ['image/tiff', 'image/tif'];
-        
+
         // JPEG and TIFF files with EXIF in browser
         return jpegTypes.includes(file.type) || tiffTypes.includes(file.type);
     }
@@ -326,24 +326,24 @@ document.addEventListener('DOMContentLoaded', function () {
             const gpsDataList = [];
             let processedCount = 0;
             let totalFiles = files.length;
-            
+
             if (totalFiles === 0) {
                 resolve([]);
                 return;
             }
-            
+
             // Update the UI to show extraction progress
             progressText.textContent = 'Extracting GPS data...';
-            
+
             // Process each file sequentially to avoid memory issues
             const processFile = (index) => {
                 if (index >= totalFiles) {
                     resolve(gpsDataList);
                     return;
                 }
-                
+
                 const file = files[index];
-                
+
                 // Skip non-image files
                 if (!file.type.startsWith('image/')) {
                     processedCount++;
@@ -351,22 +351,22 @@ document.addEventListener('DOMContentLoaded', function () {
                     processFile(index + 1);
                     return;
                 }
-                
+
                 const reader = new FileReader();
-                
-                reader.onload = function(e) {
+
+                reader.onload = function (e) {
                     try {
                         // Use EXIF.js to extract EXIF data
                         const exifReader = new FileReader();
-                        
-                        exifReader.onload = function() {
+
+                        exifReader.onload = function () {
                             try {
                                 const tags = EXIF.readFromBinaryFile(this.result);
-                                
+
                                 // Extract GPS data if available
                                 if (tags) {
                                     const gpsData = extractGpsFromExif(tags, file);
-                                    
+
                                     if (gpsData) {
                                         gpsDataList.push(gpsData);
                                     }
@@ -374,20 +374,20 @@ document.addEventListener('DOMContentLoaded', function () {
                             } catch (exifErr) {
                                 console.error(`Error reading EXIF from ${file.name}:`, exifErr);
                             }
-                            
+
                             // Process next file
                             processedCount++;
                             updateProgressBar(processedCount, totalFiles);
                             processFile(index + 1);
                         };
-                        
-                        exifReader.onerror = function() {
+
+                        exifReader.onerror = function () {
                             console.error(`Error reading EXIF binary data from ${file.name}`);
                             processedCount++;
                             updateProgressBar(processedCount, totalFiles);
                             processFile(index + 1);
                         };
-                        
+
                         // Read file as binary for EXIF.js
                         exifReader.readAsArrayBuffer(file);
                     } catch (err) {
@@ -397,22 +397,22 @@ document.addEventListener('DOMContentLoaded', function () {
                         processFile(index + 1);
                     }
                 };
-                
-                reader.onerror = function() {
+
+                reader.onerror = function () {
                     console.error(`Error reading file ${file.name}`);
                     processedCount++;
                     updateProgressBar(processedCount, totalFiles);
                     processFile(index + 1);
                 };
-                
+
                 reader.readAsDataURL(file);
             };
-            
+
             // Start processing with the first file
             processFile(0);
         });
     }
-    
+
     /**
      * Extract GPS data from EXIF metadata
      */
@@ -421,11 +421,11 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!tags || !tags.GPSLatitude || !tags.GPSLongitude) {
             return null;
         }
-        
+
         // Get reference (N/S, E/W)
         const latRef = tags.GPSLatitudeRef || "N";
         const lonRef = tags.GPSLongitudeRef || "E";
-        
+
         // Convert to decimal degrees
         let latitude = convertDMSToDD(
             tags.GPSLatitude[0],
@@ -433,14 +433,14 @@ document.addEventListener('DOMContentLoaded', function () {
             tags.GPSLatitude[2],
             latRef
         );
-        
+
         let longitude = convertDMSToDD(
             tags.GPSLongitude[0],
             tags.GPSLongitude[1],
             tags.GPSLongitude[2],
             lonRef
         );
-        
+
         // Get altitude if available
         let altitude = 0;
         if (tags.GPSAltitude) {
@@ -449,7 +449,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 altitude = -altitude;
             }
         }
-        
+
         // Get timestamp
         let timestamp;
         if (tags.DateTime) {
@@ -468,17 +468,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 ).toISOString();
             } catch (e) {
                 console.error("Error parsing timestamp:", e);
-                timestamp = file.lastModified 
-                    ? new Date(file.lastModified).toISOString() 
-                    : new Date().toISOString();
+                timestamp = file.lastModified ?
+                    new Date(file.lastModified).toISOString() :
+                    new Date().toISOString();
             }
         } else {
             // Use file modified date as fallback
-            timestamp = file.lastModified 
-                ? new Date(file.lastModified).toISOString() 
-                : new Date().toISOString();
+            timestamp = file.lastModified ?
+                new Date(file.lastModified).toISOString() :
+                new Date().toISOString();
         }
-        
+
         return {
             name: file.name,
             latitude: latitude,
@@ -487,20 +487,20 @@ document.addEventListener('DOMContentLoaded', function () {
             timestamp: timestamp
         };
     }
-    
+
     /**
      * Convert degrees, minutes, seconds to decimal degrees
      */
     function convertDMSToDD(degrees, minutes, seconds, direction) {
         let dd = degrees + (minutes / 60.0) + (seconds / 3600.0);
-        
+
         if (direction === "S" || direction === "W") {
             dd = -dd;
         }
-        
+
         return dd;
     }
-    
+
     /**
      * Update progress bar based on processing progress
      */
@@ -509,29 +509,31 @@ document.addEventListener('DOMContentLoaded', function () {
         progressBar.style.width = percentComplete + '%';
         progressText.textContent = `Processing... ${percentComplete}%`;
     }
-    
+
     /**
      * Send just the GPS data to the local server instead of full image files
      */
     function sendGpsDataToServer(gpsDataList) {
         return fetch('/api/create-gpx', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ gps_data: gpsDataList })
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(data => {
-                    throw new Error(data.error || `Server returned status ${response.status}`);
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    gps_data: gpsDataList
                 })
-                .catch(jsonError => {
-                    throw new Error(`Processing failed: Server error (${response.status})`);
-                });
-            }
-            return response.json();
-        });
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                            throw new Error(data.error || `Server returned status ${response.status}`);
+                        })
+                        .catch(jsonError => {
+                            throw new Error(`Processing failed: Server error (${response.status})`);
+                        });
+                }
+                return response.json();
+            });
     }
 
     /**
@@ -539,19 +541,19 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     function extractGpsData(sessionId) {
         return fetch(`/api/process/${sessionId}`, {
-            method: 'POST'
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(data => {
-                    throw new Error(data.error || 'Unknown server error');
-                })
-                .catch(jsonError => {
-                    throw new Error(`Server error: ${response.statusText || 'Unknown'}`);
-                });
-            }
-            return response.json();
-        });
+                method: 'POST'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                            throw new Error(data.error || 'Unknown server error');
+                        })
+                        .catch(jsonError => {
+                            throw new Error(`Server error: ${response.statusText || 'Unknown'}`);
+                        });
+                }
+                return response.json();
+            });
     }
 
     /**
@@ -584,7 +586,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Sort files into client-side and server-side processable
         const clientSideFiles = [];
         const serverSideFiles = [];
-        
+
         Array.from(selectedFiles).forEach(file => {
             if (canProcessClientSide(file)) {
                 clientSideFiles.push(file);
@@ -592,13 +594,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 serverSideFiles.push(file);
             }
         });
-        
+
         console.log(`Files to process - Client-side: ${clientSideFiles.length}, Server-side: ${serverSideFiles.length}`);
-        
+
         // Initialize arrays for GPS data
         let clientSideGpsData = [];
         let serverSideGpsData = [];
-        
+
         // Start with client-side processing
         const processClientSide = () => {
             if (clientSideFiles.length === 0) {
@@ -607,14 +609,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 processServerSide();
                 return;
             }
-            
+
             progressText.textContent = 'Extracting GPS data from JPEG/TIFF files...';
-            
+
             extractGpsDataFromImages(clientSideFiles)
                 .then(gpsData => {
                     clientSideGpsData = gpsData;
                     progressBar.style.width = '50%';
-                    
+
                     if (serverSideFiles.length > 0) {
                         progressText.textContent = 'Processing RAW/PNG files...';
                         processServerSide();
@@ -625,7 +627,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .catch(error => {
                     console.error('Error processing client-side files:', error);
-                    
+
                     if (serverSideFiles.length > 0) {
                         // Process server-side files even if client-side fails
                         progressText.textContent = 'Processing RAW/PNG files...';
@@ -635,23 +637,23 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
         };
-        
+
         // Server-side processing
         const processServerSide = () => {
             if (serverSideFiles.length === 0) {
                 finalizeProcessing();
                 return;
             }
-            
+
             // Prepare form data
             const formData = new FormData();
             for (const file of serverSideFiles) {
                 formData.append('photos', file);
             }
-            
+
             // Add source type (file or directory)
             formData.append('source_type', activeInput);
-            
+
             // Add recursive options if directory mode is selected
             if (activeInput === 'directory') {
                 formData.append('recursive', recursiveCheckbox.checked ? '1' : '0');
@@ -660,10 +662,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     formData.append('depth', depthValue);
                 }
             }
-            
+
             // Send files to local server
             const xhr = new XMLHttpRequest();
-            
+
             // Progress tracking
             xhr.upload.addEventListener('progress', function (event) {
                 if (event.lengthComputable) {
@@ -672,15 +674,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     progressText.textContent = `Uploading RAW/PNG files... ${percentComplete}%`;
                 }
             });
-            
+
             xhr.addEventListener('load', function () {
                 if (xhr.status === 200) {
                     const response = JSON.parse(xhr.responseText);
                     sessionId = response.session_id;
-                    
+
                     progressText.textContent = 'Processing RAW/PNG files on server...';
                     progressBar.style.width = '75%';
-                    
+
                     extractGpsData(sessionId)
                         .then(serverData => {
                             if (serverData.success) {
@@ -692,7 +694,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         })
                         .catch(error => {
                             console.error('Error processing server-side files:', error);
-                            
+
                             if (clientSideGpsData.length > 0) {
                                 // Continue with client-side data if server-side fails
                                 finalizeProcessing();
@@ -704,7 +706,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     try {
                         const response = JSON.parse(xhr.responseText);
                         console.error('Server error:', response);
-                        
+
                         if (clientSideGpsData.length > 0) {
                             // Continue with client-side data if server-side fails
                             finalizeProcessing();
@@ -713,7 +715,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     } catch (e) {
                         console.error('Error parsing server response:', e);
-                        
+
                         if (clientSideGpsData.length > 0) {
                             // Continue with client-side data if server-side fails
                             finalizeProcessing();
@@ -723,10 +725,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
             });
-            
+
             xhr.addEventListener('error', function () {
                 console.error('Network error during upload');
-                
+
                 if (clientSideGpsData.length > 0) {
                     // Continue with client-side data if server-side fails
                     finalizeProcessing();
@@ -734,25 +736,25 @@ document.addEventListener('DOMContentLoaded', function () {
                     handleError('Processing failed: Network error. Please check your connection.');
                 }
             });
-            
+
             xhr.open('POST', '/api/submit');
             xhr.send(formData);
         };
-        
+
         // Finalize processing with all collected GPS data
         const finalizeProcessing = () => {
             // Combine client- and server-side GPS data
             const allGpsData = [...clientSideGpsData, ...serverSideGpsData];
-            
+
             if (allGpsData.length === 0) {
                 handleError('No GPS data found in any of the submitted photos');
                 return;
             }
-            
+
             // Send all GPS data to create GPX
             progressText.textContent = 'Creating GPX file...';
             progressBar.style.width = '90%';
-            
+
             sendGpsDataToServer(allGpsData)
                 .then(response => {
                     if (response.success) {
@@ -766,7 +768,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         // Store waypoints for later use
                         waypoints = response.waypoints;
-                        
+
                         // Calculate statistics
                         calculateRouteStatistics(waypoints);
 
@@ -797,7 +799,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     handleError(error.message);
                 });
         };
-        
+
         // Start the process
         processClientSide();
     }
@@ -826,7 +828,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Clear existing markers and route
             clearMapLayers();
         }
-        
+
         // Initialize marker cluster group even if not immediately visible
         markerClusterGroup = L.markerClusterGroup({
             maxClusterRadius: clusterRadius,
@@ -844,7 +846,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Create marker with popup
             const marker = L.marker(latLng);
-            
+
             // Format timestamp if available
             let timestampStr = 'Unknown time';
             if (point.timestamp) {
@@ -859,7 +861,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 Lng: ${point.longitude.toFixed(6)}<br>
                 Time: ${timestampStr}
             `);
-            
+
             // Add to appropriate container
             if (clusteringEnabled) {
                 markerClusterGroup.addLayer(marker);
@@ -868,7 +870,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 markers.push(marker);
             }
         });
-        
+
         // If clustering is enabled, add the cluster group to the map
         if (clusteringEnabled) {
             map.addLayer(markerClusterGroup);
@@ -913,52 +915,52 @@ document.addEventListener('DOMContentLoaded', function () {
             map.removeLayer(routeLine);
             routeLine = null;
         }
-        
+
         // Remove heatmap if exists
         if (heatLayer) {
             map.removeLayer(heatLayer);
             heatLayer = null;
         }
         heatmapVisible = false;
-        
+
         // Reset heatmap button
         const toggleHeatmapButton = document.getElementById('toggle-heatmap');
         if (toggleHeatmapButton) {
             toggleHeatmapButton.textContent = 'Show Heatmap';
             toggleHeatmapButton.classList.remove('active');
         }
-        
+
         // Reset clustering button
         const toggleClusteringButton = document.getElementById('toggle-clustering');
         if (toggleClusteringButton) {
             toggleClusteringButton.textContent = 'Enable Clustering';
             toggleClusteringButton.classList.remove('active');
         }
-        
+
         // Reset statistics button
         const toggleStatisticsButton = document.getElementById('toggle-statistics');
         if (toggleStatisticsButton) {
             toggleStatisticsButton.textContent = 'Show Statistics';
             toggleStatisticsButton.classList.remove('active');
         }
-        
+
         // Hide cluster options
         clusterOptions.classList.add('hidden');
-        
+
         // Hide statistics panel
         statisticsContainer.classList.add('hidden');
-        
+
         // Reset status variables
         clusteringEnabled = false;
         statisticsVisible = false;
     }
-    
+
     /**
      * Toggle the heatmap visibility
      */
     function toggleHeatmap() {
         const toggleButton = document.getElementById('toggle-heatmap');
-        
+
         if (heatmapVisible) {
             // Hide heatmap
             if (heatLayer) {
@@ -981,25 +983,31 @@ document.addEventListener('DOMContentLoaded', function () {
      * Create a heatmap based on the GPS data points
      */
     function createHeatmap() {
+        // Check if Leaflet.heat is available
+        if (typeof L.heatLayer !== 'function') {
+            console.error("Leaflet.heat plugin not loaded correctly");
+            showStatusMessage('Heatmap feature unavailable. Missing Leaflet.heat plugin.', 'error');
+            return;
+        }
         // Remove existing heatmap if it exists
         if (heatLayer) {
             map.removeLayer(heatLayer);
         }
-        
+
         // We need waypoints to create a heatmap
         if (!waypoints || waypoints.length === 0) {
             showStatusMessage('No GPS data available for heatmap', 'warning');
             return;
         }
-        
+
         // Prepare data points for the heatmap
         // We'll use the same locations as the markers, but calculate intensity based on:
         // 1. Photos taken at the same location (higher intensity)
         // 2. Time spent at a location (calculated from timestamps)
-        
+
         const heatData = [];
         const locationGroups = {};
-        
+
         // Group photos by location (using a grid approach to group nearby points)
         waypoints.forEach(point => {
             // Extract timestamp from waypoint data
@@ -1007,11 +1015,11 @@ document.addEventListener('DOMContentLoaded', function () {
             if (point.timestamp) {
                 timestamp = new Date(point.timestamp);
             }
-            
+
             // Create a grid key by rounding coordinates (groups nearby points)
             // Using 5 decimal places (~1m precision at the equator)
             const gridKey = `${Math.round(point.latitude * 100000) / 100000},${Math.round(point.longitude * 100000) / 100000}`;
-            
+
             if (!locationGroups[gridKey]) {
                 locationGroups[gridKey] = {
                     lat: point.latitude,
@@ -1020,34 +1028,34 @@ document.addEventListener('DOMContentLoaded', function () {
                     timestamps: []
                 };
             }
-            
+
             locationGroups[gridKey].count++;
             if (timestamp) {
                 locationGroups[gridKey].timestamps.push(timestamp);
             }
         });
-        
+
         // Calculate duration for each location group and prepare heatmap data
         Object.values(locationGroups).forEach(group => {
             let intensity = group.count; // Base intensity on number of photos
-            
+
             // If we have timestamps, calculate duration
             if (group.timestamps.length > 1) {
                 // Sort timestamps
                 group.timestamps.sort((a, b) => a - b);
-                
+
                 // Calculate time span in minutes
                 const duration = (group.timestamps[group.timestamps.length - 1] - group.timestamps[0]) / (1000 * 60);
-                
+
                 // Add duration to intensity (more time spent = higher intensity)
                 // Cap duration contribution to avoid extreme values
                 intensity += Math.min(duration / 10, 10);
             }
-            
+
             // Add to heatmap data with calculated intensity
             heatData.push([group.lat, group.lng, intensity]);
         });
-        
+
         // Create the heatmap layer
         heatLayer = L.heatLayer(heatData, {
             radius: 25,
@@ -1061,13 +1069,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }).addTo(map);
     }
-    
+
     /**
      * Toggle marker clustering
      */
     function toggleClustering() {
         const toggleButton = document.getElementById('toggle-clustering');
-        
+
         if (clusteringEnabled) {
             // Disable clustering
             disableClustering();
@@ -1084,7 +1092,7 @@ document.addEventListener('DOMContentLoaded', function () {
             clusteringEnabled = true;
         }
     }
-    
+
     /**
      * Enable marker clustering
      */
@@ -1094,11 +1102,11 @@ document.addEventListener('DOMContentLoaded', function () {
             showStatusMessage('No GPS data available for clustering', 'warning');
             return;
         }
-        
+
         // Remove individual markers from map
         markers.forEach(marker => map.removeLayer(marker));
         markers = [];
-        
+
         // Create marker cluster group if it doesn't exist
         if (!markerClusterGroup) {
             markerClusterGroup = L.markerClusterGroup({
@@ -1109,21 +1117,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 chunkedLoading: true
             });
         }
-        
+
         // Add markers to cluster group
         waypoints.forEach(point => {
             const latLng = L.latLng(point.latitude, point.longitude);
-            
+
             // Create marker with popup
             const marker = L.marker(latLng);
-            
+
             // Format timestamp if available
             let timestampStr = 'Unknown time';
             if (point.timestamp) {
                 const timestamp = new Date(point.timestamp);
                 timestampStr = timestamp.toLocaleString();
             }
-            
+
             // Create popup content
             marker.bindPopup(`
                 <strong>${point.name}</strong><br>
@@ -1131,15 +1139,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 Lng: ${point.longitude.toFixed(6)}<br>
                 Time: ${timestampStr}
             `);
-            
+
             // Add to cluster group
             markerClusterGroup.addLayer(marker);
         });
-        
+
         // Add cluster group to map
         map.addLayer(markerClusterGroup);
     }
-    
+
     /**
      * Disable marker clustering
      */
@@ -1148,27 +1156,27 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!waypoints || waypoints.length === 0) {
             return;
         }
-        
+
         // Remove cluster group from map
         if (markerClusterGroup) {
             map.removeLayer(markerClusterGroup);
         }
-        
+
         // Add individual markers to map
         waypoints.forEach(point => {
             const latLng = L.latLng(point.latitude, point.longitude);
-            
+
             // Create marker with popup
             const marker = L.marker(latLng).addTo(map);
             markers.push(marker);
-            
+
             // Format timestamp if available
             let timestampStr = 'Unknown time';
             if (point.timestamp) {
                 const timestamp = new Date(point.timestamp);
                 timestampStr = timestamp.toLocaleString();
             }
-            
+
             // Create popup content
             marker.bindPopup(`
                 <strong>${point.name}</strong><br>
@@ -1178,7 +1186,7 @@ document.addEventListener('DOMContentLoaded', function () {
             `);
         });
     }
-    
+
     /**
      * Update cluster radius when slider changes
      */
@@ -1187,10 +1195,10 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!clusteringEnabled || !markerClusterGroup) {
             return;
         }
-        
+
         // Remove existing cluster group
         map.removeLayer(markerClusterGroup);
-        
+
         // Create new cluster group with updated radius
         markerClusterGroup = L.markerClusterGroup({
             maxClusterRadius: clusterRadius,
@@ -1199,21 +1207,21 @@ document.addEventListener('DOMContentLoaded', function () {
             zoomToBoundsOnClick: true,
             chunkedLoading: true
         });
-        
+
         // Add markers to new cluster group
         waypoints.forEach(point => {
             const latLng = L.latLng(point.latitude, point.longitude);
-            
+
             // Create marker with popup
             const marker = L.marker(latLng);
-            
+
             // Format timestamp if available
             let timestampStr = 'Unknown time';
             if (point.timestamp) {
                 const timestamp = new Date(point.timestamp);
                 timestampStr = timestamp.toLocaleString();
             }
-            
+
             // Create popup content
             marker.bindPopup(`
                 <strong>${point.name}</strong><br>
@@ -1221,21 +1229,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 Lng: ${point.longitude.toFixed(6)}<br>
                 Time: ${timestampStr}
             `);
-            
+
             // Add to cluster group
             markerClusterGroup.addLayer(marker);
         });
-        
+
         // Add new cluster group to map
         map.addLayer(markerClusterGroup);
     }
-    
+
     /**
      * Toggle statistics panel
      */
     function toggleStatistics() {
         const toggleButton = document.getElementById('toggle-statistics');
-        
+
         if (statisticsVisible) {
             // Hide statistics
             statisticsContainer.classList.add('hidden');
@@ -1252,14 +1260,14 @@ document.addEventListener('DOMContentLoaded', function () {
             toggleButton.textContent = 'Hide Statistics';
             toggleButton.classList.add('active');
             statisticsVisible = true;
-            
+
             // Scroll to statistics
             statisticsContainer.scrollIntoView({
                 behavior: 'smooth'
             });
         }
     }
-    
+
     /**
      * Calculate route statistics from waypoints
      */
@@ -1268,14 +1276,14 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("Not enough waypoints for statistics");
             return;
         }
-        
+
         // Sort waypoints by timestamp
         const sortedWaypoints = [...waypoints].sort((a, b) => {
             const timeA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
             const timeB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
             return timeA - timeB;
         });
-        
+
         // Initialize statistics object
         const stats = {
             totalDistance: 0,
@@ -1292,59 +1300,59 @@ document.addEventListener('DOMContentLoaded', function () {
             elevationProfile: [],
             speedProfile: []
         };
-        
+
         // Collect timestamps and start/end times
         stats.startTime = new Date(sortedWaypoints[0].timestamp);
         stats.endTime = new Date(sortedWaypoints[sortedWaypoints.length - 1].timestamp);
         stats.totalDuration = (stats.endTime - stats.startTime) / 1000; // in seconds
-        
+
         // Process waypoints for distance, elevation, and speed
         let prevPoint = null;
         let prevElevation = null;
-        
+
         for (let i = 0; i < sortedWaypoints.length; i++) {
             const point = sortedWaypoints[i];
             const timestamp = new Date(point.timestamp);
-            
+
             // Track min/max elevation
             const elevation = point.altitude || 0;
             stats.minElevation = Math.min(stats.minElevation, elevation);
             stats.maxElevation = Math.max(stats.maxElevation, elevation);
-            
+
             // Calculate elevation gain
             if (prevElevation !== null && elevation > prevElevation) {
                 stats.elevationGain += (elevation - prevElevation);
             }
             prevElevation = elevation;
-            
+
             // Add to elevation profile (distance, elevation)
             stats.elevationProfile.push({
                 index: i,
                 elevation: elevation
             });
-            
+
             // Calculate distance and speed if we have a previous point
             if (prevPoint) {
                 const distance = calculateDistance(
                     prevPoint.latitude, prevPoint.longitude,
                     point.latitude, point.longitude
                 );
-                
+
                 const timeDiff = (timestamp - new Date(prevPoint.timestamp)) / 1000; // in seconds
-                
+
                 // Only add distance if it's reasonable (avoid GPS jumps)
                 if (distance < 10) { // Don't count jumps over 10km
                     stats.totalDistance += distance;
-                
+
                     // Calculate speed if time difference is valid
                     if (timeDiff > 0) {
                         const speed = distance / timeDiff * 3600; // km/h
-                        
+
                         // Only count reasonable speeds (avoid GPS errors)
                         if (speed < 300) { // Max 300 km/h
                             stats.speeds.push(speed);
                             stats.maxSpeed = Math.max(stats.maxSpeed, speed);
-                            
+
                             // Add to speed profile (distance, speed)
                             stats.speedProfile.push({
                                 index: i,
@@ -1354,10 +1362,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
             }
-            
+
             prevPoint = point;
         }
-        
+
         // Calculate average speed (if we have valid speeds)
         if (stats.speeds.length > 0) {
             stats.avgSpeed = stats.speeds.reduce((sum, speed) => sum + speed, 0) / stats.speeds.length;
@@ -1365,17 +1373,17 @@ document.addEventListener('DOMContentLoaded', function () {
             // Fallback: calculate average speed from total distance and duration
             stats.avgSpeed = stats.totalDistance / (stats.totalDuration / 3600); // km/h
         }
-        
+
         // If no elevation changes were found, reset min/max
         if (stats.minElevation === Infinity) stats.minElevation = 0;
         if (stats.maxElevation === -Infinity) stats.maxElevation = 0;
-        
+
         // Store statistics
         routeStatistics = stats;
-        
+
         return stats;
     }
-    
+
     /**
      * Calculate distance between two GPS points using Haversine formula (in km)
      */
@@ -1383,28 +1391,28 @@ document.addEventListener('DOMContentLoaded', function () {
         const R = 6371; // Earth's radius in km
         const dLat = (lat2 - lat1) * Math.PI / 180;
         const dLon = (lon2 - lon1) * Math.PI / 180;
-        
-        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                  Math.sin(dLon/2) * Math.sin(dLon/2);
-        
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
     }
-    
+
     /**
      * Format duration in seconds to human-readable format (HH:MM:SS)
      */
     function formatDuration(durationInSeconds) {
         if (!durationInSeconds) return '-';
-        
+
         const hours = Math.floor(durationInSeconds / 3600);
         const minutes = Math.floor((durationInSeconds % 3600) / 60);
         const seconds = Math.floor(durationInSeconds % 60);
-        
+
         return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }
-    
+
     /**
      * Update statistics panel with calculated data
      */
@@ -1413,7 +1421,7 @@ document.addEventListener('DOMContentLoaded', function () {
             showStatusMessage('No statistics available', 'warning');
             return;
         }
-        
+
         // Update summary statistics
         document.getElementById('total-distance').textContent = `${routeStatistics.totalDistance.toFixed(2)} km`;
         document.getElementById('total-duration').textContent = formatDuration(routeStatistics.totalDuration);
@@ -1425,26 +1433,26 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('max-elevation').textContent = `${routeStatistics.maxElevation.toFixed(1)} m`;
         document.getElementById('elevation-gain').textContent = `${routeStatistics.elevationGain.toFixed(1)} m`;
         document.getElementById('photo-count').textContent = routeStatistics.photoCount.toString();
-        
+
         // Create charts
         createElevationChart();
         createSpeedChart();
     }
-    
+
     /**
      * Create elevation profile chart
      */
     function createElevationChart() {
         const ctx = document.getElementById('elevation-chart').getContext('2d');
-        
+
         // Destroy existing chart if it exists
         if (elevationChart) {
             elevationChart.destroy();
         }
-        
+
         // Create labels for x-axis (photo indices or timestamps)
         const labels = routeStatistics.elevationProfile.map((point, index) => index + 1);
-        
+
         // Create chart data
         const data = {
             labels: labels,
@@ -1458,7 +1466,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 tension: 0.4
             }]
         };
-        
+
         // Chart options
         const options = {
             responsive: true,
@@ -1481,14 +1489,14 @@ document.addEventListener('DOMContentLoaded', function () {
             plugins: {
                 tooltip: {
                     callbacks: {
-                        label: function(context) {
+                        label: function (context) {
                             return `Elevation: ${context.raw.toFixed(1)} m`;
                         }
                     }
                 }
             }
         };
-        
+
         // Create chart
         elevationChart = new Chart(ctx, {
             type: 'line',
@@ -1496,21 +1504,21 @@ document.addEventListener('DOMContentLoaded', function () {
             options: options
         });
     }
-    
+
     /**
      * Create speed profile chart
      */
     function createSpeedChart() {
         const ctx = document.getElementById('speed-chart').getContext('2d');
-        
+
         // Destroy existing chart if it exists
         if (speedChart) {
             speedChart.destroy();
         }
-        
+
         // Create labels for x-axis (photo indices)
         const labels = routeStatistics.speedProfile.map((point, index) => index + 1);
-        
+
         // Create chart data
         const data = {
             labels: labels,
@@ -1524,7 +1532,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 tension: 0.1
             }]
         };
-        
+
         // Chart options
         const options = {
             responsive: true,
@@ -1547,14 +1555,14 @@ document.addEventListener('DOMContentLoaded', function () {
             plugins: {
                 tooltip: {
                     callbacks: {
-                        label: function(context) {
+                        label: function (context) {
                             return `Speed: ${context.raw.toFixed(1)} km/h`;
                         }
                     }
                 }
             }
         };
-        
+
         // Create chart
         speedChart = new Chart(ctx, {
             type: 'line',
@@ -1618,7 +1626,7 @@ document.addEventListener('DOMContentLoaded', function () {
         gpxFilename = null;
         waypoints = [];
         routeStatistics = null;
-        
+
         // Reset heatmap
         if (heatLayer) {
             map.removeLayer(heatLayer);
@@ -1627,18 +1635,18 @@ document.addEventListener('DOMContentLoaded', function () {
         heatmapVisible = false;
         document.getElementById('toggle-heatmap').textContent = 'Show Heatmap';
         document.getElementById('toggle-heatmap').classList.remove('active');
-        
+
         // Reset clustering
         clusteringEnabled = false;
         document.getElementById('toggle-clustering').textContent = 'Enable Clustering';
         document.getElementById('toggle-clustering').classList.remove('active');
         clusterOptions.classList.add('hidden');
-        
+
         // Reset statistics
         statisticsVisible = false;
         document.getElementById('toggle-statistics').textContent = 'Show Statistics';
         document.getElementById('toggle-statistics').classList.remove('active');
-        
+
         // Destroy charts
         if (elevationChart) {
             elevationChart.destroy();
