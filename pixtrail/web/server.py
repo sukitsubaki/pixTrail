@@ -26,11 +26,11 @@ def create_app():
     
     # Set configuration
     app.config['SECRET_KEY'] = os.urandom(24)
-    app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB max upload
-    app.config['UPLOAD_FOLDER'] = os.path.join(os.path.expanduser('~'), 'PixTrail_Uploads')
+    app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB max file size
+    app.config['PIXTRAIL_DATA_DIR'] = os.path.join(os.path.expanduser('~'), 'PixTrail_Files')
     
-    # Ensure upload folder exists
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    # Ensure storage folder exists
+    os.makedirs(app.config['PIXTRAIL_DATA_DIR'], exist_ok=True)
     
     # Register blueprints
     from .routes import main_bp

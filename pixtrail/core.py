@@ -3,7 +3,7 @@ Core functionality for the PixTrail package.
 """
 
 import os
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Union
 
 from .exif_reader import ExifReader
 from .gpx_generator import GPXGenerator
@@ -21,7 +21,7 @@ class PixTrail:
         self, 
         input_dir: str, 
         recursive: bool = False
-    ) -> List[Dict[str, Any]]:
+    ) -> Dict[str, Any]:
         """
         Process all image files in a directory and extract GPS data.
         
@@ -30,24 +30,27 @@ class PixTrail:
             recursive: Whether to search recursively in subdirectories
         
         Returns:
-            List of dictionaries containing GPS data extracted from images
+            Dictionary containing:
+            - gps_data: List of dictionaries containing GPS data extracted from images
+            - stats: Dictionary with statistics about processed files
         """
         # Get image files
         try:
             image_files = get_image_files(input_dir, recursive)
         except FileNotFoundError as e:
             print(f"Error: {e}")
-            return []
+            return {'gps_data': [], 'stats': {'total': 0, 'processed': 0, 'skipped': 0}}
         
         if not image_files:
             print(f"No image files found in directory: {input_dir}")
-            return []
+            return {'gps_data': [], 'stats': {'total': 0, 'processed': 0, 'skipped': 0}}
         
         print(f"Found {len(image_files)} image files.")
         
         # Process each image file
         self.gps_data_list = []
         processed_count = 0
+        skipped_count = 0
         
         for image_file in image_files:
             gps_data = ExifReader.extract_gps_data(image_file)
@@ -55,9 +58,21 @@ class PixTrail:
             if gps_data:
                 self.gps_data_list.append(gps_data)
                 processed_count += 1
+            else:
+                skipped_count += 1
                 
-        print(f"Processed {processed_count} images with GPS data.")
-        return self.gps_data_list
+        print(f"Processed {processed_count} images with GPS data. Skipped {skipped_count} images without GPS data.")
+        
+        stats = {
+            'total': len(image_files),
+            'processed': processed_count,
+            'skipped': skipped_count
+        }
+        
+        return {
+            'gps_data': self.gps_data_list,
+            'stats': stats
+        }
     
     def generate_gpx(
         self, 
@@ -90,7 +105,7 @@ class PixTrail:
         input_dir: str, 
         output_path: Optional[str] = None, 
         recursive: bool = False
-    ) -> bool:
+    ) -> Union[bool, Dict[str, Any]]:
         """
         Process all images in a directory and generate a GPX file.
     
@@ -100,12 +115,15 @@ class PixTrail:
             recursive: Whether to search recursively in subdirectories
     
         Returns:
-            bool: True if the GPX file was generated successfully, False otherwise
+            If successful: Dictionary with success status and statistics
+            If failed: False
         """
         # Process directory
-        self.process_directory(input_dir, recursive)
+        result = self.process_directory(input_dir, recursive)
+        gps_data = result['gps_data']
+        stats = result['stats']
     
-        if not self.gps_data_list:
+        if not gps_data:
             return False
     
         # Use provided output path or generate a default one automatically
@@ -118,4 +136,13 @@ class PixTrail:
         ensure_directory(output_dir)
     
         # Generate GPX file
-        return self.generate_gpx(final_output_path)
+        success = self.generate_gpx(final_output_path, gps_data)
+        
+        if success:
+            return {
+                'success': True, 
+                'stats': stats,
+                'output_path': final_output_path
+            }
+        else:
+            return False

@@ -2,18 +2,18 @@
  * PixTrail Web Interface
  * 
  * Client-side JavaScript for the PixTrail web application.
- * Handles file uploads, API interactions, and map display.
+ * Handles file selection, API interactions, and map display.
  */
 
 document.addEventListener('DOMContentLoaded', function() {
     // Elements
     const photoInput = document.getElementById('photo-input');
     const selectedFilesCount = document.getElementById('selected-files-count');
-    const uploadForm = document.getElementById('upload-form');
-    const uploadButton = document.getElementById('upload-button');
-    const uploadProgress = document.getElementById('upload-progress');
-    const progressBar = uploadProgress.querySelector('.progress-bar');
-    const progressText = uploadProgress.querySelector('.progress-text');
+    const processForm = document.getElementById('process-form');
+    const processButton = document.getElementById('process-button');
+    const processProgress = document.getElementById('process-progress');
+    const progressBar = processProgress.querySelector('.progress-bar');
+    const progressText = processProgress.querySelector('.progress-text');
     const mapContainer = document.getElementById('map-container');
     const downloadButton = document.getElementById('download-gpx');
     const clearButton = document.getElementById('clear-data');
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
         photoInput.addEventListener('change', handleFileSelection);
         
         // Form submission
-        uploadForm.addEventListener('submit', handleFormSubmit);
+        processForm.addEventListener('submit', handleFormSubmit);
         
         // Map controls
         downloadButton.addEventListener('click', handleDownload);
@@ -51,10 +51,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const files = photoInput.files;
         if (files.length > 0) {
             selectedFilesCount.textContent = `${files.length} file(s) selected`;
-            uploadButton.disabled = false;
+            processButton.disabled = false;
         } else {
             selectedFilesCount.textContent = 'No files selected';
-            uploadButton.disabled = true;
+            processButton.disabled = true;
         }
     }
     
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
         
         if (photoInput.files.length === 0) {
-            showStatusMessage('Please select photos to upload', 'error');
+            showStatusMessage('Please select photos to process', 'error');
             return;
         }
         
@@ -76,27 +76,28 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Show progress
-        uploadProgress.classList.remove('hidden');
+        processProgress.classList.remove('hidden');
         progressBar.style.width = '0%';
-        progressText.textContent = 'Uploading...';
-        uploadButton.disabled = true;
+        progressText.textContent = 'Processing...';
+        processButton.disabled = true;
         
-        // Upload files
-        uploadPhotos(formData);
+        // Send files for processing
+        processPhotos(formData);
     }
     
     /**
-     * Upload photos to the server
+     * Send photos to the server for processing
      */
-    function uploadPhotos(formData) {
+    function processPhotos(formData) {
         const xhr = new XMLHttpRequest();
         
         // Progress tracking
+        // Local file transfer progress (browser API uses the term "upload")
         xhr.upload.addEventListener('progress', function(event) {
             if (event.lengthComputable) {
                 const percentComplete = Math.round((event.loaded / event.total) * 100);
                 progressBar.style.width = percentComplete + '%';
-                progressText.textContent = `Uploading... ${percentComplete}%`;
+                progressText.textContent = `Processing... ${percentComplete}%`;
             }
         });
         
@@ -106,30 +107,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 const response = JSON.parse(xhr.responseText);
                 sessionId = response.session_id;
                 
-                progressText.textContent = 'Processing photos...';
+                progressText.textContent = 'Extracting GPS data...';
                 progressBar.style.width = '75%';
                 
-                // Process the uploaded photos
-                processPhotos(sessionId);
+                // Process the submitted photos
+                extractGpsData(sessionId);
             } else {
-                handleError('Upload failed');
+                handleError('Processing failed');
             }
         });
         
         // Handle errors
         xhr.addEventListener('error', function() {
-            handleError('Upload failed. Network error.');
+            handleError('Processing failed. Network error.');
         });
         
         // Send the request
-        xhr.open('POST', '/api/upload');
+        xhr.open('POST', '/api/submit');
         xhr.send(formData);
     }
     
     /**
-     * Process the uploaded photos
+     * Extract GPS data from the processed photos
      */
-    function processPhotos(sessionId) {
+    function extractGpsData(sessionId) {
         fetch(`/api/process/${sessionId}`, {
             method: 'POST'
         })
@@ -153,18 +154,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Show the map and plot the route
                 showMap(data.waypoints);
                 
-                // Show success message
-                showStatusMessage('Photos processed successfully! GPS data extracted and GPX file created.', 'success');
+                // Show success message with statistics
+                let statsMessage = 'Photos processed successfully! ';
+                if (data.stats) {
+                    statsMessage += `${data.stats.processed} photos with GPS data processed`;
+                    if (data.stats.skipped > 0) {
+                        statsMessage += `, ${data.stats.skipped} photos without GPS data skipped`;
+                    }
+                    statsMessage += '. GPX file created.';
+                }
+                showStatusMessage(statsMessage, 'success');
                 
-                // Reset upload form
+                // Reset form
                 setTimeout(() => {
-                    uploadProgress.classList.add('hidden');
-                    uploadButton.disabled = false;
+                    processProgress.classList.add('hidden');
+                    processButton.disabled = false;
                     photoInput.value = '';
                     selectedFilesCount.textContent = 'No files selected';
                 }, 1500);
             } else {
-                handleError(data.error || 'Processing failed');
+                // Show error message with statistics if available
+                let errorMessage = data.error || 'Processing failed';
+                if (data.stats) {
+                    errorMessage += ` (${data.stats.total} total files, ${data.stats.processed} with GPS data, ${data.stats.skipped} without GPS data)`;
+                }
+                handleError(errorMessage);
             }
         })
         .catch(error => {
@@ -288,8 +302,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         mapContainer.classList.add('hidden');
-        uploadProgress.classList.add('hidden');
-        uploadButton.disabled = true;
+        processProgress.classList.add('hidden');
+        processButton.disabled = true;
         photoInput.value = '';
         selectedFilesCount.textContent = 'No files selected';
         
@@ -309,8 +323,8 @@ document.addEventListener('DOMContentLoaded', function() {
         progressText.textContent = 'Error';
         
         setTimeout(() => {
-            uploadProgress.classList.add('hidden');
-            uploadButton.disabled = false;
+            processProgress.classList.add('hidden');
+            processButton.disabled = false;
         }, 1000);
         
         showStatusMessage(message, 'error');
