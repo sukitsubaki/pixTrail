@@ -1,0 +1,43 @@
+# PixTrail CODEOWNERS file
+# These owners will be requested for review when someone opens a pull request.
+
+# Default owners for everything in the repo (fallback)
+*                         @sukitsubaki
+
+# JavaScript files
+*.js                      @neoneko87
+*.mjs                     @neoneko87
+*.cjs                     @neoneko87
+*.jsx                     @neoneko87
+
+# Python files
+*.py                      @sukitsubaki
+
+# Documentation
+/docs/                    @radanana
+README.md                 @sukitsubaki
+
+# Web interface
+/pixtrail/web/            @neoneko87 @sukitsubaki
+/pixtrail/web/static/js/  @neoneko87
+/pixtrail/web/static/css/ @sukitsubaki
+/pixtrail/web/templates/  @sukitsubaki
+
+# Build configuration
+pyproject.toml            @sukitsubaki
+setup.py                  @sukitsubaki
+requirements.txt          @sukitsubaki
+
+# GitHub specific files
+/.github/                 @sukitsubaki
+/.github/CODEOWNERS       @sukitsubaki
+/.github/workflows/       @sukitsubaki
+
+# CSS files
+*.css                     @sukitsubaki
+
+# Test files
+/tests/                   @sukitsubaki @neoneko87
+
+# Example files
+/examples/                @sukitsubaki
