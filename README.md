@@ -19,6 +19,9 @@
 # Install with web interface
 pip install pixtrail[web]
 
+# Install with web interface (zsh/macOS)
+pip install "pixtrail[web]"
+
 # Launch web interface
 pixtrail -w
 
