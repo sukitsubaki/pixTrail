@@ -2,6 +2,34 @@
 
 All notable changes to the PixTrail project will be documented in this file.
 
+## [2.0.0] - 2025-03-21
+
+This major update introduces a powerful new web interface with Flask that makes it easier than ever to visualize and share your journeys, while keeping your data private and secure.
+
+### New Features
+#### Web Interface
+* Upload and process photos directly in your browser
+* Visualize your routes on an interactive OpenStreetMap
+* Generate and download GPX files with a single click
+* Keep all your data private - nothing is uploaded to any server
+
+#### Privacy Focused
+* All processing happens completely locally on your device
+* Your photos and location data never leave your computer
+* No tracking, no data collection, no server uploads
+
+#### Interactive Maps
+* Dynamic route plotting on OpenStreetMap
+* Markers for each photo with timestamp and location information
+* Automatic map centering and zoom based on your route
+* Full route line connecting all waypoints chronologically
+
+### Improvements
+#### Command Line Enhancements
+* Start the web interface with a simple command: `pixtrail -w`
+* Configure host and port: `pixtrail -w --host 0.0.0.0 --port 8080`
+* Control browser launch behavior: `pixtrail -w --no-browser`
+
 ## [1.3.0] - 2025-03-20
 
 ### New Features
