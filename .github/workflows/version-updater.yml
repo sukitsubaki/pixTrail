@@ -17,26 +17,33 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.head_ref || github.ref_name }}
 
-      - name: Extract latest version from CHANGELOG
+      - name: Extract versions from CHANGELOG
         id: extract
         run: |
           # Extract the latest version from CHANGELOG.md
-          # Skip the Unreleased section and find the first version entry
-          VERSION=$(grep -o '## \[[0-9]\+\.[0-9]\+\.[0-9]\+\]' CHANGELOG.md | head -1 | sed 's/## \[\(.*\)\]/\1/')
+          LATEST_VERSION=$(grep -o '## \[[0-9]\+\.[0-9]\+\.[0-9]\+\]' CHANGELOG.md | head -1 | sed 's/## \[\(.*\)\]/\1/')
           
-          if [ -z "$VERSION" ]; then
+          if [ -z "$LATEST_VERSION" ]; then
             echo "Failed to extract version from CHANGELOG.md"
             exit 1
           fi
           
-          echo "Extracted version: $VERSION"
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          # Extract the previous version (second entry)
+          PREVIOUS_VERSION=$(grep -o '## \[[0-9]\+\.[0-9]\+\.[0-9]\+\]' CHANGELOG.md | head -2 | tail -1 | sed 's/## \[\(.*\)\]/\1/')
+          
+          echo "Latest version: $LATEST_VERSION"
+          echo "Previous version: $PREVIOUS_VERSION"
+          
+          echo "latest_version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+          echo "previous_version=$PREVIOUS_VERSION" >> $GITHUB_OUTPUT
 
       - name: Update version numbers
         id: update
         run: |
-          VERSION="${{ steps.extract.outputs.version }}"
-          echo "Updating files to version $VERSION"
+          LATEST_VERSION="${{ steps.extract.outputs.latest_version }}"
+          PREVIOUS_VERSION="${{ steps.extract.outputs.previous_version }}"
+          
+          echo "Updating files to version $LATEST_VERSION"
           
           # Initialize update flag
           UPDATED=false
@@ -45,7 +52,7 @@ jobs:
           if [ -f "README.md" ]; then
             if grep -q 'version-[0-9]\+\.[0-9]\+\.[0-9]\+' README.md; then
               echo "Updating version in README.md"
-              sed -i "s/version-[0-9]\+\.[0-9]\+\.[0-9]\+/version-$VERSION/" README.md
+              sed -i "s/version-[0-9]\+\.[0-9]\+\.[0-9]\+/version-$LATEST_VERSION/" README.md
               UPDATED=true
             fi
           fi
@@ -54,7 +61,7 @@ jobs:
           if [ -f "setup.py" ]; then
             if grep -q 'version="[0-9]\+\.[0-9]\+\.[0-9]\+"' setup.py; then
               echo "Updating version in setup.py"
-              sed -i "s/version=\"[0-9]\+\.[0-9]\+\.[0-9]\+\"/version=\"$VERSION\"/" setup.py
+              sed -i "s/version=\"[0-9]\+\.[0-9]\+\.[0-9]\+\"/version=\"$LATEST_VERSION\"/" setup.py
               UPDATED=true
             fi
           fi
@@ -63,7 +70,7 @@ jobs:
           if [ -f "pyproject.toml" ]; then
             if grep -q 'version = "[0-9]\+\.[0-9]\+\.[0-9]\+"' pyproject.toml; then
               echo "Updating version in pyproject.toml"
-              sed -i "s/version = \"[0-9]\+\.[0-9]\+\.[0-9]\+\"/version = \"$VERSION\"/" pyproject.toml
+              sed -i "s/version = \"[0-9]\+\.[0-9]\+\.[0-9]\+\"/version = \"$LATEST_VERSION\"/" pyproject.toml
               UPDATED=true
             fi
           fi
@@ -72,15 +79,33 @@ jobs:
           if [ -f "pixtrail/__init__.py" ]; then
             if grep -q '__version__ = "[0-9]\+\.[0-9]\+\.[0-9]\+"' pixtrail/__init__.py; then
               echo "Updating version in pixtrail/__init__.py"
-              sed -i "s/__version__ = \"[0-9]\+\.[0-9]\+\.[0-9]\+\"/__version__ = \"$VERSION\"/" pixtrail/__init__.py
+              sed -i "s/__version__ = \"[0-9]\+\.[0-9]\+\.[0-9]\+\"/__version__ = \"$LATEST_VERSION\"/" pixtrail/__init__.py
               UPDATED=true
             fi
           fi
           
-          # Update the Unreleased link in CHANGELOG.md
-          if grep -q '\[unreleased\]: https://github.com/sukitsubaki/pixTrail/compare/[0-9]\+\.[0-9]\+\.[0-9]\+\.\.\.HEAD' CHANGELOG.md; then
-            echo "Updating Unreleased link in CHANGELOG.md"
-            sed -i "s|\[unreleased\]: https://github.com/sukitsubaki/pixTrail/compare/[0-9]\+\.[0-9]\+\.[0-9]\+\.\.\.HEAD|\[unreleased\]: https://github.com/sukitsubaki/pixTrail/compare/$VERSION...HEAD|" CHANGELOG.md
+          # Update the version links in CHANGELOG.md
+          if [ -n "$PREVIOUS_VERSION" ]; then
+            # Check if a link for the latest version already exists
+            if ! grep -q "\[$LATEST_VERSION\]: " CHANGELOG.md; then
+              echo "Adding new version link in CHANGELOG.md"
+              
+              # Update the Unreleased link
+              sed -i "s|\[unreleased\]: https://github.com/sukitsubaki/pixTrail/compare/[0-9]\+\.[0-9]\+\.[0-9]\+\.\.\.HEAD|\[unreleased\]: https://github.com/sukitsubaki/pixTrail/compare/$LATEST_VERSION...HEAD|" CHANGELOG.md
+              
+              # Add new version link after the Unreleased link
+              sed -i "/\[unreleased\]:/a \[$LATEST_VERSION\]: https://github.com/sukitsubaki/pixTrail/compare/$PREVIOUS_VERSION...$LATEST_VERSION" CHANGELOG.md
+              
+              UPDATED=true
+            else
+              # Only update the Unreleased link if the version link already exists
+              echo "Version link already exists, only updating Unreleased link"
+              sed -i "s|\[unreleased\]: https://github.com/sukitsubaki/pixTrail/compare/[0-9]\+\.[0-9]\+\.[0-9]\+\.\.\.HEAD|\[unreleased\]: https://github.com/sukitsubaki/pixTrail/compare/$LATEST_VERSION...HEAD|" CHANGELOG.md
+              UPDATED=true
+            fi
+          else
+            echo "Previous version not found, only updating Unreleased link"
+            sed -i "s|\[unreleased\]: https://github.com/sukitsubaki/pixTrail/compare/[0-9]\+\.[0-9]\+\.[0-9]\+\.\.\.HEAD|\[unreleased\]: https://github.com/sukitsubaki/pixTrail/compare/$LATEST_VERSION...HEAD|" CHANGELOG.md
             UPDATED=true
           fi
           
@@ -98,5 +123,5 @@ jobs:
           echo "Current branch: $BRANCH_NAME"
           
           git add README.md setup.py pyproject.toml pixtrail/__init__.py CHANGELOG.md
-          git commit -m "automatic update on push (v${{ steps.extract.outputs.version }})"
+          git commit -m "automatic update on push (v${{ steps.extract.outputs.latest_version }})"
           git push origin $BRANCH_NAME
