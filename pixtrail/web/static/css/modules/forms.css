@@ -70,7 +70,7 @@ input[type="file"] {
 
 .selector-tab.active {
     font-weight: 600;
-    color: var(--primary-color);
+    color: white;
     border-bottom: 2px solid var(--primary-color);
     margin-bottom: -1px;
 }
