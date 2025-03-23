@@ -13,6 +13,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 * ...
 
+## [2.3.3] - 2025-03-24
+
+### Security
+* Fixed multiple path traversal vulnerabilities in file handling operations
+* Prevented information exposure through detailed exception messages
+* Added explicit permissions to GitHub workflows following principle of least privilege
+
+### Fixed
+* Secured file path handling in utils.py, web/routes.py, and gpx_generator.py
+* Improved error responses to prevent leaking sensitive information
+* Enhanced security of the web interface against potential directory traversal attacks
+* Validated and sanitized user inputs before using them in file operations
+* Implemented proper path normalization throughout the codebase
+
+### Technical
+* Added comprehensive input validation for user-provided paths
+* Implemented secure error handling with appropriate logging
+* Added path traversal prevention for nested directory structures
+* Enhanced exception handling with user-friendly error messages
+
 ## [2.3.2] - 2025-03-23
 
 ### Changed
@@ -246,6 +266,7 @@ Initial stable release of PixTrail with the following features:
 * Command-line skeleton
 
 [unreleased]: https://github.com/sukitsubaki/pixTrail/compare/2.3.0...HEAD
+[2.3.2]: https://github.com/sukitsubaki/pixTrail/compare/2.3.2...2.3.3
 [2.3.2]: https://github.com/sukitsubaki/pixTrail/compare/2.3.1...2.3.2
 [2.3.1]: https://github.com/sukitsubaki/pixTrail/compare/2.3.0...2.3.1
 [2.3.0]: https://github.com/sukitsubaki/pixTrail/compare/2.2.0...2.3.0
