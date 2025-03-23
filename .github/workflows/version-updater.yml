@@ -77,6 +77,13 @@ jobs:
             fi
           fi
           
+          # Update the Unreleased link in CHANGELOG.md
+          if grep -q '\[unreleased\]: https://github.com/sukitsubaki/pixTrail/compare/[0-9]\+\.[0-9]\+\.[0-9]\+\.\.\.HEAD' CHANGELOG.md; then
+            echo "Updating Unreleased link in CHANGELOG.md"
+            sed -i "s|\[unreleased\]: https://github.com/sukitsubaki/pixTrail/compare/[0-9]\+\.[0-9]\+\.[0-9]\+\.\.\.HEAD|\[unreleased\]: https://github.com/sukitsubaki/pixTrail/compare/$VERSION...HEAD|" CHANGELOG.md
+            UPDATED=true
+          fi
+          
           # Set output variables
           echo "updated=$UPDATED" >> $GITHUB_OUTPUT
 
@@ -86,9 +93,10 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
+          # Make sure we're on the correct branch
           BRANCH_NAME=$(git symbolic-ref --short HEAD || echo "main")
           echo "Current branch: $BRANCH_NAME"
           
-          git add README.md setup.py pyproject.toml pixtrail/__init__.py
+          git add README.md setup.py pyproject.toml pixtrail/__init__.py CHANGELOG.md
           git commit -m "automatic update on push (v${{ steps.extract.outputs.version }})"
           git push origin $BRANCH_NAME
