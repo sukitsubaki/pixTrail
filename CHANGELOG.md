@@ -108,12 +108,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * Default filename changed from `track.gpx` to `PixTrail.gpx` when no explicit name can be derived
 
-## [1.1.1] - 2025-03-19
+## 1.1.1 - 2025-03-19
 
 ### Fixed
 * Removed redundant "GPX file created successfully" message appearing twice in terminal output
 
-## [1.1.0] - 2025-03-19
+## 1.1.0 - 2025-03-19
 
 ### Added
 * Support for various RAW formats (CR2, NEF, ARW, DNG, ORF, RW2, PEF, SRW)
@@ -128,7 +128,7 @@ Initial stable release of PixTrail with the following features:
 * Support for common image formats (JPG, PNG, TIFF)
 * Command-line interface for easy integration
 
-## [0.9.0] - 2025-03-12
+## 0.9.0 - 2025-03-12
 
 ### Added
 * Release candidate with final polishing
@@ -143,7 +143,7 @@ Initial stable release of PixTrail with the following features:
 * Final bug fixes before stable release
 * Edge cases in GPS data interpretation
 
-## [0.7.0] - 2025-03-01
+## 0.7.0 - 2025-03-01
 
 ### Added
 * Beta release with feature-complete implementation
@@ -158,7 +158,7 @@ Initial stable release of PixTrail with the following features:
 * Timestamp parsing for various camera models
 * Path handling on different operating systems
 
-## [0.5.0] - 2025-02-20
+## 0.5.0 - 2025-02-20
 
 ### Added
 * Alpha release with expanded API for developer integration
@@ -169,7 +169,7 @@ Initial stable release of PixTrail with the following features:
 * Improved logging system with configurable verbosity
 * Enhanced error messages with solution suggestions
 
-## [0.4.0] - 2025-02-12
+## 0.4.0 - 2025-02-12
 
 ### Added
 * Comprehensive test suite
@@ -180,7 +180,7 @@ Initial stable release of PixTrail with the following features:
 * Refactored core processing module for better maintainability
 * Optimized memory usage for large directories
 
-## [0.3.0] - 2025-02-01
+## 0.3.0 - 2025-02-01
 
 ### Added
 * Recursive directory scanning option
@@ -191,7 +191,7 @@ Initial stable release of PixTrail with the following features:
 * GPS coordinates parsing issues with certain camera models
 * UTC time zone handling in timestamp processing
 
-## [0.2.0] - 2025-01-27
+## 0.2.0 - 2025-01-27
 
 ### Added
 * Command-line interface with basic options
@@ -201,14 +201,14 @@ Initial stable release of PixTrail with the following features:
 * Improved EXIF data extraction performance
 * Better handling of files without GPS data
 
-## [0.1.0] - 2025-01-20
+## 0.1.0 - 2025-01-20
 
 ### Added
 * Initial experimental version
 * Basic EXIF data extraction
 * Simple GPX file generation
 
-## [0.0.1] - 2025-01-04
+## 0.0.1 - 2025-01-04
 
 ### Added
 * Proof of concept
@@ -223,6 +223,4 @@ Initial stable release of PixTrail with the following features:
 [2.0.0]: https://github.com/sukitsubaki/pixTrail/compare/1.3.0...2.0.0
 [1.3.0]: https://github.com/sukitsubaki/pixTrail/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/sukitsubaki/pixTrail/compare/1.1.1...1.2.0
-[1.1.1]: https://github.com/sukitsubaki/pixTrail/compare/1.1.0...1.1.1
-[1.1.0]: https://github.com/sukitsubaki/pixTrail/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/sukitsubaki/pixTrail/releases/tag/1.0.0
