@@ -2,6 +2,11 @@
 
 All notable changes to the PixTrail project will be documented in this file.
 
+## [1.1.0] - 2025-03-19
+
+### New Features
+* **Added RAW file support**: Now supporting various RAW formats (CR2, NEF, ARW, DNG, ORF, RW2, PEF, SRW)
+
 ## [1.0.0] - 2025-03-19 - Initial Release
 
 PixTrail is a Python-based tool that extracts GPS data from photo EXIF metadata and generates GPX files for mapping and route visualization.
