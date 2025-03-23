@@ -53,9 +53,43 @@ sukitsubaki/pixTrail/
 │       ├── server.py
 │       ├── static/
 │       │   ├── css/
-│       │   │   └── style.css
+│       │   │   ├── main.css
+│       │   │   ├── base/
+│       │   │   │   ├── reset.css
+│       │   │   │   ├── typography.css
+│       │   │   │   └── variables.css
+│       │   │   ├── layouts/
+│       │   │   │   ├── container.css
+│       │   │   │   └── grid.css
+│       │   │   └── modules/
+│       │   │       ├── buttons.css
+│       │   │       ├── dropdown.css
+│       │   │       ├── footer.css
+│       │   │       ├── forms.css
+│       │   │       ├── header.css
+│       │   │       ├── map-section.css
+│       │   │       ├── photo-section.css
+│       │   │       ├── statistics-section.css
+│       │   │       ├── status-messages.css
+│       │   │       └── utilities.css
 │       │   └── js/
-│       │       └── main.js
+│       │       ├── main.js
+│       │       ├── api/
+│       │       │   └── apiClient.js
+│       │       ├── modules/
+│       │       │   ├── charts.js
+│       │       │   ├── clustering.js
+│       │       │   ├── dragAndDrop.js
+│       │       │   ├── exifReader.js
+│       │       │   ├── fileUpload.js
+│       │       │   ├── heatmap.js
+│       │       │   ├── mapVisualization.js
+│       │       │   └── statistics.js
+│       │       └── utils/
+│       │           ├── domHelpers.js
+│       │           ├── fileUtils.js
+│       │           ├── gpsUtils.js
+│       │           └── uiUtils.js
 │       └── templates/
 │           └── index.html
 └── tests/
