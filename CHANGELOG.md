@@ -2,6 +2,34 @@
 
 All notable changes to the PixTrail project will be documented in this file.
 
+## [2.2.0] - 2025-03-22
+
+### New Features
+#### Hybrid Image Processing (Web Interface)
+* **New 2-way processing**: JPEG/TIFF files are now processed directly in the browser, while RAW/PNG files are processed on the server
+* **Complete format support**: Supports all common image formats, including JPEG, PNG, TIFF, and various RAW formats (CR2, NEF, ARW, ORF, RW2, PEF, SRW, DNG)
+* **Faster processing**: Client-side extraction of EXIF data for compatible formats significantly reduces processing time
+
+#### Optimized Resource Usage (Web Interface)
+* **Automatic cleanup**: Temporary image files are automatically deleted after GPS data extraction
+* **Reduced disk usage**: Only GPX files are stored, dramatically reducing the storage requirements
+* **Relocated cache**: Cache directory moved to `__pixtrail-cache__` within the project directory
+
+#### Improved User Interface (Web Interface)
+* **Better error messages**: More detailed and informative error messages
+* **Optimized message placement**: Status messages now appear directly below action buttons for better visibility
+* **Enhanced upload capabilities**: Increased maximum upload size limit
+
+### Technical Improvements (Web Interface)
+* Implemented EXIF.js for client-side metadata extraction
+* Added robust error handling throughout the application
+* Optimized server-side file processing
+
+### Bug Fixes
+* Web interface: Fixed processing errors for large file uploads
+* Web interface: Improved handling of missing GPS data in images
+* Web interface: Fixed memory usage issues with large image collections
+
 ## [2.1.0] - 2025-03-22
 
 ### New Features
