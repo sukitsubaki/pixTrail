@@ -9,8 +9,6 @@ sukitsubaki/pixTrail/
 ├── requirements.txt
 ├── setup.py
 ├── assets/
-│   ├── shimizu-yuki.jpg
-│   ├── tanaka-keisuke.jpg
 │   └── tsubaki-suki.jpg
 ├── docs/
 │   ├── architecture.md
@@ -30,7 +28,9 @@ sukitsubaki/pixTrail/
 │   │   ├── index.md
 │   │   └── utils.md
 │   ├── assets/
-│   │   └── pixtrail-web-interface.png
+│   │   ├── pixtrail-web-interface.png
+│   │   ├── shimizu-yuki.jpg
+│   │   └── tanaka-keisuke.jpg
 │   ├── development/
 │   │   ├── css-architecture.md
 │   │   ├── index.md
