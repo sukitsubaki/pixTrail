@@ -2,307 +2,263 @@
 
 This guide provides solutions to common issues you might encounter when using PixTrail.
 
-## Application Issues
+## Installation Issues
 
-### Application Won't Start
+### Package Not Found
 
-If the application doesn't start or load properly:
+If you receive `No matching distribution found for pixtrail`:
 
-1. **Check Console Errors**: Open browser developer tools (F12 or Ctrl+Shift+I) and check the console for error messages
-2. **Check Network Requests**: In the Network tab, look for failed resource requests
-3. **Clear Browser Cache**: Try clearing your browser cache and reloading
-4. **Try Another Browser**: Test in a different browser to isolate browser-specific issues
+- Check your internet connection
+- Verify you have a compatible Python version (3.6+)
+- Try updating pip: `pip install --upgrade pip`
+- If behind a proxy, configure pip to use it: `pip install --proxy=http://user:password@proxyserver:port pixtrail`
 
-### Module Loading Errors
+### Dependency Installation Failures
 
-If you see errors related to module loading:
+If dependencies fail to install:
 
-```
-Uncaught SyntaxError: The requested module '/static/js/utils/domHelpers.js' does not provide an export named 'X'
-```
+- Install build dependencies: `pip install wheel setuptools`
+- For Windows users with C extension issues: `pip install pipwin && pipwin install pillow`
+- Try installing in a virtual environment to avoid system conflicts
+- If using Linux, install development packages: `sudo apt-get install python3-dev libjpeg-dev zlib1g-dev`
 
-1. **Check Import Statements**: Ensure that imports match exports in the module
-2. **Check File Paths**: Verify that file paths in import statements are correct
-3. **Check Module Type**: Ensure script tags have `type="module"` where needed
-4. **CORS Issues**: Local development may require a web server rather than opening files directly
+### Permission Errors
 
-## File Upload Issues
+If you get "Permission denied" errors during installation:
 
-### No Files Appear in Upload
+- Use `pip install --user pixtrail` to install in user space
+- Run the command prompt/terminal as administrator/root
+- Check folder permissions where Python packages are installed
 
-If no files appear after selecting them:
+## Command Line Issues
 
-1. **Check File Types**: Ensure you're selecting image files
-2. **Check File Size**: There may be size limits (check browser console for errors)
-3. **Check Input Permissions**: Some browsers restrict file access
-4. **Try Drag and Drop**: If the file browser dialog isn't working, try drag and drop instead
+### Command Not Found
 
-### Drag and Drop Not Working
+If `pixtrail` command is not found after installation:
 
-If drag and drop isn't working:
+- Ensure Python scripts directory is in your PATH
+- Try the full module path: `python -m pixtrail`
+- Reinstall with: `pip install --force-reinstall pixtrail`
+- For Windows users, check if `Scripts` directory is in PATH
 
-1. **Check Browser Support**: Ensure your browser supports the HTML5 Drag and Drop API
-2. **Check Event Handlers**: Open console and check if events are firing with:
-   ```javascript
-   document.getElementById('file-drop-area').addEventListener('dragover', e => {
-     console.log('Dragover event fired');
-   });
-   ```
-3. **Check CSS**: The drop area should be visible and have sufficient size
-4. **Try Files vs. Directories**: Some browsers handle file drops differently from directory drops
+### Invalid Syntax Errors
 
-### No GPS Data in Photos
+If you get Python syntax errors when running PixTrail:
 
-If the application processes photos but reports no GPS data:
+- Check that you're using Python 3.6 or newer
+- Verify that the command line arguments are correctly formatted
+- Avoid using quotes in paths with spaces; use single quotes if needed: `pixtrail -i '/path with spaces/'`
 
-1. **Check EXIF Data**: Verify that your photos actually contain GPS data
-   - You can use online EXIF viewers or tools like ExifTool
-2. **Check File Types**: Some file formats (like PNG) may not store GPS metadata
-3. **Check Privacy Settings**: Some applications and services strip location data
-4. **Try Different Photos**: Test with photos known to have GPS data
+### No GPS Data Found
 
-## Map Issues
+If PixTrail reports "No GPS data found in photos":
 
-### Map Not Displaying
+- Verify your photos actually contain GPS data using other software (like ExifTool)
+- Ensure you have permission to read the input directory
+- Check that the file formats are supported (.jpg, .jpeg, .tiff, .raw formats)
+- Try processing a single photo known to have GPS data: `pixtrail -i /path/to/single_photo.jpg -v`
 
-If the map doesn't appear:
+### Errors with RAW Files
 
-1. **Check Network Access**: The base map tiles require internet access
-2. **Check Console Errors**: Look for Leaflet-related errors
-3. **Check Container Size**: The map container must have a height
-4. **Check Map Initialization**: Verify the map is properly initialized
-   ```javascript
-   console.log(document.getElementById('map')._leaflet_id);
-   ```
+If RAW files aren't processed correctly:
 
-### Markers Not Appearing
+- Install additional dependencies: `pip install rawpy`
+- Check if your RAW format is supported (CR2, NEF, ARW, DNG, etc.)
+- Try converting RAW to JPEG first, then processing the JPEGs
+- Use verbose mode to see which files have issues: `pixtrail -i /path/to/photos -v`
 
-If markers don't appear on the map:
+## Web Interface Issues
 
-1. **Check Waypoint Data**: Verify that waypoints have valid coordinates
-   ```javascript
-   console.log(window.pixTrail.waypoints);
-   ```
-2. **Check Map Bounds**: Ensure the map is zoomed to include marker locations
-3. **Check Clustering**: If clustering is enabled, markers might be grouped
-4. **Check Z-Index**: Other elements might be overlaying the markers
+### Web Server Won't Start
 
-### Heatmap or Clustering Not Working
+If the web server fails to start:
 
-If heatmap or clustering features aren't working:
+- Check if another application is using port 5000
+- Try a different port: `pixtrail -w --port 8080`
+- Look for error messages in the terminal
+- Check if you have access rights to bind to the specified host
+- Install web dependencies if missing: `pip install pixtrail[web]`
 
-1. **Check Plugin Loading**: Verify that required Leaflet plugins are loaded
-   ```javascript
-   console.log(typeof L.heatLayer);  // For heatmap
-   console.log(typeof L.MarkerClusterGroup);  // For clustering
-   ```
-2. **Check Data Points**: Ensure there are enough data points for meaningful visualization
-3. **Check Control Initialization**: Verify that controls are properly initialized
-4. **Check Module Dependencies**: These features depend on the map and waypoints
+### Browser Doesn't Open Automatically
 
-## JavaScript Module Issues
+If the browser doesn't launch:
 
-### Module Not Found
+- Open your browser manually and navigate to `http://127.0.0.1:5000`
+- Try using the `--no-browser` flag and then open the URL manually
+- Check if you have a default browser set in your system
 
-If you get a "Module not found" error:
+### Directory Selection Not Working
 
-1. **Check File Path**: Verify the file exists at the specified path
-2. **Check Import Statement**: Ensure the import statement uses the correct path
-   ```javascript
-   // Correct absolute path from root
-   import Module from '/static/js/modules/module.js';
-   // Or correct relative path
-   import Module from '../modules/module.js';
-   ```
-3. **Check Web Server**: Modules require a proper web server, not file:// URLs
-4. **Check File Permissions**: Ensure the web server has permission to read the files
+If the directory selector doesn't work:
 
-### Undefined Module Properties
+- Try using the file upload option instead
+- Some browsers have limited directory access (especially on mobile)
+- Check if you're using a supported browser (Chrome/Firefox/Edge recommended)
+- Try dragging and dropping the directory onto the drop area
 
-If module properties are undefined:
+### Files Not Appearing in Upload
 
-1. **Check Module Initialization**: Ensure the module is properly initialized
-   ```javascript
-   console.log(module);  // Should be an instance, not a class definition
-   ```
-2. **Check Constructor Parameters**: Verify that required configuration is provided
-3. **Check Lifecycle Methods**: Some modules need explicit initialization
-4. **Check Dependency Initialization**: Dependencies should be initialized first
+If files don't appear after selection:
 
-### Feature Module Not Working
+- Check if you're selecting files with supported formats
+- Ensure files aren't too large for browser processing
+- Try dragging and dropping files directly
+- Clear your browser cache and try again
+- Use the Chrome or Firefox browser for best compatibility
 
-If a specific feature module isn't working:
+### Map Does Not Display
 
-1. **Check Module Dependencies**: Verify all dependencies are loaded
-2. **Check Initialization Order**: Modules should be initialized in the correct order
-3. **Check Configuration**: Verify that the module is properly configured
-4. **Check DOM Elements**: The module might depend on specific DOM elements
-5. **Isolate the Issue**: Try using the module in isolation
+If the map doesn't appear after processing:
 
-For example, to debug the Heatmap module:
+- Check your internet connection (needed for map tiles)
+- Look for JavaScript errors in the browser console (F12)
+- Verify that your files contain valid GPS coordinates
+- Try disabling browser extensions that might block content
 
-```javascript
-// Create a minimal configuration
-const minimalConfig = { 
-  map: window.pixTrail.mapVisualization.getMap(),
-  waypoints: window.pixTrail.waypoints
-};
+## GPS Data Issues
 
-// Test the module directly
-const testHeatmap = new Heatmap(minimalConfig);
-testHeatmap.show();
-```
+### Incorrect Coordinates
 
-## CSS Issues
+If your route appears in the wrong location:
 
-### Styles Not Applied
+- Check that your camera's date/time was correctly set when taking photos
+- Some cameras store coordinates in non-standard formats
+- Try using ExifTool to verify the coordinates are correct in the original files
+- Check if any software might have modified the EXIF data before processing
 
-If styles aren't being applied:
+### Missing Timestamps
 
-1. **Check CSS Loading**: Verify that CSS files are loaded
-   ```javascript
-   const styles = document.styleSheets;
-   for (let i = 0; i < styles.length; i++) {
-     console.log(styles[i].href);
-   }
-   ```
-2. **Check CSS Import Order**: CSS imports should be in the correct order
-3. **Check Selector Specificity**: More specific selectors might override your styles
-4. **Check for CSS Errors**: Syntax errors can break CSS parsing
+If your route has no chronological order:
 
-### Layout Issues
+- Ensure your camera records timestamps in EXIF data
+- Check if file modification dates can be used as a fallback
+- Verify that the time zone settings on your camera were correct
 
-If the layout doesn't look right:
+### Inconsistent GPS Data
 
-1. **Check Responsive Design**: Verify that elements adapt to different screen sizes
-2. **Check Container Sizes**: Elements might need explicit widths/heights
-3. **Check CSS Variables**: Ensure variables are defined and used correctly
-4. **Check Browser Compatibility**: Some CSS features aren't supported in all browsers
+If your route has strange jumps or inconsistencies:
 
-### Module Style Conflicts
+- Photos taken indoors or in "urban canyons" may have poor GPS accuracy
+- Some cameras only update GPS periodically to save battery
+- Try removing outliers manually before processing
+- Use clustering or heatmap visualization to identify problematic points
 
-If there are conflicts between CSS modules:
+## GPX File Issues
 
-1. **Check Selector Scope**: Selectors should be scoped to their components
-2. **Check CSS Variable Usage**: Use variables for consistent styling
-3. **Check Import Order**: Later imports can override earlier ones
-4. **Use More Specific Selectors**: Increase specificity to override conflicts
+### Empty GPX File
+
+If the generated GPX file is empty:
+
+- Ensure your photos contain GPS data
+- Check if you have write permissions for the output location
+- Try specifying a different output path: `pixtrail -i /path/to/photos -o /path/to/output.gpx`
+- Run with verbose mode to see what's happening: `pixtrail -i /path/to/photos -v`
+
+### GPX Import Problems
+
+If mapping software can't import the generated GPX file:
+
+- Verify the file was created successfully (should be non-zero size)
+- Check if the GPX format is compatible with your software
+- Try opening the file in a text editor to check for obvious errors
+- Different applications support different GPX features; try a simple viewer first
+
+### Missing Elevation Data
+
+If elevation data is missing in the GPX file:
+
+- Not all cameras record elevation data
+- Elevation data might be absent or inaccurate depending on the device
+- Some mapping software can add elevation data after import
+- Consider using a GPX editor to add elevation data from a DEM (Digital Elevation Model)
 
 ## Performance Issues
 
-### Slow Application Startup
+### Slow Processing
 
-If the application takes a long time to start:
+If processing is very slow:
 
-1. **Check Module Size**: Large modules take longer to load
-2. **Check Network Requests**: Slow responses can delay startup
-3. **Check Initialization Code**: Complex initialization can slow startup
-4. **Use Performance Profiling**: Browser developer tools include performance profiling
+- RAW files take much longer to process than JPEG
+- Processing many files at once requires more memory
+- Processing recursively through many subdirectories takes longer
+- For large collections, process in smaller batches
+- Use the command line interface for better performance with many files
 
-### Sluggish Map Performance
+### High Memory Usage
 
-If the map is slow or unresponsive:
+If PixTrail uses too much memory:
 
-1. **Check Marker Count**: Too many markers can slow performance
-   - Try enabling clustering for better performance
-2. **Check Map Tile Server**: The tile server might be slow
-3. **Check Event Handlers**: Too many event handlers can cause lag
-4. **Reduce Map Complexity**: Simplify map visualizations
+- Process fewer photos at once
+- Avoid recursive processing of large directory trees
+- Close other memory-intensive applications
+- For very large collections, use batch processing with smaller groups
 
-### Memory Usage Issues
+### Browser Performance Issues
 
-If the application uses too much memory:
+If the web interface is slow or unresponsive:
 
-1. **Check File Processing**: Large files consume more memory
-2. **Check for Memory Leaks**: Use the Memory tab in developer tools
-3. **Close Unused Resources**: Release resources when they're no longer needed
-4. **Limit Data Size**: Process smaller batches of data
-
-## Browser Compatibility Issues
-
-### Browser-Specific Problems
-
-If the application works in some browsers but not others:
-
-1. **Check Feature Support**: Use [caniuse.com](https://caniuse.com/) to check feature support
-2. **Check Console Errors**: Different browsers may show different errors
-3. **Test Across Browsers**: Test in Chrome, Firefox, Safari, and Edge
-4. **Use Polyfills**: Add polyfills for unsupported features
-
-### Mobile Browser Issues
-
-If the application doesn't work well on mobile:
-
-1. **Check Responsive Design**: Verify that the layout adapts to small screens
-2. **Check Touch Interactions**: Mobile uses touch instead of mouse events
-3. **Check File Access**: Mobile browsers have stricter file access limitations
-4. **Check Performance**: Mobile devices may have limited resources
-
-## Module Communication Issues
-
-In the modular architecture, issues can arise from module communication:
-
-1. **Check Module Dependencies**: Verify that dependent modules are initialized
-2. **Check Event Handling**: Events should be properly propagated between modules
-3. **Check Callback Functions**: Callbacks should be passed and called correctly
-4. **Check State Synchronization**: Modules should share state appropriately
-
-For example, if the heatmap isn't updating with new waypoints:
-
-```javascript
-// Check if waypoints are being passed to the heatmap module
-console.log('Waypoints:', window.pixTrail.waypoints);
-console.log('Heatmap waypoints:', window.pixTrail.heatmap.waypoints);
-
-// Manually update the heatmap
-window.pixTrail.heatmap.setWaypoints(window.pixTrail.waypoints);
-window.pixTrail.heatmap.show();
-```
+- Enable clustering when displaying many photo markers
+- Process fewer photos at a time
+- Try a different browser (Chrome often has the best performance)
+- Avoid having too many browser tabs or applications open simultaneously
 
 ## Advanced Troubleshooting
 
-### Debugging Module Interactions
+### Debugging with Verbose Mode
 
-For complex issues involving multiple modules:
+For detailed information about what's happening:
 
-1. **Use Breakpoints**: Set breakpoints in key methods to trace execution
-2. **Log Module State**: Log the state of modules at different points
-3. **Isolate Components**: Test components in isolation
-4. **Check Event Flow**: Track events between modules
+```bash
+pixtrail -i /path/to/photos -v
+```
 
-### Fixing Module Import Issues
+The verbose output will show:
+- Which files are being processed
+- Whether EXIF data was found
+- GPS coordinates extracted
+- Any errors encountered
 
-If you encounter persistent module import issues:
+### Logging to a File
 
-1. **Use Absolute Paths**: Start paths from the web root
-   ```javascript
-   import Module from '/static/js/modules/module.js';
-   ```
-2. **Check Import/Export Match**: Ensure named imports match named exports
-3. **Use Default Exports**: Default exports can simplify imports
-4. **Check Browser Support**: Ensure your browser supports ES modules
+To save troubleshooting information to a file:
 
-### Resolving CSS Module Conflicts
+```bash
+pixtrail -i /path/to/photos -v > pixtrail_log.txt 2>&1
+```
 
-For CSS conflicts in the modular architecture:
+This captures both standard output and error messages for later analysis.
 
-1. **Use Namespaced Classes**: Prefix classes with module names
-   ```css
-   .map-section__control vs .heatmap__control
-   ```
-2. **Use CSS Variables**: Define and use variables consistently
-3. **Check Specificity**: More specific selectors take precedence
-4. **Check Import Order**: Later imports override earlier ones
+### Checking EXIF Data Manually
+
+To verify GPS data in your photos:
+
+```bash
+# Using exiftool (may need to be installed separately)
+exiftool -gps:all -time:all photo.jpg
+```
+
+### Running from Source
+
+For debugging or development:
+
+```bash
+git clone https://github.com/sukitsubaki/pixtrail.git
+cd pixtrail
+pip install -e .
+python -m pixtrail.cli -i /path/to/photos -v
+```
 
 ## Getting Additional Help
 
-If you're still having issues:
+If you're still experiencing issues:
 
-1. **Check Documentation**: Review the relevant documentation sections
-2. **Search Issues**: Check if others have reported similar issues
-3. **Provide Details**: When reporting issues, include:
-   - Browser and version
-   - Steps to reproduce
-   - Console errors
-   - Screenshots or recordings
-   - Code samples if applicable
+1. Check the [FAQ](faq.md) for common questions
+2. Search for similar issues in the GitHub repository
+3. Ensure you're using the latest version of PixTrail
+4. Provide detailed information when reporting issues:
+   - PixTrail version: `pixtrail --version`
+   - Python version: `python --version`
+   - Operating system details
+   - Complete error messages
+   - Steps to reproduce the problem
+   - Sample files (if possible)

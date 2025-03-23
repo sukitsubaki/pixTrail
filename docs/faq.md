@@ -38,7 +38,6 @@ PixTrail supports the following image formats:
 - JPEG/JPG (most common)
 - PNG (limited EXIF support)
 - TIFF
-- BMP
 - RAW formats:
   - CR2 (Canon)
   - NEF (Nikon)
@@ -56,7 +55,7 @@ Most modern smartphones automatically embed GPS coordinates when taking photos. 
 You can check if your photos have GPS data by:
 - Looking at the photo properties in your operating system's file explorer
 - Using photo management software like Adobe Lightroom, Apple Photos, or Google Photos
-- Using online EXIF viewers
+- Using online EXIF viewers or tools like ExifTool
 
 ### Can PixTrail process videos?
 
@@ -191,6 +190,14 @@ The accuracy depends on:
 
 PixTrail extracts the data exactly as recorded in your photos' metadata.
 
+### How are timestamps handled across time zones?
+
+PixTrail uses the original timestamps from the EXIF data, including time zone information if available. If no time zone is specified in the EXIF data, the local time zone of the computer running PixTrail is used.
+
+### Does PixTrail interpolate missing data points?
+
+No, PixTrail only uses the actual GPS data found in your photos. It doesn't estimate or interpolate coordinates for photos without GPS data or for gaps between photos.
+
 ## Troubleshooting
 
 ### PixTrail is not finding any GPS data in my photos
@@ -244,8 +251,31 @@ See the [Contributing Guidelines](contributing.md) for information on how to con
 
 ### Is there a roadmap for future development?
 
-Check the README file in the GitHub repository for the latest roadmap. Planned features include:
+Current planned features include:
 - Video file support
 - More advanced filtering options
 - Enhanced visualization tools
 - Mobile app support
+- Integration with online mapping services
+
+Check the README file in the GitHub repository for the latest roadmap.
+
+## Advanced Usage
+
+### Can I process photos without GPS data?
+
+Not directly with PixTrail. You would first need to geotag your photos using specialized software, and then process them with PixTrail.
+
+### Can I combine multiple GPX files?
+
+PixTrail doesn't have a built-in feature to merge GPX files, but you can:
+1. Use the web interface to visualize multiple GPX files by uploading them sequentially
+2. Use third-party GPX editing tools to merge files
+3. Write a custom script using the PixTrail Python API to combine data from multiple sources
+
+### Can I schedule automatic processing?
+
+Yes, you can set up scheduled tasks or cron jobs to run PixTrail commands automatically. For example:
+- Process photos every time you connect your camera
+- Monitor a directory for new photos and process them automatically
+- Create nightly batches of processed GPX files
