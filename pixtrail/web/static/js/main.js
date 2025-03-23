@@ -181,9 +181,30 @@ document.addEventListener('DOMContentLoaded', function () {
          */
         handleFileSelection: function(files) {
             if (files.length > 0) {
-                this.selectedFilesCount.textContent = `${files.length} file(s) selected`;
-                if (this.activeInput === 'file') {
-                    this.processButton.disabled = false;
+                // Count only image files
+                const imageFiles = Array.from(files).filter(file => 
+                    FileUtils.isImageFile(file)
+                );
+        
+                const totalFiles = files.length;
+                const imageCount = imageFiles.length;
+                const nonImageCount = totalFiles - imageCount;
+        
+                if (imageCount > 0) {
+                    if (nonImageCount > 0) {
+                        this.selectedFilesCount.textContent = `${imageCount} image file(s) selected (${nonImageCount} non-image files will be skipped)`;
+                    } else {
+                        this.selectedFilesCount.textContent = `${imageCount} image file(s) selected`;
+                    }
+            
+                    if (this.activeInput === 'file') {
+                        this.processButton.disabled = false;
+                    }
+                } else {
+                    this.selectedFilesCount.textContent = 'No valid image files selected';
+                    if (this.activeInput === 'file') {
+                        this.processButton.disabled = true;
+                    }
                 }
             } else {
                 this.selectedFilesCount.textContent = 'No files selected';
@@ -192,16 +213,37 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         },
-        
+
         /**
          * Handle directory selection
          * @param {FileList} files - Files in selected directory
          */
         handleDirectorySelection: function(files) {
             if (files.length > 0) {
-                this.selectedDirectory.textContent = `Directory with ${files.length} file(s) selected`;
-                if (this.activeInput === 'directory') {
-                    this.processButton.disabled = false;
+                // Count only image files
+                const imageFiles = Array.from(files).filter(file => 
+                    FileUtils.isImageFile(file)
+                );
+        
+                const totalFiles = files.length;
+                const imageCount = imageFiles.length;
+                const nonImageCount = totalFiles - imageCount;
+        
+                if (imageCount > 0) {
+                    if (nonImageCount > 0) {
+                        this.selectedDirectory.textContent = `Directory with ${imageCount} image file(s) selected (${nonImageCount} non-image files will be skipped)`;
+                    } else {
+                        this.selectedDirectory.textContent = `Directory with ${imageCount} image file(s) selected`;
+                    }
+            
+                    if (this.activeInput === 'directory') {
+                        this.processButton.disabled = false;
+                    }
+                } else {
+                    this.selectedDirectory.textContent = 'No valid image files in selected directory';
+                    if (this.activeInput === 'directory') {
+                        this.processButton.disabled = true;
+                    }
                 }
             } else {
                 this.selectedDirectory.textContent = 'No directory selected';
@@ -212,29 +254,29 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         
         /**
- * Handle file drop
- * @param {File[]} files - Dropped files
- */
-handleFileDrop: function(files) {
-    if (files && files.length > 0) {
-        try {
-            // Set the files to the photo input
-            this.photoInput.files = this.createFileList(files);
-            this.handleFileSelection(this.photoInput.files);
-            this.showStatusMessage(`${files.length} files dropped and ready to process`, 'info');
+         * Handle file drop
+         * @param {File[]} files - Dropped files
+         */
+        handleFileDrop: function(files) {
+            if (files && files.length > 0) {
+                try {
+                    // Set the files to the photo input
+                    this.photoInput.files = this.createFileList(files);
+                    this.handleFileSelection(this.photoInput.files);
+                    this.showStatusMessage(`${files.length} files dropped and ready to process`, 'info');
             
-            // Enable the process button
-            if (this.activeInput === 'file') {
-                this.processButton.disabled = false;
+                    // Enable the process button
+                    if (this.activeInput === 'file') {
+                        this.processButton.disabled = false;
+                    }
+                } catch (error) {
+                    console.error('Error handling dropped files:', error);
+                    this.showStatusMessage('Error handling dropped files. Please use the Select Photos button instead.', 'error');
+                }
+            } else {
+                this.showStatusMessage('No files found in the drop', 'error');
             }
-        } catch (error) {
-            console.error('Error handling dropped files:', error);
-            this.showStatusMessage('Error handling dropped files. Please use the Select Photos button instead.', 'error');
-        }
-    } else {
-        this.showStatusMessage('No files found in the drop', 'error');
-    }
-},
+        },
 
         /**
          * Handle directory drop
