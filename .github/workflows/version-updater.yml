@@ -1,0 +1,70 @@
+name: Update Version Numbers
+
+on:
+  push:
+    paths:
+      - 'README.md'
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Update version numbers
+        id: update
+        run: |
+          # Extract version from README.md
+          VERSION=$(grep -o 'version-[0-9]\+\.[0-9]\+\.[0-9]\+' README.md | cut -d'-' -f2)
+          echo "Extracted version: $VERSION"
+          
+          # Initialize update flag
+          UPDATED=false
+          
+          # Check if version needs updating in setup.py
+          if [ -f "setup.py" ]; then
+            SETUP_VERSION=$(grep -o 'version="[0-9]\+\.[0-9]\+\.[0-9]\+"' setup.py | cut -d'"' -f2)
+            if [ "$SETUP_VERSION" != "$VERSION" ]; then
+              echo "Updating version in setup.py from $SETUP_VERSION to $VERSION"
+              sed -i "s/version=\"[0-9]\+\.[0-9]\+\.[0-9]\+\"/version=\"$VERSION\"/" setup.py
+              UPDATED=true
+            fi
+          fi
+          
+          # Check if version needs updating in pyproject.toml
+          if [ -f "pyproject.toml" ]; then
+            PYPROJECT_VERSION=$(grep -o 'version = "[0-9]\+\.[0-9]\+\.[0-9]\+"' pyproject.toml | cut -d'"' -f2)
+            if [ "$PYPROJECT_VERSION" != "$VERSION" ]; then
+              echo "Updating version in pyproject.toml from $PYPROJECT_VERSION to $VERSION"
+              sed -i "s/version = \"[0-9]\+\.[0-9]\+\.[0-9]\+\"/version = \"$VERSION\"/" pyproject.toml
+              UPDATED=true
+            fi
+          fi
+          
+          # Check if version needs updating in pixtrail/__init__.py
+          if [ -f "pixtrail/__init__.py" ]; then
+            INIT_VERSION=$(grep -o '__version__ = "[0-9]\+\.[0-9]\+\.[0-9]\+"' pixtrail/__init__.py | cut -d'"' -f2)
+            if [ "$INIT_VERSION" != "$VERSION" ]; then
+              echo "Updating version in pixtrail/__init__.py from $INIT_VERSION to $VERSION"
+              sed -i "s/__version__ = \"[0-9]\+\.[0-9]\+\.[0-9]\+\"/__version__ = \"$VERSION\"/" pixtrail/__init__.py
+              UPDATED=true
+            fi
+          fi
+          
+          # Set output variables
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "updated=$UPDATED" >> $GITHUB_OUTPUT
+
+      - name: Commit and push changes
+        if: steps.update.outputs.updated == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add setup.py pyproject.toml pixtrail/__init__.py
+          git commit -m "automatic update on push (v${{ steps.update.outputs.version }})"
+          git push
