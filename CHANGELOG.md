@@ -1,3 +1,7 @@
+# Changelog
+
+All notable changes to the PixTrail project will be documented in this file.
+
 ## [1.0.0] - 2025-03-19 - Initial Release
 
 PixTrail is a Python-based tool that extracts GPS data from photo EXIF metadata and generates GPX files for mapping and route visualization.
