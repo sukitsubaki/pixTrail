@@ -1,5 +1,7 @@
 # Troubleshooting PixTrail
 
+This guide provides solutions to common issues you might encounter when using PixTrail.
+
 ## Installation Issues
 
 ### Package Not Found
