@@ -4,6 +4,7 @@ Thank you for your interest in contributing to PixTrail! This guide will help yo
 
 ## Table of Contents
 
+- [Team](#project-team-and-governance)
 - [Getting Started](#getting-started)
 - [Development Environment](#development-environment)
 - [Code Organization](#code-organization)
@@ -13,6 +14,38 @@ Thank you for your interest in contributing to PixTrail! This guide will help yo
 - [Documentation](#documentation)
 - [Pull Request Process](#pull-request-process)
 - [Issue Guidelines](#issue-guidelines)
+
+## Project Team & Governance
+
+PixTrail is developed and maintained by a small dedicated team:
+
+### Core Team
+
+| Name           | Role                                     | Responsibilities                                                 |
+|----------------|------------------------------------------|------------------------------------------------------------------|
+| Suki Tsubaki   | Founder & Lead Developer                 | Project direction, web interface design, core Python development |
+| Yuki Shimizu   | Documentation Specialist                 | Documentation, tutorials, user guides                            |
+| Keisuke Tanaka | Quality Assurance & JavaScript Developer | Code review, quality standards, JavaScript components            |
+
+### Team Responsibilities
+
+Our team members focus on specific areas of the project:
+
+- **Suki Tsubaki** initiated PixTrail and leads the development of both the web interface and the Python backend. She reviews pull requests related to core functionality and makes final decisions on feature implementations.
+
+- **Yuki Shimizu** oversees the documentation system and ensures that all features are properly documented. If you're contributing documentation improvements, Yuki will review your pull requests.
+
+- **Keisuke Tanaka** manages our quality assurance process and is responsible for the JavaScript components. He conducts final reviews before releases and maintains our testing framework.
+
+### Getting in Touch with the Team
+
+If you have specific questions for team members:
+
+- For questions about core functionality or project direction: Tag @sukitsubaki in GitHub issues
+- For documentation-related questions: Tag @radanana in GitHub issues
+- For quality assurance or JavaScript questions: Tag @neoneko87 in GitHub issues
+
+We encourage community contributions and are happy to provide guidance as you work on improvements to PixTrail.
 
 ## Getting Started
 
