@@ -24,10 +24,17 @@ This installs the core functionality, which includes:
 
 ## Installation with Web Interface
 
-For most users, we recommend installing PixTrail with the web interface:
+For most users, we recommend installing PixTrail with the web interface.
+
+For users of bash, PowerShell, or Command Prompt:
 
 ```bash
 pip install pixtrail[web]
+```
+
+For users of zsh (default shell on macOS):
+```zsh
+pip install "pixtrail[web]"
 ```
 
 This installs additional dependencies required for the browser-based interface:
@@ -41,12 +48,14 @@ If you plan to contribute to PixTrail or modify it, install the development depe
 
 ```bash
 pip install pixtrail[dev]
+# zsh: pip install "pixtrail[dev]"
 ```
 
 For all dependencies (web interface and development tools):
 
 ```bash
 pip install pixtrail[web,dev]
+# zsh: pip install "pixtrail[web,dev]"
 ```
 
 ## Installation from Source
@@ -84,7 +93,7 @@ The `-e` flag installs the package in "editable" mode, which is useful for devel
    ```
 2. Install PixTrail:
    ```
-   pip3 install pixtrail[web]
+   pip3 install "pixtrail[web]"
    ```
 3. Test the installation:
    ```
