@@ -2,6 +2,11 @@
 
 All notable changes to the PixTrail project will be documented in this file.
 
+## [1.3.0] - 2025-03-20
+
+### New Features
+* **Batch Processing**: Process multiple photo directories in a single command with the new batch processing feature. Perfect for photographers who want to generate GPX tracks for multiple events or trips at once.
+
 ## [1.2.0] - 2025-03-20
 
 ### New Features
