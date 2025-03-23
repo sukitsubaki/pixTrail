@@ -337,16 +337,17 @@ document.addEventListener('DOMContentLoaded', function () {
             this.sessionId = result.sessionId;
             this.gpxFilename = result.gpxFilename;
             this.waypoints = result.waypoints;
-            
+    
             // Update map
             this.mapVisualization.setWaypoints(this.waypoints);
-            
+    
             // Update heatmap module with new waypoints
             this.heatmap.setWaypoints(this.waypoints);
-            
-            // Update clustering module with map markers
+    
+            // Update clustering module with waypoints and map markers
+            this.clustering.setWaypoints(this.waypoints);
             this.clustering.setMarkers(this.mapVisualization.markers);
-            
+    
             // Update statistics
             this.statistics.setWaypoints(this.waypoints);
         },
