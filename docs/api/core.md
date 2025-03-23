@@ -1,14 +1,212 @@
 # PixTrail Core Modules
 
-This page documents the core modules that form the backbone of PixTrail. These modules implement the main features of the application.
+This page documents the core modules that form the backbone of PixTrail. These modules implement the main features of the application and provide the foundation for both the command-line interface and the web application.
 
-## API Client
+## Core Python Module
 
-`apiClient.js` handles all communication with the server.
+The `core.py` module contains the main functionality of PixTrail, providing a high-level interface for processing photos and generating GPX files.
+
+### PixTrail Class
+
+```python
+class PixTrail:
+    """Main class for processing photos and generating GPX files."""
+```
+
+#### Methods
+
+##### `process_directory(input_dir, recursive=False, min_photos=1, file_types=None, exclude_dirs=None, verbose=False)`
+
+```python
+def process_directory(self, input_dir, recursive=False, min_photos=1, file_types=None, exclude_dirs=None, verbose=False):
+    """
+    Process photos in a directory to extract GPS data.
+    
+    Args:
+        input_dir (str): Directory containing photos with GPS data
+        recursive (bool): Whether to search subdirectories recursively
+        min_photos (int): Minimum number of photos with GPS data required
+        file_types (list): List of file extensions to process (default: None = all supported)
+        exclude_dirs (list): List of directory names to exclude
+        verbose (bool): Whether to print detailed information
+        
+    Returns:
+        dict: Dictionary containing result information
+    """
+```
+
+Example:
+```python
+from pixtrail.core import PixTrail
+
+pt = PixTrail()
+result = pt.process_directory(
+    input_dir="/path/to/photos",
+    recursive=True,
+    file_types=[".jpg", ".jpeg", ".tiff"]
+)
+
+if result["success"]:
+    print(f"Processed {result['stats']['processed']} photos with GPS data")
+    print(f"Total photos scanned: {result['stats']['total']}")
+    
+    # Access the extracted GPS data
+    gps_data = result["gps_data"]
+```
+
+##### `generate_gpx(output_file=None, add_track=True, add_timestamps=True, add_elevations=True, creator=None)`
+
+```python
+def generate_gpx(self, output_file=None, add_track=True, add_timestamps=True, add_elevations=True, creator=None):
+    """
+    Generate a GPX file from previously processed GPS data.
+    
+    Args:
+        output_file (str): Path where GPX file will be saved (default: auto-named)
+        add_track (bool): Whether to add a track connecting waypoints
+        add_timestamps (bool): Whether to include timestamps
+        add_elevations (bool): Whether to include elevation data
+        creator (str): GPX creator tag (default: "PixTrail")
+        
+    Returns:
+        dict: Dictionary containing result information
+    """
+```
+
+Example:
+```python
+# After processing a directory
+result = pt.generate_gpx(
+    output_file="/path/to/output.gpx",
+    add_track=True,
+    creator="MyCustomApplication"
+)
+
+if result["success"]:
+    print(f"GPX file created at: {result['output_file']}")
+```
+
+##### `process_and_generate(input_dir, output_file=None, recursive=False, min_photos=1, file_types=None, exclude_dirs=None, add_track=True, add_timestamps=True, add_elevations=True, creator=None, verbose=False)`
+
+```python
+def process_and_generate(self, input_dir, output_file=None, recursive=False, min_photos=1, file_types=None, exclude_dirs=None, add_track=True, add_timestamps=True, add_elevations=True, creator=None, verbose=False):
+    """
+    Process photos and generate a GPX file in a single step.
+    
+    Args:
+        input_dir (str): Directory containing photos with GPS data
+        output_file (str): Path where GPX file will be saved (default: auto-named)
+        recursive (bool): Whether to search subdirectories recursively
+        min_photos (int): Minimum number of photos with GPS data required
+        file_types (list): List of file extensions to process
+        exclude_dirs (list): List of directory names to exclude
+        add_track (bool): Whether to add a track connecting waypoints
+        add_timestamps (bool): Whether to include timestamps
+        add_elevations (bool): Whether to include elevation data
+        creator (str): GPX creator tag (default: "PixTrail")
+        verbose (bool): Whether to print detailed information
+        
+    Returns:
+        dict: Dictionary containing result information
+    """
+```
+
+Example:
+```python
+from pixtrail.core import PixTrail
+
+pt = PixTrail()
+result = pt.process_and_generate(
+    input_dir="/path/to/photos",
+    output_file="/path/to/output.gpx",
+    recursive=True,
+    verbose=True
+)
+
+if result["success"]:
+    print(f"Successfully processed {result['stats']['processed']} photos")
+    print(f"GPX file created at: {result['output_file']}")
+else:
+    print(f"Failed: {result['message']}")
+```
+
+##### `batch_process(input_dirs, output_dir=None, recursive=False, min_photos=1, file_types=None, exclude_dirs=None, add_track=True, add_timestamps=True, add_elevations=True, creator=None, verbose=False)`
+
+```python
+def batch_process(self, input_dirs, output_dir=None, recursive=False, min_photos=1, file_types=None, exclude_dirs=None, add_track=True, add_timestamps=True, add_elevations=True, creator=None, verbose=False):
+    """
+    Process multiple directories in batch mode.
+    
+    Args:
+        input_dirs (list): List of directories to process
+        output_dir (str): Directory where GPX files will be saved (default: same as input)
+        recursive (bool): Whether to search subdirectories recursively
+        min_photos (int): Minimum number of photos with GPS data required
+        file_types (list): List of file extensions to process
+        exclude_dirs (list): List of directory names to exclude
+        add_track (bool): Whether to add a track connecting waypoints
+        add_timestamps (bool): Whether to include timestamps
+        add_elevations (bool): Whether to include elevation data
+        creator (str): GPX creator tag (default: "PixTrail")
+        verbose (bool): Whether to print detailed information
+        
+    Returns:
+        dict: Dictionary containing result information for each input directory
+    """
+```
+
+Example:
+```python
+from pixtrail.core import PixTrail
+
+pt = PixTrail()
+results = pt.batch_process(
+    input_dirs=["/path/to/trip1", "/path/to/trip2", "/path/to/trip3"],
+    output_dir="/path/to/gpx_files",
+    recursive=True
+)
+
+for dir_name, result in results.items():
+    if result["success"]:
+        print(f"{dir_name}: Success - {result['stats']['processed']} photos - {result['output_file']}")
+    else:
+        print(f"{dir_name}: Failed - {result['message']}")
+```
+
+### Return Value Format
+
+Most methods in the PixTrail class return a dictionary with the following structure:
+
+```python
+{
+    "success": bool,       # Whether the operation was successful
+    "message": str,        # Status message or error description
+    "stats": {
+        "processed": int,  # Number of photos with GPS data
+        "total": int,      # Total number of photos processed
+        "skipped": int     # Number of photos without GPS data
+    },
+    "gps_data": list,      # List of GPS data dictionaries
+    "output_file": str     # Path to the generated GPX file (if applicable)
+}
+```
+
+## JavaScript API Client
+
+The API Client handles all communication between the browser and the local server in the web interface.
+
+```javascript
+/**
+ * API Client for PixTrail web interface
+ */
+class APIClient {
+    // Methods for communicating with the server
+}
+```
 
 ### Methods
 
-#### Submit Photos
+#### `submitPhotos(formData, progressCallback)`
 
 ```javascript
 /**
@@ -17,18 +215,32 @@ This page documents the core modules that form the backbone of PixTrail. These m
  * @param {Function} progressCallback - Callback for upload progress
  * @returns {Promise<Object>} Promise resolving to the response data
  */
-APIClient.submitPhotos(formData, progressCallback)
-  .then(response => {
-    // Handle response
-  })
-  .catch(error => {
-    // Handle error
-  });
+static submitPhotos(formData, progressCallback) {
+    // Implementation
+}
 ```
 
-The response includes a `session_id` that is used for subsequent operations.
+Example:
+```javascript
+// Create form data with files
+const formData = new FormData();
+fileInput.files.forEach(file => formData.append('photos', file));
 
-#### Process Photos
+// Submit photos and track progress
+APIClient.submitPhotos(formData, (progress) => {
+  const percent = Math.round((progress.loaded / progress.total) * 100);
+  console.log(`Upload progress: ${percent}%`);
+})
+.then(response => {
+  console.log('Photos submitted successfully:', response);
+  return response.session_id;
+})
+.catch(error => {
+  console.error('Error submitting photos:', error);
+});
+```
+
+#### `processPhotos(sessionId)`
 
 ```javascript
 /**
@@ -36,13 +248,28 @@ The response includes a `session_id` that is used for subsequent operations.
  * @param {string} sessionId - Session ID from the submission
  * @returns {Promise<Object>} Promise resolving to the extracted GPS data
  */
-APIClient.processPhotos(sessionId)
+static processPhotos(sessionId) {
+    // Implementation
+}
+```
+
+Example:
+```javascript
+// After submitting photos
+APIClient.submitPhotos(formData, progressCallback)
+  .then(response => {
+    return APIClient.processPhotos(response.session_id);
+  })
   .then(data => {
-    // Handle GPS data
+    console.log('GPS data extracted:', data.waypoints);
+    // Use the waypoints data
+  })
+  .catch(error => {
+    console.error('Error processing photos:', error);
   });
 ```
 
-#### Create GPX File
+#### `createGPX(gpsData)`
 
 ```javascript
 /**
@@ -50,13 +277,27 @@ APIClient.processPhotos(sessionId)
  * @param {Array} gpsData - Array of GPS data points
  * @returns {Promise<Object>} Promise resolving to the creation result
  */
-APIClient.createGPX(gpsData)
+static createGPX(gpsData) {
+    // Implementation
+}
+```
+
+Example:
+```javascript
+// After processing photos
+APIClient.createGPX(waypoints)
   .then(result => {
-    // Handle GPX file result
+    console.log('GPX file created:', result);
+    if (result.success) {
+      window.location.href = APIClient.getDownloadUrl(result.session_id, result.filename);
+    }
+  })
+  .catch(error => {
+    console.error('Error creating GPX file:', error);
   });
 ```
 
-#### Download GPX File
+#### `downloadGPX(sessionId, filename)`
 
 ```javascript
 /**
@@ -64,10 +305,19 @@ APIClient.createGPX(gpsData)
  * @param {string} sessionId - Session ID
  * @param {string} filename - GPX filename
  */
-APIClient.downloadGPX(sessionId, filename);
+static downloadGPX(sessionId, filename) {
+    // Implementation
+}
 ```
 
-#### Get Download URL
+Example:
+```javascript
+document.getElementById('download-button').addEventListener('click', () => {
+  APIClient.downloadGPX(sessionId, 'track.gpx');
+});
+```
+
+#### `getDownloadUrl(sessionId, filename)`
 
 ```javascript
 /**
@@ -76,10 +326,18 @@ APIClient.downloadGPX(sessionId, filename);
  * @param {string} filename - GPX filename
  * @returns {string} Download URL
  */
-const url = APIClient.getDownloadUrl(sessionId, filename);
+static getDownloadUrl(sessionId, filename) {
+    // Implementation
+}
 ```
 
-#### Clean Up Session
+Example:
+```javascript
+const url = APIClient.getDownloadUrl(sessionId, 'track.gpx');
+console.log('Download URL:', url);
+```
+
+#### `cleanupSession(sessionId)`
 
 ```javascript
 /**
@@ -87,17 +345,43 @@ const url = APIClient.getDownloadUrl(sessionId, filename);
  * @param {string} sessionId - Session ID to clean up
  * @returns {Promise<Object>} Promise resolving to the cleanup result
  */
-APIClient.cleanupSession(sessionId)
-  .then(result => {
-    // Handle cleanup result
-  });
+static cleanupSession(sessionId) {
+    // Implementation
+}
+```
+
+Example:
+```javascript
+// Clean up when done
+window.addEventListener('beforeunload', () => {
+  if (sessionId) {
+    APIClient.cleanupSession(sessionId);
+  }
+});
 ```
 
 ## Map Visualization
 
-`mapVisualization.js` handles the display of maps and routes.
+The `mapVisualization.js` module handles the display of maps and routes.
 
-### Constructor
+```javascript
+/**
+ * Map visualization module for PixTrail
+ */
+class MapVisualization {
+    /**
+     * Initialize map visualization
+     * @param {Object} config - Configuration options
+     */
+    constructor(config) {
+        // Implementation
+    }
+    
+    // Methods for map handling
+}
+```
+
+### Constructor Options
 
 ```javascript
 /**
@@ -118,64 +402,112 @@ const mapViz = new MapVisualization({
 
 ### Methods
 
-#### Initialize Map
+#### `initMap()`
 
 ```javascript
 /**
  * Initialize the map and base layer
  * @returns {Object} Leaflet map instance
  */
-const map = mapViz.initMap();
+initMap() {
+    // Implementation
+}
 ```
 
-#### Show Map Container
+#### `showMapContainer()`
 
 ```javascript
 /**
  * Show the map container if it's hidden
  */
-mapViz.showMapContainer();
+showMapContainer() {
+    // Implementation
+}
 ```
 
-#### Set Waypoints
+#### `setWaypoints(waypoints)`
 
 ```javascript
 /**
  * Set waypoints and display them on the map
  * @param {Array} waypoints - Array of waypoint objects
  */
-mapViz.setWaypoints(waypoints);
+setWaypoints(waypoints) {
+    // Implementation
+}
 ```
 
-#### Show Waypoints
+Example:
+```javascript
+// After processing photos
+mapViz.setWaypoints(data.waypoints);
+```
+
+#### `showWaypoints()`
 
 ```javascript
 /**
  * Display waypoints on the map
  */
-mapViz.showWaypoints();
+showWaypoints() {
+    // Implementation
+}
 ```
 
-#### Clear Map Layers
+#### `clearMapLayers()`
 
 ```javascript
 /**
  * Clear all map layers (markers and route)
  */
-mapViz.clearMapLayers();
+clearMapLayers() {
+    // Implementation
+}
 ```
 
-#### Get Map Instance
+#### `getMap()`
 
 ```javascript
 /**
  * Get the map instance
  * @returns {Object} Leaflet map instance
  */
-const map = mapViz.getMap();
+getMap() {
+    // Implementation
+}
 ```
 
-#### Add Control
+#### `showHeatmap()` / `hideHeatmap()`
+
+```javascript
+/**
+ * Show/hide the heat map visualization
+ */
+showHeatmap() {
+    // Implementation
+}
+
+hideHeatmap() {
+    // Implementation
+}
+```
+
+#### `enableClustering()` / `disableClustering()`
+
+```javascript
+/**
+ * Enable/disable marker clustering
+ */
+enableClustering() {
+    // Implementation
+}
+
+disableClustering() {
+    // Implementation
+}
+```
+
+#### `addControl()`
 
 ```javascript
 /**
@@ -184,10 +516,12 @@ const map = mapViz.getMap();
  * @param {string} [position='topright'] - Control position
  * @returns {Object} The added control
  */
-const control = mapViz.addControl(customControl, 'bottomleft');
+addControl(control, position) {
+    // Implementation
+}
 ```
 
-#### Add Button Control
+#### `addButtonControl()`
 
 ```javascript
 /**
@@ -198,24 +532,33 @@ const control = mapViz.addControl(customControl, 'bottomleft');
  * @param {string} [title=''] - Button title attribute
  * @returns {Object} The created control
  */
-const button = mapViz.addButtonControl('<i class="icon"></i>', handleClick, 'topleft', 'Toggle Layer');
-```
-
-#### Convert to GeoJSON
-
-```javascript
-/**
- * Create a GeoJSON representation of the current route
- * @returns {Object} GeoJSON object
- */
-const geoJson = mapViz.toGeoJSON();
+addButtonControl(html, onClick, position, title) {
+    // Implementation
+}
 ```
 
 ## File Upload
 
-`fileUpload.js` manages file selection, validation, and uploading.
+The `fileUpload.js` module manages file selection, validation, and uploading.
 
-### Constructor
+```javascript
+/**
+ * File upload module for PixTrail
+ */
+class FileUpload {
+    /**
+     * Initialize file upload functionality
+     * @param {Object} config - Configuration options
+     */
+    constructor(config) {
+        // Implementation
+    }
+    
+    // Methods for file upload handling
+}
+```
+
+### Constructor Options
 
 ```javascript
 /**
@@ -254,44 +597,45 @@ const fileUpload = new FileUpload({
 
 ### Methods
 
-#### Set Active Input
+#### `setActiveInput(inputType)`
 
 ```javascript
 /**
  * Set active input type
  * @param {string} inputType - 'file' or 'directory'
  */
-fileUpload.setActiveInput('directory');
+setActiveInput(inputType) {
+    // Implementation
+}
 ```
 
-#### Update Submit Button State
+#### `updateSubmitButtonState()`
 
 ```javascript
 /**
  * Update submit button state based on form validity
  */
-fileUpload.updateSubmitButtonState();
+updateSubmitButtonState() {
+    // Implementation
+}
 ```
 
-#### Show Progress
+#### `showProgress()` / `hideProgress()`
 
 ```javascript
 /**
- * Show progress container and reset progress bar
+ * Show/hide progress container
  */
-fileUpload.showProgress();
+showProgress() {
+    // Implementation
+}
+
+hideProgress() {
+    // Implementation
+}
 ```
 
-#### Hide Progress
-
-```javascript
-/**
- * Hide progress container
- */
-fileUpload.hideProgress();
-```
-
-#### Update Progress
+#### `updateProgress(current, total, message)`
 
 ```javascript
 /**
@@ -300,10 +644,12 @@ fileUpload.hideProgress();
  * @param {number} total - Total progress value
  * @param {string} [message] - Optional message to display
  */
-fileUpload.updateProgress(50, 100, 'Processing files...');
+updateProgress(current, total, message) {
+    // Implementation
+}
 ```
 
-#### Show Status Message
+#### `showStatusMessage(message, type, timeout)`
 
 ```javascript
 /**
@@ -312,16 +658,27 @@ fileUpload.updateProgress(50, 100, 'Processing files...');
  * @param {string} [type='info'] - Message type: 'success', 'error', 'warning', 'info'
  * @param {number} [timeout=10000] - Auto-removal timeout in ms (0 to disable)
  */
-fileUpload.showStatusMessage('Files uploaded successfully', 'success');
+showStatusMessage(message, type, timeout) {
+    // Implementation
+}
 ```
 
 ## EXIF Reader
 
-`exifReader.js` extracts GPS and other metadata from image files.
+The `exifReader.js` extracts GPS and other metadata from image files directly in the browser.
+
+```javascript
+/**
+ * EXIF Reader module for PixTrail
+ */
+class ExifReader {
+    // Methods for EXIF data extraction
+}
+```
 
 ### Methods
 
-#### Extract GPS Data From Images
+#### `extractGpsDataFromImages(files, progressCallback)`
 
 ```javascript
 /**
@@ -330,16 +687,28 @@ fileUpload.showStatusMessage('Files uploaded successfully', 'success');
  * @param {Function} progressCallback - Callback for processing progress updates
  * @returns {Promise<Array>} Promise resolving to extracted GPS data
  */
-ExifReader.extractGpsDataFromImages(files, (current, total) => {
+static extractGpsDataFromImages(files, progressCallback) {
+    // Implementation
+}
+```
+
+Example:
+```javascript
+// Extract GPS data from files in the browser
+ExifReader.extractGpsDataFromImages(fileInput.files, (current, total) => {
   const percent = Math.round((current / total) * 100);
   console.log(`Processing: ${percent}%`);
 })
 .then(gpsData => {
-  // Use extracted GPS data
+  console.log('Extracted GPS data:', gpsData);
+  // Use the extracted GPS data
+})
+.catch(error => {
+  console.error('Error extracting GPS data:', error);
 });
 ```
 
-#### Extract GPS From EXIF
+#### `extractGpsFromExif(tags, file)`
 
 ```javascript
 /**
@@ -348,21 +717,33 @@ ExifReader.extractGpsDataFromImages(files, (current, total) => {
  * @param {File} file - Original file
  * @returns {Object|null} Extracted GPS data or null if not available
  */
-const gpsData = ExifReader.extractGpsFromExif(exifTags, file);
+static extractGpsFromExif(exifTags, file) {
+    // Implementation
+}
 ```
-
-The GPS data object includes:
-- `name`: File name
-- `latitude`: Decimal latitude
-- `longitude`: Decimal longitude
-- `altitude`: Elevation in meters
-- `timestamp`: ISO timestamp
 
 ## Statistics
 
-`statistics.js` handles route statistics calculation and visualization.
+The `statistics.js` module handles route statistics calculation and visualization.
 
-### Constructor
+```javascript
+/**
+ * Statistics module for PixTrail
+ */
+class Statistics {
+    /**
+     * Initialize statistics functionality
+     * @param {Object} config - Configuration options
+     */
+    constructor(config) {
+        // Implementation
+    }
+    
+    // Methods for statistics handling
+}
+```
+
+### Constructor Options
 
 ```javascript
 /**
@@ -389,87 +770,116 @@ const statistics = new Statistics({
 
 ### Methods
 
-#### Set Waypoints
+#### `setWaypoints(waypoints)`
 
 ```javascript
 /**
  * Set waypoints data and calculate statistics
  * @param {Array} waypoints - Array of waypoint objects
  */
-statistics.setWaypoints(waypoints);
+setWaypoints(waypoints) {
+    // Implementation
+}
 ```
 
-#### Calculate Statistics
+#### `calculateStatistics()`
 
 ```javascript
 /**
  * Calculate statistics from waypoints
  */
-statistics.calculateStatistics();
+calculateStatistics() {
+    // Implementation
+}
 ```
 
-#### Toggle, Show, Hide
+#### `toggle()` / `show()` / `hide()`
 
 ```javascript
 /**
- * Toggle statistics panel visibility
+ * Toggle, show, or hide statistics panel
  */
-statistics.toggle();
+toggle() {
+    // Implementation
+}
 
-/**
- * Show statistics panel
- */
-statistics.show();
+show() {
+    // Implementation
+}
 
-/**
- * Hide statistics panel
- */
-statistics.hide();
+hide() {
+    // Implementation
+}
 ```
 
-#### Update Display
+#### `updateDisplay()`
 
 ```javascript
 /**
  * Update statistics display
  */
-statistics.updateDisplay();
+updateDisplay() {
+    // Implementation
+}
 ```
 
-#### Update Charts
+#### `updateCharts()`
 
 ```javascript
 /**
  * Update charts with current statistics data
  */
-statistics.updateCharts();
+updateCharts() {
+    // Implementation
+}
 ```
 
-#### Get Statistics
+#### `getStatistics()`
 
 ```javascript
 /**
  * Get the current route statistics object
  * @returns {Object} Statistics object
  */
-const stats = statistics.getStatistics();
+getStatistics() {
+    // Implementation
+}
 ```
 
-#### Export Report
+#### `exportReport()`
 
 ```javascript
 /**
  * Export statistics as a formatted text report
  * @returns {string} Report text
  */
-const report = statistics.exportReport();
+exportReport() {
+    // Implementation
+}
 ```
 
 ## Heatmap
 
-`heatmap.js` provides heat map visualization on the map.
+The `heatmap.js` provides heat map visualization on the map.
 
-### Constructor
+```javascript
+/**
+ * Heatmap module for PixTrail
+ */
+class Heatmap {
+    /**
+     * Initialize heatmap functionality
+     * @param {Object} config - Configuration options
+     */
+    constructor(config) {
+        // Implementation
+    }
+    
+    // Methods for heatmap handling
+}
+```
+
+### Constructor Options
 
 ```javascript
 /**
@@ -492,53 +902,71 @@ const heatmap = new Heatmap({
 
 ### Methods
 
-#### Set Waypoints
+#### `setWaypoints(waypoints)`
 
 ```javascript
 /**
  * Set waypoints data
  * @param {Array} waypoints - Array of waypoint objects
  */
-heatmap.setWaypoints(waypoints);
+setWaypoints(waypoints) {
+    // Implementation
+}
 ```
 
-#### Toggle, Show, Hide
+#### `toggle()` / `show()` / `hide()`
 
 ```javascript
 /**
- * Toggle heatmap visibility
+ * Toggle, show, or hide heatmap
  */
-heatmap.toggle();
+toggle() {
+    // Implementation
+}
 
-/**
- * Show heatmap
- */
-heatmap.show();
+show() {
+    // Implementation
+}
 
-/**
- * Hide heatmap
- */
-heatmap.hide();
+hide() {
+    // Implementation
+}
 ```
 
-#### Update Options
+#### `updateOptions(options)`
 
 ```javascript
 /**
  * Update heatmap options
  * @param {Object} options - New options to apply
  */
-heatmap.updateOptions({
-  radius: 35,
-  blur: 20
-});
+updateOptions(options) {
+    // Implementation
+}
 ```
 
 ## Marker Clustering
 
-`clustering.js` provides marker clustering functionality.
+The `clustering.js` provides marker clustering functionality.
 
-### Constructor
+```javascript
+/**
+ * Marker clustering module for PixTrail
+ */
+class MarkerClustering {
+    /**
+     * Initialize marker clustering functionality
+     * @param {Object} config - Configuration options
+     */
+    constructor(config) {
+        // Implementation
+    }
+    
+    // Methods for clustering handling
+}
+```
+
+### Constructor Options
 
 ```javascript
 /**
@@ -563,54 +991,62 @@ const clustering = new MarkerClustering({
 
 ### Methods
 
-#### Set Waypoints/Markers
+#### `setWaypoints(waypoints)` / `setMarkers(markers)`
 
 ```javascript
 /**
  * Set waypoints data
  * @param {Array} waypoints - Array of waypoint objects
  */
-clustering.setWaypoints(waypoints);
+setWaypoints(waypoints) {
+    // Implementation
+}
 
 /**
  * Set individual markers that will be clustered
  * @param {Array} markers - Array of Leaflet marker objects
  */
-clustering.setMarkers(markers);
+setMarkers(markers) {
+    // Implementation
+}
 ```
 
-#### Toggle, Enable, Disable
+#### `toggle()` / `enable()` / `disable()`
 
 ```javascript
 /**
- * Toggle clustering on/off
+ * Toggle, enable, or disable clustering
  */
-clustering.toggle();
+toggle() {
+    // Implementation
+}
 
-/**
- * Enable clustering
- */
-clustering.enable();
+enable() {
+    // Implementation
+}
 
-/**
- * Disable clustering
- */
-clustering.disable();
+disable() {
+    // Implementation
+}
 ```
 
-#### Radius Control
+#### `updateClusterRadius()` / `setRadius(radius)`
 
 ```javascript
 /**
  * Update cluster radius
  */
-clustering.updateClusterRadius();
+updateClusterRadius() {
+    // Implementation
+}
 
 /**
  * Set cluster radius
  * @param {number} radius - New radius in pixels
  */
-clustering.setRadius(100);
+setRadius(radius) {
+    // Implementation
+}
 ```
 
 ## Integration Example
@@ -640,26 +1076,48 @@ const fileUpload = new FileUpload({
     heatmap.setWaypoints(result.waypoints);
     clustering.setMarkers(mapViz.markers);
     statistics.setWaypoints(result.waypoints);
+    
+    // Show UI elements
+    mapViz.showMapContainer();
+    document.getElementById('map-controls').classList.remove('hidden');
   }
 });
 
-// Add toggle button for heatmap
-mapViz.addButtonControl(
-  'Toggle Heatmap',
-  () => heatmap.toggle(),
-  'topright',
-  'Toggle heatmap visualization'
-);
+// Add toggle buttons for features
+document.getElementById('toggle-heatmap').addEventListener('click', () => {
+  heatmap.toggle();
+});
+
+document.getElementById('toggle-clustering').addEventListener('click', () => {
+  clustering.toggle();
+});
+
+document.getElementById('toggle-statistics').addEventListener('click', () => {
+  statistics.toggle();
+});
+
+document.getElementById('download-gpx').addEventListener('click', () => {
+  const gpsData = mapViz.getWaypoints();
+  if (gpsData.length > 0) {
+    APIClient.createGPX(gpsData)
+      .then(result => {
+        if (result.success) {
+          APIClient.downloadGPX(result.session_id, result.filename);
+        }
+      });
+  }
+});
 ```
 
 ## Module Dependencies
 
-The core modules generally depend on the utility modules:
+The core modules generally depend on the utility modules and sometimes on each other:
 
 - All modules use `domHelpers.js` for DOM manipulation
 - All modules use `uiUtils.js` for UI operations
 - `mapVisualization.js` uses `gpsUtils.js` for coordinate validation
 - `fileUpload.js` uses `fileUtils.js` for file handling
 - `statistics.js` uses `charts.js` for chart creation
+- `heatmap.js` and `clustering.js` depend on `mapVisualization.js` for the map instance
 
 See the [Module Structure](../development/module-structure.md) document for more details on module dependencies.
