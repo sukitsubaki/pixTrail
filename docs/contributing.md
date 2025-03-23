@@ -2,52 +2,172 @@
 
 Thank you for your interest in contributing to PixTrail! This guide will help you understand the project structure and how to make effective contributions.
 
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [Development Environment](#development-environment)
+- [Code Organization](#code-organization)
+- [Making Contributions](#making-contributions)
+- [Coding Standards](#coding-standards)
+- [Testing](#testing)
+- [Documentation](#documentation)
+- [Pull Request Process](#pull-request-process)
+- [Issue Guidelines](#issue-guidelines)
+
+## Getting Started
+
+Before contributing to PixTrail, please:
+
+1. **Read the documentation**: Familiarize yourself with the existing documentation, especially the [Architecture Overview](architecture.md) and [Module Structure](development/module-structure.md).
+
+2. **Check existing issues**: See if someone has already reported the bug or requested the feature you're thinking about.
+
+3. **Discuss major changes**: For significant changes, open an issue first to discuss your ideas with the maintainers.
+
+## Development Environment
+
+### Prerequisites
+
+- Python 3.6 or newer
+- Node.js and npm (for JavaScript linting)
+- Git
+
+### Setting Up
+
+1. **Fork the repository**:
+   - Go to the [PixTrail GitHub repository](https://github.com/sukitsubaki/pixtrail)
+   - Click the "Fork" button in the upper right corner
+
+2. **Clone your fork**:
+   ```bash
+   git clone https://github.com/YOUR-USERNAME/pixtrail.git
+   cd pixtrail
+   ```
+
+3. **Create a virtual environment**:
+   ```bash
+   python -m venv venv
+   # On Windows
+   venv\Scripts\activate
+   # On macOS/Linux
+   source venv/bin/activate
+   ```
+
+4. **Install development dependencies**:
+   ```bash
+   pip install -e ".[dev,web]"
+   ```
+
+5. **Set up pre-commit hooks** (optional but recommended):
+   ```bash
+   pre-commit install
+   ```
+
 ## Code Organization
 
-PixTrail follows a modular architecture that separates concerns and improves maintainability. Understanding this structure is essential for effective contributions.
+PixTrail follows a modular architecture that separates concerns and improves maintainability.
+
+### Python Code Structure
+
+```
+pixtrail/
+├── __init__.py
+├── __main__.py
+├── cli.py                 # Command-line interface
+├── core.py                # Core functionality
+├── exif_reader.py         # EXIF metadata extraction
+├── gpx_generator.py       # GPX file generation
+├── utils.py               # General utilities
+└── web/                   # Web interface
+    ├── __init__.py
+    ├── routes.py          # API routes
+    ├── server.py          # Web server
+    ├── static/            # Static assets
+    └── templates/         # HTML templates
+```
 
 ### JavaScript Modules
 
 The JavaScript code is organized into the following categories:
 
-1. **API Client** (`js/api/`)
+1. **API Client** (`static/js/api/`)
    - Contains modules for server communication
    - `apiClient.js` handles all API requests
 
-2. **Feature Modules** (`js/modules/`)
+2. **Feature Modules** (`static/js/modules/`)
    - Each module encapsulates a specific feature
-   - Follows a class-based approach with clear public APIs
-   - Examples: `charts.js`, `clustering.js`, `heatmap.js`
+   - Examples: `mapVisualization.js`, `fileUpload.js`, `statistics.js`
 
-3. **Utilities** (`js/utils/`)
+3. **Utilities** (`static/js/utils/`)
    - Provides shared functionality across modules
-   - Each utility focuses on a specific domain
    - Examples: `domHelpers.js`, `fileUtils.js`, `gpsUtils.js`
 
-4. **Main Application** (`js/main.js`)
+4. **Main Application** (`static/js/main.js`)
    - Application entry point
    - Initializes and orchestrates all modules
 
-### CSS Modules
+### CSS Structure
 
-The CSS is organized in a similar modular fashion:
+The CSS follows a similar modular approach:
 
-1. **Base Styles** (`css/base/`)
+1. **Base Styles** (`static/css/base/`)
    - Foundational styles that apply globally
    - `reset.css`, `typography.css`, `variables.css`
 
-2. **Layout Styles** (`css/layouts/`)
+2. **Layout Styles** (`static/css/layouts/`)
    - Define the overall page structure
    - `container.css`, `grid.css`
 
-3. **Module Styles** (`css/modules/`)
+3. **Module Styles** (`static/css/modules/`)
    - Component-specific styles in individual files
-   - Each file corresponds to a UI component
+   - Examples: `map-section.css`, `file-upload.css`
 
-4. **Main CSS** (`css/main.css`)
+4. **Main CSS** (`static/css/main.css`)
    - Imports all modules in the correct order
 
-## Development Guidelines
+## Making Contributions
+
+### Types of Contributions
+
+We welcome several types of contributions:
+
+1. **Bug fixes**: Fixes for issues in the existing codebase
+2. **Feature additions**: New features that enhance the application
+3. **Performance improvements**: Changes that make the code faster or more efficient
+4. **Documentation**: Improvements to the documentation
+5. **UI/UX enhancements**: Visual and user experience improvements
+
+### Workflow
+
+1. **Create a branch** for your changes:
+   ```bash
+   git checkout -b feature/your-feature-name
+   # or
+   git checkout -b fix/issue-description
+   ```
+
+2. **Make your changes**: Implement the bug fix or feature
+
+3. **Run tests**: Ensure all tests pass
+   ```bash
+   pytest
+   ```
+
+4. **Write your own tests**: Add tests for your changes
+
+5. **Update documentation**: Update relevant documentation files
+
+6. **Commit your changes** with descriptive messages:
+   ```bash
+   git commit -m "Add feature: brief description"
+   ```
+
+7. **Push to your fork**:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+
+8. **Create a pull request** from your fork to the main repository
 
 ### Adding a New JavaScript Module
 
@@ -104,7 +224,7 @@ export default MyFeature;
 
 ### Adding a New CSS Module
 
-1. Create a new file in the appropriate directory (`css/modules/` for components)
+1. Create a new file in the appropriate directory (`static/css/modules/` for components)
 2. Focus on styling a single component or feature
 3. Use CSS variables for colors, spacing, etc.
 4. Add your file to the imports in `main.css`
@@ -141,36 +261,235 @@ Example CSS module:
 }
 ```
 
-## Testing Your Changes
+### Adding a New Python Feature
 
-Before submitting a pull request:
+1. Determine if the feature belongs in an existing module or deserves a new one
+2. Follow the architectural patterns established in the codebase
+3. Add comprehensive docstrings and type hints
+4. Write unit tests for your new functionality
 
-1. Test your changes in multiple browsers
-2. Ensure responsive design works on different screen sizes
-3. Verify that your changes don't break existing functionality
-4. Check for console errors
+Example Python module structure:
 
-## Submitting Your Contribution
+```python
+"""
+Module: my_feature.py
+Description of what this module does
+"""
 
-1. Create a new branch for your feature or bug fix
-2. Make your changes following the guidelines above
-3. Update relevant documentation
-4. Submit a pull request with a clear description of your changes
+import os
+from typing import Dict, List, Optional
+
+class MyFeature:
+    """Main class for implementing my feature."""
+    
+    def __init__(self, config: Optional[Dict] = None):
+        """
+        Initialize the feature.
+        
+        Args:
+            config: Optional configuration dictionary
+        """
+        self.config = config or {}
+        # Initialize properties
+    
+    def process(self, data: List[Dict]) -> Dict:
+        """
+        Process the provided data.
+        
+        Args:
+            data: Data to process
+            
+        Returns:
+            Dictionary containing processed results
+        """
+        # Process data
+        result = {}
+        # Implementation
+        return result
+```
+
+## Coding Standards
+
+### Python
+
+- Follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) style guide
+- Include docstrings for all modules, classes, and functions ([PEP 257](https://www.python.org/dev/peps/pep-0257/))
+- Use type hints where appropriate ([PEP 484](https://www.python.org/dev/peps/pep-0484/))
+- Write clean, readable code with descriptive variable names
+- Keep functions focused on a single responsibility
+- Use meaningful variable and function names
+- Limit line length to 100 characters
+
+### JavaScript
+
+- Use ES6+ features
+- Follow consistent indentation (2 spaces)
+- Include JSDoc comments for all functions and methods
+- Use `const` for variables that don't need to be reassigned
+- Use `let` for variables that need reassignment
+- Avoid global variables
+- Use camelCase for variables and functions
+- Use PascalCase for classes
+- Use descriptive variable and function names
+
+### CSS
+
+- Use the BEM naming convention for classes
+- Use CSS variables for colors, spacing, etc.
+- Keep selectors specific to their component
+- Organize properties logically
+- Include responsive styles for each component
+- Add comments for complex styles
+
+## Testing
+
+### Python Testing
+
+1. Write unit tests using pytest for all new functionality
+2. Ensure all tests pass before submitting a pull request
+3. Test structure should follow the same structure as the code
+4. Use descriptive test names
+5. Use fixtures where appropriate
+
+Example test:
+
+```python
+import pytest
+from pixtrail.my_feature import MyFeature
+
+def test_my_feature_initialization():
+    """Test that MyFeature initializes correctly."""
+    feature = MyFeature()
+    assert feature.config == {}
+    
+    feature = MyFeature({"option": "value"})
+    assert feature.config == {"option": "value"}
+
+def test_my_feature_processing():
+    """Test that MyFeature processes data correctly."""
+    feature = MyFeature()
+    data = [{"field": "value"}]
+    result = feature.process(data)
+    assert "processed_field" in result
+    assert result["processed_field"] == "expected_value"
+```
+
+### JavaScript Testing
+
+1. Test JavaScript modules with Jest or similar framework
+2. Focus on testing the public API of each module
+3. Use mocks and stubs for external dependencies
+4. Include both unit and integration tests
+
+Example test:
+
+```javascript
+import MyFeature from '../modules/myFeature.js';
+
+describe('MyFeature', () => {
+  let myFeature;
+  let mockConfig;
+  
+  beforeEach(() => {
+    mockConfig = {
+      container: document.createElement('div')
+    };
+    myFeature = new MyFeature(mockConfig);
+  });
+  
+  test('initializes correctly', () => {
+    expect(myFeature.config).toBe(mockConfig);
+  });
+  
+  test('publicMethod returns expected value', () => {
+    const result = myFeature.publicMethod('test');
+    expect(result).toBe(true);
+  });
+});
+```
 
 ## Documentation
 
-When adding new features, please update the relevant documentation:
+Documentation is a crucial part of PixTrail. When adding new features:
 
-1. Add JSDoc comments to all new functions and methods
-2. Update the appropriate documentation files in the `docs/` directory
-3. If you've added a major feature, consider adding a new tutorial
+1. Update or create relevant documentation files
+2. Add comprehensive docstrings to Python code
+3. Add JSDoc comments to JavaScript code
+4. Include examples of how to use the new feature
+5. Update any diagrams or architecture documentation if necessary
 
-## Code Style
+### Documentation Structure
 
-- Use ES6+ features where appropriate
-- Follow consistent indentation (2 spaces)
-- Use meaningful variable and function names
-- Keep functions focused on a single responsibility
-- Favor composition over inheritance
+- `README.md`: Main project overview
+- `/docs/`: Technical documentation
+  - `architecture.md`: Architectural overview
+  - `api/`: API documentation
+  - `development/`: Development guidelines
+  - `tutorials/`: User tutorials
+
+## Pull Request Process
+
+1. **Ensure your code meets all requirements**:
+   - Tests pass
+   - Documentation is updated
+   - Code follows style guidelines
+
+2. **Create a clear pull request description**:
+   - Explain the purpose of the changes
+   - Reference any related issues
+   - Describe how to test the changes
+   - Mention any significant design decisions
+
+3. **Review process**:
+   - A maintainer will review your code
+   - Address any feedback or requested changes
+   - Tests will be run automatically
+
+4. **Approval and merge**:
+   - Once approved, a maintainer will merge your changes
+   - Your contribution will become part of PixTrail!
+
+### Pull Request Title Format
+
+Use descriptive titles that indicate the type of change:
+
+- `Fix: Description of the bug fix`
+- `Feature: Description of the new feature`
+- `Docs: Description of documentation changes`
+- `Refactor: Description of code refactoring`
+- `Test: Description of test additions/changes`
+- `Perf: Description of performance improvements`
+
+## Issue Guidelines
+
+### Reporting Bugs
+
+When reporting a bug, please include:
+
+1. **Description**: Clear and concise description of the bug
+2. **Steps to reproduce**: Detailed steps to reproduce the issue
+3. **Expected behavior**: What you expected to happen
+4. **Actual behavior**: What actually happened
+5. **Screenshots/logs**: If applicable
+6. **Environment**: OS, Python version, browser, etc.
+7. **Additional context**: Any other relevant information
+
+### Feature Requests
+
+When suggesting a feature, please include:
+
+1. **Description**: Clear and concise description of the feature
+2. **Problem**: The problem this feature would solve
+3. **Proposed solution**: How you envision the feature working
+4. **Alternatives**: Any alternative solutions you've considered
+5. **Additional context**: Any other relevant information
+
+## Code of Conduct
+
+We are committed to providing a welcoming and inspiring community for all. Please be respectful and considerate of others when participating in this project.
+
+## Recognition
+
+Contributors will be acknowledged in the project's README and/or CONTRIBUTORS file.
 
 Thank you for contributing to PixTrail!
