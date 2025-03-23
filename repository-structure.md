@@ -8,10 +8,37 @@ sukitsubaki/pixTrail/
 ├── requirements.txt
 ├── setup.py
 ├── docs/
-│   ├── api.md
+│   ├── architecture.md
+│   ├── cli.md
+│   ├── contributing.md
+│   ├── faq.md
+│   ├── getting-started.md
 │   ├── index.md
+│   ├── installation.md
+│   ├── troubleshooting.md
 │   ├── usage.md
-│   └── web_interface.md
+│   ├── web-interface.md
+│   ├── api/
+│   │   ├── core.md
+│   │   ├── exif.md
+│   │   ├── gpx.md
+│   │   ├── index.md
+│   │   └── utils.md
+│   ├── development/
+│   │   ├── css-architecture.md
+│   │   ├── index.md
+│   │   ├── module-structure.md
+│   │   └── testing.md
+│   ├── tutorials/
+│   │   ├── batch-processing.md
+│   │   ├── custom-visualizations.md
+│   │   ├── index.md
+│   │   └── photo-journey.md
+│   └── visualization/
+│       ├── clustering.md
+│       ├── heatmap.md
+│       ├── index.md
+│       └── statistics.md
 ├── examples/
 │   ├── README.md
 │   ├── example_script.py
