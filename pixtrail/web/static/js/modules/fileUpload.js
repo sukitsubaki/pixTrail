@@ -108,16 +108,30 @@ class FileUpload {
         // Sort files into client-side and server-side processable
         const clientSideFiles = [];
         const serverSideFiles = [];
+        let nonImageCount = 0;
         
         Array.from(selectedFiles).forEach(file => {
             if (FileUtils.canProcessClientSide(file)) {
                 clientSideFiles.push(file);
             } else if (FileUtils.isImageFile(file)) {
                 serverSideFiles.push(file);
+            } else {
+                nonImageCount++;
             }
         });
         
-        console.log(`Files to process - Client-side: ${clientSideFiles.length}, Server-side: ${serverSideFiles.length}`);
+        // Check if we have any valid image files to process
+        if (clientSideFiles.length === 0 && serverSideFiles.length === 0) {
+            this.handleError('No valid image files found. Please select photos to process.');
+            return;
+        }
+        
+        // Notify user about non-image files that will be skipped
+        if (nonImageCount > 0) {
+            this.showStatusMessage(`Skipping ${nonImageCount} non-image files`, 'warning');
+        }
+        
+        console.log(`Files to process - Client-side: ${clientSideFiles.length}, Server-side: ${serverSideFiles.length}, Skipped: ${nonImageCount}`);
         
         // Initialize arrays for GPS data
         let clientSideGpsData = [];
