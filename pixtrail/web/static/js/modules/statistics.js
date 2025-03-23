@@ -120,12 +120,22 @@ class Statistics {
      * @param {Array} waypoints - Array of waypoint objects
      */
     setWaypoints(waypoints) {
+        if (!waypoints || waypoints.length === 0) {
+            console.warn('No waypoints provided to Statistics module');
+            return;
+        }
+            
         this.waypoints = waypoints;
-        this.calculateStatistics();
         
-        // Update display if statistics panel is visible
-        if (this.statisticsVisible) {
-            this.updateDisplay();
+        try {
+            this.calculateStatistics();
+            
+            // Update display if statistics panel is visible
+            if (this.statisticsVisible) {
+                this.updateDisplay();
+            }
+        } catch (error) {
+            console.error('Error calculating statistics:', error);
         }
     }
     
@@ -139,8 +149,38 @@ class Statistics {
             return;
         }
         
-        // Use the GPSUtils calculateRouteStatistics function
-        this.routeStatistics = GPSUtils.calculateRouteStatistics(this.waypoints);
+        try {
+            // Use the GPSUtils calculateRouteStatistics function
+            this.routeStatistics = GPSUtils.calculateRouteStatistics(this.waypoints);
+            
+            // If statistics calculation failed, create default object
+            if (!this.routeStatistics) {
+                this.createDefaultStatistics();
+            }
+        } catch (error) {
+            console.error('Error calculating route statistics:', error);
+            this.createDefaultStatistics();
+        }
+    }
+    
+    /**
+     * Create default statistics with zero values
+     */
+    createDefaultStatistics() {
+        this.routeStatistics = {
+            totalDistance: 0,
+            totalDuration: 0,
+            startTime: new Date(),
+            endTime: new Date(),
+            avgSpeed: 0,
+            maxSpeed: 0,
+            minElevation: 0,
+            maxElevation: 0,
+            elevationGain: 0,
+            photoCount: this.waypoints ? this.waypoints.length : 0,
+            elevationProfile: [],
+            speedProfile: []
+        };
     }
     
     /**
@@ -215,17 +255,32 @@ class Statistics {
             return;
         }
         
+        const stats = this.routeStatistics;
+        
         // Update summary statistics elements
-        this.updateElement('total-distance', `${this.routeStatistics.totalDistance.toFixed(2)} km`);
-        this.updateElement('total-duration', UIUtils.formatDuration(this.routeStatistics.totalDuration));
-        this.updateElement('start-time', UIUtils.formatDate(this.routeStatistics.startTime));
-        this.updateElement('end-time', UIUtils.formatDate(this.routeStatistics.endTime));
-        this.updateElement('avg-speed', `${this.routeStatistics.avgSpeed.toFixed(2)} km/h`);
-        this.updateElement('max-speed', `${this.routeStatistics.maxSpeed.toFixed(2)} km/h`);
-        this.updateElement('min-elevation', `${this.routeStatistics.minElevation.toFixed(1)} m`);
-        this.updateElement('max-elevation', `${this.routeStatistics.maxElevation.toFixed(1)} m`);
-        this.updateElement('elevation-gain', `${this.routeStatistics.elevationGain.toFixed(1)} m`);
-        this.updateElement('photo-count', this.routeStatistics.photoCount.toString());
+        this.updateElement('total-distance', `${stats.totalDistance.toFixed(2)} km`);
+        this.updateElement('total-duration', UIUtils.formatDuration(stats.totalDuration));
+        
+        // Format timestamps if valid
+        let startTimeDisplay = '-';
+        let endTimeDisplay = '-';
+        
+        if (stats.startTime && stats.startTime instanceof Date && !isNaN(stats.startTime.getTime())) {
+            startTimeDisplay = UIUtils.formatDate(stats.startTime);
+        }
+        
+        if (stats.endTime && stats.endTime instanceof Date && !isNaN(stats.endTime.getTime())) {
+            endTimeDisplay = UIUtils.formatDate(stats.endTime);
+        }
+        
+        this.updateElement('start-time', startTimeDisplay);
+        this.updateElement('end-time', endTimeDisplay);
+        this.updateElement('avg-speed', `${stats.avgSpeed.toFixed(2)} km/h`);
+        this.updateElement('max-speed', `${stats.maxSpeed.toFixed(2)} km/h`);
+        this.updateElement('min-elevation', `${stats.minElevation.toFixed(1)} m`);
+        this.updateElement('max-elevation', `${stats.maxElevation.toFixed(1)} m`);
+        this.updateElement('elevation-gain', `${stats.elevationGain.toFixed(1)} m`);
+        this.updateElement('photo-count', stats.photoCount.toString());
         
         // Create or update charts
         this.updateCharts();
@@ -250,7 +305,7 @@ class Statistics {
         if (!this.routeStatistics) return;
         
         // Update elevation chart
-        if (this.elevationChart && this.routeStatistics.elevationProfile) {
+        if (this.elevationChart && this.routeStatistics.elevationProfile && this.routeStatistics.elevationProfile.length > 0) {
             const labels = this.routeStatistics.elevationProfile.map((_, index) => index + 1);
             const data = this.routeStatistics.elevationProfile.map(point => point.elevation);
             
@@ -266,10 +321,23 @@ class Statistics {
                     tension: 0.4
                 }]
             });
+        } else if (this.elevationChart) {
+            // No elevation data available, show empty chart
+            this.elevationChart.updateChart({
+                labels: [],
+                datasets: [{
+                    label: 'Elevation (m)',
+                    data: [],
+                    fill: true,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2
+                }]
+            });
         }
         
         // Update speed chart
-        if (this.speedChart && this.routeStatistics.speedProfile) {
+        if (this.speedChart && this.routeStatistics.speedProfile && this.routeStatistics.speedProfile.length > 0) {
             const labels = this.routeStatistics.speedProfile.map((_, index) => index + 1);
             const data = this.routeStatistics.speedProfile.map(point => point.speed);
             
@@ -283,6 +351,19 @@ class Statistics {
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 2,
                     tension: 0.1
+                }]
+            });
+        } else if (this.speedChart) {
+            // No speed data available, show empty chart
+            this.speedChart.updateChart({
+                labels: [],
+                datasets: [{
+                    label: 'Speed (km/h)',
+                    data: [],
+                    fill: false,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2
                 }]
             });
         }
