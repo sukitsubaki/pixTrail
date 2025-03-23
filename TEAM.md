@@ -2,26 +2,29 @@
 
 ## Core Team Members
 
-### Suki Tsubaki
-**Founder & Lead Developer**
+<img align="right" width="200px" src="https://github.com/sukitsubaki/sukitsubaki/blob/main/suki-tsubaki.jpg" alt="Suki Tsubaki">
 
+### Suki Tsubaki - Founder & Lead Developer
 Suki Tsubaki is the visionary behind PixTrail. With a passion for both photography and programming, she created PixTrail to solve the challenge of visualizing journeys through photographs. She leads the development of the web interface and core Python backend, bringing to life the seamless experience that PixTrail offers.
 
 GitHub: [@sukitsubaki](https://github.com/sukitsubaki)
 
-### Yuki Shimizu
-**Documentation Specialist**
+<br clear="right"/>
 
-Yuki Shimizu ensures that PixTrail is accessible to users of all technical levels through comprehensive, clear documentation. With a keen eye for detail and a talent for technical writing, Yuki transforms complex functionality into user-friendly guides and tutorials.
+<img align="right" width="200px" src="https://avatars.githubusercontent.com/u/204524156?v=4" alt="Yuki Shimizu">
+
+### Yuki Shimizu - Documentation Specialist
+Yuki Shimizu ensures that PixTrail is accessible to users of all technical levels through comprehensive, clear documentation. With an eye for detail and a talent for technical writing, Yuki transforms complex functionality into user-friendly guides and tutorials.
 
 GitHub: [@radanana](https://github.com/radanana)
 
-### Keisuke Tanaka
-**Quality Assurance & JavaScript Developer**
+<br clear="right"/>
 
-Keisuke Tanaka maintains the high standards that make PixTrail reliable and robust. As the quality assurance lead, he implements rigorous testing procedures and oversees the final review process. His expertise in JavaScript powers the interactive features that enhance the user experience.
+<img align="right" width="200px" src="https://avatars.githubusercontent.com/u/203371253?v=4" alt="Keisuke Tanaka">
 
-GitHub: [@neoneko87](https://github.com/neoneko87)
+### Keisuke Tanaka - Quality Assurance & JavaScript Developer
+
+Keisuke Tanaka maintains the high standards that make PixTrail reliable and robust. As the quality assurance lead, he implements rigorous testing procedures and oversees the final review process. His expertise in JavaScript powers the interactive features that enhance the user experience.<br><br>GitHub: [@neoneko87](https://github.com/neoneko87)
 
 ## Join Our Team
 
