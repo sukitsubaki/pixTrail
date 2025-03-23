@@ -30,11 +30,6 @@ cd pixtrail
 pip install -e .
 ```
 
-Or you can install it from your local package:
-```bash
-python /path/to/pixtrail/setup.py install
-```
-
 ## Command Line Interface
 
 PixTrail provides a simple command-line interface for processing photos and generating GPX files.
