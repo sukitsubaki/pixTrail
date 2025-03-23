@@ -1,5 +1,6 @@
 ```
 sukitsubaki/pixTrail/
+├── CODE_OF_CONDUCT.md
 ├── LICENSE
 ├── README.md
 ├── SECURITY.md
