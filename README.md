@@ -86,7 +86,11 @@ pip install pixtrail
 ### Installation with Web Interface
 
 ```bash
+# For bash, PowerShell, or Command Prompt
 pip install pixtrail[web]
+
+# For zsh (macOS default shell)
+pip install "pixtrail[web]"
 ```
 
 ### Install from Source
