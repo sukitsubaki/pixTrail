@@ -8,8 +8,6 @@ sukitsubaki/pixTrail/
 ├── pyproject.toml
 ├── requirements.txt
 ├── setup.py
-├── assets/
-│   └── tsubaki-suki.jpg
 ├── docs/
 │   ├── architecture.md
 │   ├── cli.md
@@ -30,7 +28,8 @@ sukitsubaki/pixTrail/
 │   ├── assets/
 │   │   ├── pixtrail-web-interface.png
 │   │   ├── shimizu-yuki.jpg
-│   │   └── tanaka-keisuke.jpg
+│   │   ├── tanaka-keisuke.jpg
+│   │   └── tsubaki-suki.jpg
 │   ├── development/
 │   │   ├── css-architecture.md
 │   │   ├── index.md
