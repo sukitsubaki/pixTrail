@@ -3,7 +3,7 @@ name: Update Version Numbers
 on:
   push:
     paths:
-      - 'README.md'
+      - 'CHANGELOG.md'
 
 jobs:
   update-version:
@@ -16,48 +16,67 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Extract latest version from CHANGELOG
+        id: extract
+        run: |
+          # Extract the latest version from CHANGELOG.md
+          # Skip the Unreleased section and find the first version entry
+          VERSION=$(grep -o '## \[[0-9]\+\.[0-9]\+\.[0-9]\+\]' CHANGELOG.md | head -1 | sed 's/## \[\(.*\)\]/\1/')
+          
+          if [ -z "$VERSION" ]; then
+            echo "Failed to extract version from CHANGELOG.md"
+            exit 1
+          fi
+          
+          echo "Extracted version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
       - name: Update version numbers
         id: update
         run: |
-          # Extract version from README.md
-          VERSION=$(grep -o 'version-[0-9]\+\.[0-9]\+\.[0-9]\+' README.md | cut -d'-' -f2)
-          echo "Extracted version: $VERSION"
+          VERSION="${{ steps.extract.outputs.version }}"
+          echo "Updating files to version $VERSION"
           
           # Initialize update flag
           UPDATED=false
           
-          # Check if version needs updating in setup.py
+          # Update README.md
+          if [ -f "README.md" ]; then
+            if grep -q 'version-[0-9]\+\.[0-9]\+\.[0-9]\+' README.md; then
+              echo "Updating version in README.md"
+              sed -i "s/version-[0-9]\+\.[0-9]\+\.[0-9]\+/version-$VERSION/" README.md
+              UPDATED=true
+            fi
+          fi
+          
+          # Update setup.py
           if [ -f "setup.py" ]; then
-            SETUP_VERSION=$(grep -o 'version="[0-9]\+\.[0-9]\+\.[0-9]\+"' setup.py | cut -d'"' -f2)
-            if [ "$SETUP_VERSION" != "$VERSION" ]; then
-              echo "Updating version in setup.py from $SETUP_VERSION to $VERSION"
+            if grep -q 'version="[0-9]\+\.[0-9]\+\.[0-9]\+"' setup.py; then
+              echo "Updating version in setup.py"
               sed -i "s/version=\"[0-9]\+\.[0-9]\+\.[0-9]\+\"/version=\"$VERSION\"/" setup.py
               UPDATED=true
             fi
           fi
           
-          # Check if version needs updating in pyproject.toml
+          # Update pyproject.toml
           if [ -f "pyproject.toml" ]; then
-            PYPROJECT_VERSION=$(grep -o 'version = "[0-9]\+\.[0-9]\+\.[0-9]\+"' pyproject.toml | cut -d'"' -f2)
-            if [ "$PYPROJECT_VERSION" != "$VERSION" ]; then
-              echo "Updating version in pyproject.toml from $PYPROJECT_VERSION to $VERSION"
+            if grep -q 'version = "[0-9]\+\.[0-9]\+\.[0-9]\+"' pyproject.toml; then
+              echo "Updating version in pyproject.toml"
               sed -i "s/version = \"[0-9]\+\.[0-9]\+\.[0-9]\+\"/version = \"$VERSION\"/" pyproject.toml
               UPDATED=true
             fi
           fi
           
-          # Check if version needs updating in pixtrail/__init__.py
+          # Update pixtrail/__init__.py
           if [ -f "pixtrail/__init__.py" ]; then
-            INIT_VERSION=$(grep -o '__version__ = "[0-9]\+\.[0-9]\+\.[0-9]\+"' pixtrail/__init__.py | cut -d'"' -f2)
-            if [ "$INIT_VERSION" != "$VERSION" ]; then
-              echo "Updating version in pixtrail/__init__.py from $INIT_VERSION to $VERSION"
+            if grep -q '__version__ = "[0-9]\+\.[0-9]\+\.[0-9]\+"' pixtrail/__init__.py; then
+              echo "Updating version in pixtrail/__init__.py"
               sed -i "s/__version__ = \"[0-9]\+\.[0-9]\+\.[0-9]\+\"/__version__ = \"$VERSION\"/" pixtrail/__init__.py
               UPDATED=true
             fi
           fi
           
           # Set output variables
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "updated=$UPDATED" >> $GITHUB_OUTPUT
 
       - name: Commit and push changes
@@ -65,6 +84,6 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add setup.py pyproject.toml pixtrail/__init__.py
-          git commit -m "automatic update on push (v${{ steps.update.outputs.version }})"
+          git add README.md setup.py pyproject.toml pixtrail/__init__.py
+          git commit -m "automatic update on push (v${{ steps.extract.outputs.version }})"
           git push
