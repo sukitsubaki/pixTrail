@@ -266,7 +266,7 @@ Initial stable release of PixTrail with the following features:
 * Command-line skeleton
 
 [unreleased]: https://github.com/sukitsubaki/pixTrail/compare/2.3.3...HEAD
-[2.3.3]: https://github.com/sukitsubaki/pixTrail/compare/2.3.2...2.3.3
+[2.3.3]: https://github.com/sukitsubaki/pixTrail/compare/2.3.3~17...2.3.3
 [2.3.2]: https://github.com/sukitsubaki/pixTrail/compare/2.3.1...2.3.2
 [2.3.1]: https://github.com/sukitsubaki/pixTrail/compare/2.3.0...2.3.1
 [2.3.0]: https://github.com/sukitsubaki/pixTrail/compare/2.2.0...2.3.0
