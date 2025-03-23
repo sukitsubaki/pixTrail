@@ -1,6 +1,6 @@
 # Getting Started with PixTrail
 
-This guide will help you quickly get up and running with PixTrail. I'll cover installation, basic usage, and point you to more detailed documentation for advanced features.
+This guide will help you quickly get up and running with PixTrail. It covers installation, basic usage, and points you to more detailed documentation for advanced features.
 
 ## Requirements
 
@@ -24,6 +24,8 @@ If you want to use the web interface (recommended for most users):
 pip install pixtrail[web]
 ```
 
+For more detailed installation instructions, including platform-specific guidance, see the [Installation Guide](installation.md).
+
 ## Basic Usage
 
 ### Command Line
@@ -42,7 +44,7 @@ This will:
 
 ### Web Interface
 
-For a more visual experience, you can use the web interface:
+For a more visual experience, use the web interface:
 
 ```bash
 # Start the web interface
@@ -68,13 +70,48 @@ Using either the command line or web interface, select the directory containing 
 
 After processing, PixTrail will generate a GPX file. If you're using the web interface, you'll see your route displayed on a map immediately. If you're using the command line, you can import the GPX file into your favorite mapping application.
 
+## Common Tasks
+
+### Processing a Directory of Photos
+
+```bash
+# Basic directory processing
+pixtrail -i /path/to/photos
+
+# Process recursively (including subdirectories)
+pixtrail -i /path/to/photos -r
+
+# Specify a custom output file
+pixtrail -i /path/to/photos -o my_journey.gpx
+```
+
+### Batch Processing Multiple Directories
+
+```bash
+# Process multiple directories at once
+pixtrail -b /path/to/trip1 /path/to/trip2 /path/to/trip3
+
+# Save all output files to a specific directory
+pixtrail -b /path/to/trip1 /path/to/trip2 -d /path/to/gpx_files
+```
+
+### Using the Web Interface
+
+1. Start the web interface with `pixtrail -w`
+2. Click on the "Directory" tab
+3. Click "Select Directory" and choose your photos folder
+4. Click "Process Photos"
+5. Explore the map, enable features like the heatmap or clustering
+6. Download the GPX file using the "Download GPX" button
+
 ## Next Steps
 
 Now that you've processed your first set of photos, you might want to explore:
 
 - [Detailed usage instructions](usage.md) for more command options
-- [Web interface documentation](web_interface.md) for advanced features
+- [Web interface documentation](web-interface.md) for advanced features
 - [Visualization features](visualization/index.md) for understanding the heat map and clustering options
+- [Tutorials](tutorials/index.md) for step-by-step guides for specific tasks
 
 ## Example Workflow
 
@@ -87,5 +124,17 @@ Here's a complete example workflow:
    pixtrail -i ~/Photos/MyJourney
    ```
 4. Import the generated GPX file into Google Earth, OpenStreetMap, or any GPX-compatible application
+5. Explore your journey on the map, seeing exactly where each photo was taken
 
 You now have a visual record of your journey based on the photos you took!
+
+## Troubleshooting
+
+If you encounter any issues:
+
+- Check that your photos contain GPS data
+- Ensure you have the proper permissions to read/write the specified directories
+- Run with the verbose flag for more information: `pixtrail -i /path/to/photos -v`
+- See the [Troubleshooting Guide](troubleshooting.md) for solutions to common problems
+
+For additional help, check the [FAQ](faq.md) or visit our GitHub repository.
