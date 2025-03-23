@@ -1,0 +1,89 @@
+name: Update Changelog on Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  update-changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.CHANGELOG_TOKEN }}
+
+      - name: Update Changelog
+        run: |
+          # Store release info
+          RELEASE_TAG="${{ github.event.release.tag_name }}"
+          RELEASE_DATE=$(date +"%Y-%m-%d")
+          RELEASE_BODY=$(cat << 'EOF'
+          ${{ github.event.release.body }}
+          EOF
+          )
+          
+          # Create a temporary file to process the release notes
+          echo "$RELEASE_BODY" > release_notes.md
+          
+          # Extract only the sections we want
+          python3 -c '
+          import re
+          import sys
+          
+          with open("release_notes.md", "r") as f:
+              content = f.read()
+          
+          # Find the "Whats Changed" header
+          whats_changed_match = re.search(r"## What\'?s Changed", content, re.IGNORECASE)
+          if not whats_changed_match:
+              sys.exit(0)
+          
+          # Extract content after "Whats Changed"
+          content_after_header = content[whats_changed_match.end():]
+          
+          # Find all sections we want to include
+          sections = []
+          section_pattern = r"### (Changed|Fixed|Technical|Security|Added)[\s\S]*?(?=### |$)"
+          section_matches = re.finditer(section_pattern, content_after_header)
+          
+          for match in section_matches:
+              section_text = match.group(0)
+              # Stop at "---" if it exists
+              if "---" in section_text:
+                  section_text = section_text.split("---")[0]
+              sections.append(section_text)
+          
+          # Join all found sections
+          processed_content = "\n".join(sections)
+          
+          # Write to filtered notes file
+          with open("filtered_notes.md", "w") as f:
+              f.write(processed_content)
+          '
+          
+          # Check if we have content
+          if [ ! -s filtered_notes.md ]; then
+            echo "No matching sections found in release notes. Skipping changelog update."
+            exit 0
+          fi
+          
+          # Prepare changelog entry
+          CHANGELOG_ENTRY="## [$RELEASE_TAG] - $RELEASE_DATE\n\n"
+          CHANGELOG_ENTRY+=$(cat filtered_notes.md)
+          CHANGELOG_ENTRY+="\n\n"
+          
+          # Update CHANGELOG.md
+          if [ -f CHANGELOG.md ]; then
+            echo -e "$CHANGELOG_ENTRY$(cat CHANGELOG.md)" > CHANGELOG.md
+          else
+            echo -e "# Changelog\n\nAll notable changes to this project will be documented in this file.\n\n$CHANGELOG_ENTRY" > CHANGELOG.md
+          fi
+          
+          # Commit and push changes
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add CHANGELOG.md
+          git commit -m "Update CHANGELOG.md for $RELEASE_TAG"
+          git push
