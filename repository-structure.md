@@ -9,6 +9,7 @@ sukitsubaki/pixTrail/
 ├── requirements.txt
 ├── setup.py
 ├── assets/
+│   ├── pixtrail-web-interface.png
 │   ├── shimizu-yuki.jpg
 │   ├── tanaka-keisuke.jpg
 │   └── tsubaki-suki.jpg
