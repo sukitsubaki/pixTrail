@@ -13,6 +13,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 * ...
 
+## [2.3.2] - 2025-03-23
+
+### Changed
+* Comprehensive modularization of CSS and JavaScript files for improved maintainability
+* Reorganized JavaScript code into functional modules with clear responsibilities
+* Enhanced documentation with comprehensive guides, tutorials, and API references
+* Added examples and FAQ to README
+* Created team information and documentation
+* Added structured CHANGELOG to track version history
+
+### Fixed
+* Drag and drop functionality for files and directories now properly processes uploads
+* Improved error handling for non-image files with clear messaging about skipped files
+* Fixed map viewport display to properly show all markers without manual zooming
+* Resolved marker clustering functionality with proper plugin initialization
+* Corrected statistics display with accurate calculations and proper timestamp handling
+
+### Technical
+* Implemented module pattern for CSS with base, layouts, and component-specific styles
+* Reorganized JavaScript into utils, API client, and feature-specific modules
+* Added ES modules support for better code organization
+
 ## [2.3.1] - 2025-03-22
 
 ### Fixed
@@ -224,6 +246,7 @@ Initial stable release of PixTrail with the following features:
 * Command-line skeleton
 
 [unreleased]: https://github.com/sukitsubaki/pixTrail/compare/2.3.0...HEAD
+[2.3.2]: https://github.com/sukitsubaki/pixTrail/compare/2.3.1...2.3.2
 [2.3.1]: https://github.com/sukitsubaki/pixTrail/compare/2.3.0...2.3.1
 [2.3.0]: https://github.com/sukitsubaki/pixTrail/compare/2.2.0...2.3.0
 [2.2.0]: https://github.com/sukitsubaki/pixTrail/compare/2.1.0...2.2.0
