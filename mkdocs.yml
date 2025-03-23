@@ -3,6 +3,7 @@ site_description: Documentation for PixTrail - GPS Photo to GPX Tracker
 site_author: Suki Tsubaki
 repo_url: https://github.com/sukitsubaki/pixtrail
 repo_name: sukitsubaki/pixtrail
+copyright: Documentation written by Yuki Shimizu
 
 theme:
   name: material
