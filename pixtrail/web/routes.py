@@ -45,7 +45,14 @@ def receive_photos():
     
     # Create a session ID based on timestamp
     session_id = datetime.now().strftime('%Y%m%d%H%M%S')
-    process_dir = os.path.join(current_app.config['PIXTRAIL_DATA_DIR'], session_id)
+    
+    # Secure and normalize data directory path
+    data_dir = os.path.normpath(current_app.config['PIXTRAIL_DATA_DIR'])
+    process_dir = os.path.normpath(os.path.join(data_dir, session_id))
+    
+    # Ensure process_dir is within data_dir
+    if not process_dir.startswith(data_dir):
+        return jsonify({'error': 'Invalid session path'}), 400
     
     try:
         # Create processing directory
@@ -62,14 +69,29 @@ def receive_photos():
                     # Create subdirectories if they don't exist
                     file_dir = os.path.dirname(rel_path)
                     if file_dir:
-                        ensure_directory(os.path.join(process_dir, file_dir))
+                        # Secure the file directory
+                        secure_file_dir = os.path.normpath(os.path.join(process_dir, 
+                                                          *[secure_filename(part) for part in file_dir.split(os.sep)]))
+                        # Ensure it's still within process_dir
+                        if not secure_file_dir.startswith(process_dir):
+                            continue
+                        ensure_directory(secure_file_dir)
                     
-                    # Save file with its relative path
-                    file_path = os.path.join(process_dir, rel_path)
+                    # Secure the filename
+                    secure_rel_path = os.path.join(
+                        os.path.dirname(rel_path),
+                        secure_filename(os.path.basename(rel_path))
+                    )
+                    # Save file with its secured relative path
+                    file_path = os.path.normpath(os.path.join(process_dir, secure_rel_path))
                 else:
                     # For individual file submissions, just use the filename
                     filename = secure_filename(file.filename)
-                    file_path = os.path.join(process_dir, filename)
+                    file_path = os.path.normpath(os.path.join(process_dir, filename))
+                
+                # Final safety check
+                if not file_path.startswith(process_dir):
+                    continue
                 
                 file.save(file_path)
                 saved_files.append({
@@ -99,16 +121,23 @@ def process_photos(session_id):
     Args:
         session_id: Session ID from the submission step
     """
-    process_dir = os.path.join(current_app.config['PIXTRAIL_DATA_DIR'], session_id)
+    # Secure and normalize paths
+    secure_session_id = secure_filename(session_id)
+    data_dir = os.path.normpath(current_app.config['PIXTRAIL_DATA_DIR'])
+    process_dir = os.path.normpath(os.path.join(data_dir, secure_session_id))
+    
+    # Ensure process_dir is within data_dir
+    if not process_dir.startswith(data_dir):
+        return jsonify({'error': 'Invalid session path'}), 400
     
     if not os.path.exists(process_dir):
         return jsonify({'error': 'Session not found'}), 404
     
     try:
         # Get processing options from session
-        session_file = os.path.join(process_dir, ".session_info")
+        session_file = os.path.normpath(os.path.join(process_dir, ".session_info"))
         processing_options = {}
-        if os.path.exists(session_file):
+        if os.path.exists(session_file) and session_file.startswith(process_dir):
             with open(session_file, 'r') as f:
                 processing_options = json.load(f)
         
@@ -139,8 +168,19 @@ def process_photos(session_id):
                 'stats': stats
             }), 400
         
-        # Generate GPX file
-        gpx_file = os.path.join(process_dir, f"pixtrail_{session_id}.gpx")
+        # Generate GPX file with secured filename
+        gpx_filename = f"pixtrail_{secure_session_id}.gpx"
+        gpx_file = os.path.normpath(os.path.join(process_dir, gpx_filename))
+        
+        # Verify path is still within process_dir
+        if not gpx_file.startswith(process_dir):
+            shutil.rmtree(process_dir)
+            return jsonify({
+                'success': False,
+                'error': 'Invalid GPX file path',
+                'stats': stats
+            }), 400
+            
         success = pixtrail.generate_gpx(gpx_file, gps_data)
         
         if not success:
@@ -155,6 +195,11 @@ def process_photos(session_id):
         # Remove cached image files
         for item in os.listdir(process_dir):
             item_path = os.path.join(process_dir, item)
+            # Normalize the path and verify it's within process_dir
+            item_path = os.path.normpath(item_path)
+            if not item_path.startswith(process_dir):
+                continue
+                
             # Keep GPX file and session_info
             if os.path.basename(item_path) != os.path.basename(gpx_file) and os.path.basename(item_path) != ".session_info":
                 if os.path.isfile(item_path):
@@ -175,7 +220,7 @@ def process_photos(session_id):
             'success': True,
             'waypoints': waypoints,
             'gpx_file': os.path.basename(gpx_file),
-            'session_id': session_id,
+            'session_id': secure_session_id,
             'stats': stats
         })
     
@@ -200,11 +245,11 @@ def download_gpx(session_id, filename):
         session_id: Session ID
         filename: GPX filename
     """
-    # Sanitize session_id to prevent path traversal
+    # Sanitize inputs
     secure_session_id = secure_filename(session_id)
     secure_name = secure_filename(filename)
     
-    # Construct and normalize the file path
+    # Construct and normalize paths
     data_dir = os.path.normpath(current_app.config['PIXTRAIL_DATA_DIR'])
     file_path = os.path.normpath(os.path.join(data_dir, secure_session_id, secure_name))
     
@@ -231,7 +276,16 @@ def cleanup_session(session_id):
     Args:
         session_id: Session ID to clean up
     """
-    session_dir = os.path.join(current_app.config['PIXTRAIL_DATA_DIR'], session_id)
+    # Sanitize session_id
+    secure_session_id = secure_filename(session_id)
+    
+    # Construct and normalize path
+    data_dir = os.path.normpath(current_app.config['PIXTRAIL_DATA_DIR'])
+    session_dir = os.path.normpath(os.path.join(data_dir, secure_session_id))
+    
+    # Verify session_dir is within data_dir
+    if not session_dir.startswith(data_dir):
+        return jsonify({'error': 'Invalid session path'}), 400
     
     if os.path.exists(session_dir):
         try:
@@ -272,14 +326,32 @@ def create_gpx():
     try:
         # Create a session ID based on timestamp
         session_id = datetime.now().strftime('%Y%m%d%H%M%S')
-        process_dir = os.path.join(current_app.config['PIXTRAIL_DATA_DIR'], session_id)
+        
+        # Construct and normalize paths
+        data_dir = os.path.normpath(current_app.config['PIXTRAIL_DATA_DIR'])
+        process_dir = os.path.normpath(os.path.join(data_dir, session_id))
+        
+        # Verify process_dir is within data_dir
+        if not process_dir.startswith(data_dir):
+            return jsonify({'error': 'Invalid session path'}), 400
         
         # Create output directory only, no image files are copied
         os.makedirs(process_dir, exist_ok=True)
         
         # Generate GPX file
         pixtrail = PixTrail()
-        gpx_file = os.path.join(process_dir, f"pixtrail_{session_id}.gpx")
+        gpx_filename = f"pixtrail_{session_id}.gpx"
+        gpx_file = os.path.normpath(os.path.join(process_dir, gpx_filename))
+        
+        # Final security check
+        if not gpx_file.startswith(process_dir):
+            if os.path.exists(process_dir):
+                shutil.rmtree(process_dir)
+            return jsonify({
+                'success': False,
+                'error': 'Invalid GPX file path'
+            }), 400
+            
         success = pixtrail.generate_gpx(gpx_file, gps_data_list)
         
         if not success:
