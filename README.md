@@ -237,5 +237,6 @@ pytest
 
 ## License
 
-- This project is licensed under the MIT License by <a href="https://github.com/sukitsubaki" target="_blank">Suki Tsubaki</a>.
-- The <a href="https://github.com/sukitsubaki/pixTrail/tree/main/examples/example_photos" target="_blank">example photos</a> are licensed under CC BY 4.0 by <a href="https://anil-oeztas.de" target="_blank">Anil Öztas</a>.
+- This project is licensed under the MIT License by <a href="https://github.com/sukitsubaki" target="_blank">Suki Tsubaki</a>
+- The <a href="https://github.com/sukitsubaki/pixTrail/tree/main/docs" target="_blank">documentation</a> is licensed under CC BY-ND 4.0 by <a href="https://github.com/radanana" target="_blank">Yuki Shimizu</a>
+- The <a href="https://github.com/sukitsubaki/pixTrail/tree/main/examples/example_photos" target="_blank">example photos</a> are licensed under CC BY 4.0 by <a href="https://anil-oeztas.de" target="_blank">Anil Öztas</a>
