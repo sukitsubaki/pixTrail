@@ -102,16 +102,16 @@ class MapVisualization {
         if (!this.map) {
             this.initMap();
         }
-        
+    
         // Ensure we have waypoints
         if (!this.waypoints || this.waypoints.length === 0) {
             console.warn('No waypoints to display on map');
             return;
         }
-        
+    
         // Clear existing markers and route
         this.clearMapLayers();
-        
+    
         // Add markers for each waypoint
         const latLngs = [];
         this.waypoints.forEach(point => {
@@ -119,7 +119,7 @@ class MapVisualization {
                 console.warn(`Invalid coordinates in waypoint: ${point.name}`, point);
                 return;
             }
-                
+            
             const latLng = L.latLng(point.latitude, point.longitude);
             latLngs.push(latLng);
 
@@ -153,16 +153,40 @@ class MapVisualization {
             weight: 3
         }).addTo(this.map);
 
-        // Fit map to the route
-        if (this.routeLine.getBounds().isValid()) {
+        // Fit map to the route with increased padding
+        if (this.routeLine && this.routeLine.getBounds().isValid()) {
+            // Use larger padding for better overview
             this.map.fitBounds(this.routeLine.getBounds(), {
-                padding: [30, 30]
+                padding: [100, 100]  // Increased padding (100px on all sides)
             });
-        }
         
+            // Zoom out slightly for a better overview
+            setTimeout(() => {
+                const currentZoom = this.map.getZoom();
+                this.map.setZoom(currentZoom - 1);
+            }, 100);
+        } else if (this.markers.length > 0) {
+            // Fallback if route bounds are invalid: fit to marker bounds
+            const markerGroup = L.featureGroup(this.markers);
+            this.map.fitBounds(markerGroup.getBounds(), {
+                padding: [100, 100]
+            });
+        
+            // Zoom out slightly for a better overview
+            setTimeout(() => {
+                const currentZoom = this.map.getZoom();
+                this.map.setZoom(currentZoom - 1);
+            }, 100);
+        }
+    
         // Show the map container
         this.showMapContainer();
-        
+    
+        // Refresh map size
+        setTimeout(() => {
+            this.map.invalidateSize();
+        }, 200);
+    
         // Scroll to map
         if (this.mapContainer) {
             this.mapContainer.scrollIntoView({
