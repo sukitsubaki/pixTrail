@@ -2,6 +2,19 @@
 
 All notable changes to the PixTrail project will be documented in this file.
 
+## [2.1.0] - 2025-03-22
+
+### New Features
+* **Directory Selection**: Added ability to select and process entire directories of photos directly in the web interface
+* **Recursive Processing**: Support for recursively scanning subdirectories with configurable depth levels
+* **Drag & Drop Support**: Added intuitive drag & drop functionality for both files and directories
+
+### Improvements
+* Redesigned input selection UI with tabbed interface for switching between file and directory modes
+* Enhanced progress reporting during processing
+* Updated documentation with detailed explanations of new features
+* Added visual feedback during drag and drop operations
+
 ## [2.0.1] - 2025-03-22
 
 ### Bug Fixes
