@@ -2,6 +2,14 @@
 
 All notable changes to the PixTrail project will be documented in this file.
 
+## [1.2.0] - 2025-03-20
+
+### New Features
+* **Automatic GPX Naming**: GPX files are now automatically named after the photo directory. For example, if you run `pixtrail /path/to/Photos_Kyoto`, a file named `Photos_Kyoto.gpx` will be created in the same directory.
+
+### Minor Changes
+* The default filename has been changed from `track.gpx` to `PixTrail.gpx` when no explicit name can be derived.
+
 ## [1.1.1] - 2025-03-19
 
 ### Bug Fixes
