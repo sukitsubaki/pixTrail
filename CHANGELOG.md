@@ -2,6 +2,11 @@
 
 All notable changes to the PixTrail project will be documented in this file.
 
+## [2.0.1] - 2025-03-22
+
+### Bug Fixes
+* Improved handling of photos without GPS data and revised terminology (#5)
+
 ## [2.0.0] - 2025-03-21
 
 This major update introduces a powerful new web interface with Flask that makes it easier than ever to visualize and share your journeys, while keeping your data private and secure.
