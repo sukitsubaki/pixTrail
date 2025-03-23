@@ -1,12 +1,13 @@
 # Installation Guide
 
-This guide provides detailed instructions for installing PixTrail on different platforms and in different configurations.
+This guide provides detailed instructions for installing PixTrail on different platforms and configurations.
 
 ## System Requirements
 
 - **Python:** 3.6 or newer
 - **Operating System:** Windows, macOS, or Linux
 - **Disk Space:** Approximately 50MB for installation
+- **Internet Connection:** Required for downloading dependencies and map tiles
 
 ## Basic Installation
 
@@ -16,32 +17,33 @@ The simplest way to install PixTrail is using pip, the Python package manager:
 pip install pixtrail
 ```
 
-This will install the core functionality of PixTrail, which includes:
+This installs the core functionality, which includes:
 - GPS data extraction from images
 - GPX file generation
 - Command-line interface
 
 ## Installation with Web Interface
 
-For most users, I'd recommend installing PixTrail with the web interface:
+For most users, we recommend installing PixTrail with the web interface:
 
 ```bash
 pip install pixtrail[web]
 ```
 
-This will install the additional dependencies required for the browser-based interface:
+This installs additional dependencies required for the browser-based interface:
 - Flask web framework
-- Related web dependencies
+- Required JavaScript libraries
+- Web server components
 
 ## Development Installation
 
-If you plan to contribute to PixTrail or modify it, you should install the development dependencies:
+If you plan to contribute to PixTrail or modify it, install the development dependencies:
 
 ```bash
 pip install pixtrail[dev]
 ```
 
-Or, to install all dependencies (web interface and development tools):
+For all dependencies (web interface and development tools):
 
 ```bash
 pip install pixtrail[web,dev]
@@ -134,6 +136,7 @@ pip install pixtrail[web]
 - **Permission errors:** If you see permission errors, try using `pip install --user pixtrail[web]` or run the installation with administrator privileges.
 - **Missing dependencies:** If you encounter missing dependency errors, ensure you have the latest version of pip: `pip install --upgrade pip` before installing PixTrail.
 - **Installation fails on Windows:** Try installing the wheel package first: `pip install wheel` then retry the PixTrail installation.
+- **ModuleNotFoundError after installation:** Make sure your Python environment path is correctly set and try restarting your terminal or command prompt.
 
 ### Verifying Installation
 
@@ -166,3 +169,5 @@ If you need to uninstall PixTrail:
 ```bash
 pip uninstall pixtrail
 ```
+
+This will remove the package but preserve your configuration files. To completely remove all traces, manually delete any remaining configuration directories after uninstallation.
