@@ -2,6 +2,11 @@
 
 All notable changes to the PixTrail project will be documented in this file.
 
+## [1.1.1] - 2025-03-19
+
+### Bug Fixes
+* **Fixed duplicate success messages**: Removed redundant "GPX file created successfully" message that was appearing twice in terminal output
+
 ## [1.1.0] - 2025-03-19
 
 ### New Features
