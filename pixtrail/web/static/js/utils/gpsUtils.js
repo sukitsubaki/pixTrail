@@ -31,6 +31,11 @@ const GPSUtils = {
      * @returns {number} Distance in kilometers
      */
     calculateDistance: (lat1, lon1, lat2, lon2) => {
+        if (!GPSUtils.validateCoordinates(lat1, lon1) || !GPSUtils.validateCoordinates(lat2, lon2)) {
+            console.warn('Invalid coordinates for distance calculation');
+            return 0;
+        }
+        
         const R = 6371; // Earth's radius in km
         const dLat = (lat2 - lat1) * Math.PI / 180;
         const dLon = (lon2 - lon1) * Math.PI / 180;
@@ -58,6 +63,12 @@ const GPSUtils = {
         const t1 = time1 instanceof Date ? time1 : new Date(time1);
         const t2 = time2 instanceof Date ? time2 : new Date(time2);
         
+        // Check if dates are valid
+        if (isNaN(t1.getTime()) || isNaN(t2.getTime())) {
+            console.warn('Invalid timestamps for speed calculation');
+            return 0;
+        }
+        
         // Calculate distance
         const distance = GPSUtils.calculateDistance(lat1, lon1, lat2, lon2);
         
@@ -81,6 +92,7 @@ const GPSUtils = {
     validateCoordinates: (latitude, longitude) => {
         return typeof latitude === 'number' && 
                typeof longitude === 'number' &&
+               !isNaN(latitude) && !isNaN(longitude) &&
                latitude >= -90 && latitude <= 90 &&
                longitude >= -180 && longitude <= 180;
     },
@@ -144,6 +156,10 @@ const GPSUtils = {
      * @returns {string} Formatted coordinates
      */
     formatCoordinates: (latitude, longitude, decimals = 6) => {
+        if (!GPSUtils.validateCoordinates(latitude, longitude)) {
+            return 'Invalid coordinates';
+        }
+        
         const lat = Math.abs(latitude).toFixed(decimals);
         const lng = Math.abs(longitude).toFixed(decimals);
         
@@ -151,6 +167,29 @@ const GPSUtils = {
         const lngDir = longitude >= 0 ? 'E' : 'W';
         
         return `${lat}° ${latDir}, ${lng}° ${lngDir}`;
+    },
+    
+    /**
+     * Parse a timestamp string or convert timestamp to Date object
+     * @param {string|Date} timestamp - Timestamp to parse
+     * @returns {Date|null} Date object or null if invalid
+     */
+    parseTimestamp: (timestamp) => {
+        if (!timestamp) return null;
+        
+        // If already a Date object, return it
+        if (timestamp instanceof Date) {
+            return isNaN(timestamp.getTime()) ? null : timestamp;
+        }
+        
+        // Try to parse as ISO string
+        try {
+            const date = new Date(timestamp);
+            return isNaN(date.getTime()) ? null : date;
+        } catch (e) {
+            console.warn(`Failed to parse timestamp: ${timestamp}`, e);
+            return null;
+        }
     },
     
     /**
@@ -164,12 +203,33 @@ const GPSUtils = {
             return null;
         }
 
-        // Sort waypoints by timestamp
-        const sortedWaypoints = [...waypoints].sort((a, b) => {
-            const timeA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
-            const timeB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
-            return timeA - timeB;
+        // Create a copy of waypoints to avoid modifying the original
+        const waypointsCopy = waypoints.map(wp => ({ ...wp }));
+
+        // Convert timestamp strings to Date objects and validate
+        waypointsCopy.forEach(wp => {
+            if (wp.timestamp) {
+                wp.timestamp = GPSUtils.parseTimestamp(wp.timestamp);
+            }
         });
+
+        // Filter out waypoints with invalid coordinates
+        const validWaypoints = waypointsCopy.filter(wp => 
+            GPSUtils.validateCoordinates(wp.latitude, wp.longitude)
+        );
+
+        if (validWaypoints.length < 2) {
+            console.log("Not enough valid waypoints for statistics");
+            return null;
+        }
+
+        // Sort waypoints by timestamp (if available)
+        const validTimestampWaypoints = validWaypoints.filter(wp => wp.timestamp !== null);
+        
+        // Sort only if we have waypoints with valid timestamps
+        const sortedWaypoints = validTimestampWaypoints.length > 1 
+            ? [...validTimestampWaypoints].sort((a, b) => a.timestamp - b.timestamp)
+            : validWaypoints;
 
         // Initialize statistics object
         const stats = {
@@ -188,10 +248,12 @@ const GPSUtils = {
             speedProfile: []
         };
 
-        // Collect timestamps and start/end times
-        stats.startTime = new Date(sortedWaypoints[0].timestamp);
-        stats.endTime = new Date(sortedWaypoints[sortedWaypoints.length - 1].timestamp);
-        stats.totalDuration = (stats.endTime - stats.startTime) / 1000; // in seconds
+        // Set start/end times if we have valid timestamps
+        if (validTimestampWaypoints.length > 1) {
+            stats.startTime = sortedWaypoints[0].timestamp;
+            stats.endTime = sortedWaypoints[sortedWaypoints.length - 1].timestamp;
+            stats.totalDuration = (stats.endTime - stats.startTime) / 1000; // in seconds
+        }
 
         // Process waypoints for distance, elevation, and speed
         let prevPoint = null;
@@ -199,54 +261,62 @@ const GPSUtils = {
 
         for (let i = 0; i < sortedWaypoints.length; i++) {
             const point = sortedWaypoints[i];
-            const timestamp = new Date(point.timestamp);
 
             // Track min/max elevation
-            const elevation = point.altitude || 0;
-            stats.minElevation = Math.min(stats.minElevation, elevation);
-            stats.maxElevation = Math.max(stats.maxElevation, elevation);
+            if (typeof point.altitude === 'number' && !isNaN(point.altitude)) {
+                const elevation = point.altitude;
+                stats.minElevation = Math.min(stats.minElevation, elevation);
+                stats.maxElevation = Math.max(stats.maxElevation, elevation);
 
-            // Calculate elevation gain
-            if (prevElevation !== null && elevation > prevElevation) {
-                stats.elevationGain += (elevation - prevElevation);
+                // Calculate elevation gain
+                if (prevElevation !== null && elevation > prevElevation) {
+                    stats.elevationGain += (elevation - prevElevation);
+                }
+                prevElevation = elevation;
+
+                // Add to elevation profile
+                stats.elevationProfile.push({
+                    index: i,
+                    elevation: elevation
+                });
             }
-            prevElevation = elevation;
-
-            // Add to elevation profile (distance, elevation)
-            stats.elevationProfile.push({
-                index: i,
-                elevation: elevation
-            });
 
             // Calculate distance and speed if we have a previous point
             if (prevPoint) {
-                const distance = GPSUtils.calculateDistance(
-                    prevPoint.latitude, prevPoint.longitude,
-                    point.latitude, point.longitude
-                );
+                try {
+                    const distance = GPSUtils.calculateDistance(
+                        prevPoint.latitude, prevPoint.longitude,
+                        point.latitude, point.longitude
+                    );
 
-                const timeDiff = (timestamp - new Date(prevPoint.timestamp)) / 1000; // in seconds
+                    // Only add distance if it's reasonable (avoid GPS jumps)
+                    if (distance < 10) { // Don't count jumps over 10km
+                        stats.totalDistance += distance;
 
-                // Only add distance if it's reasonable (avoid GPS jumps)
-                if (distance < 10) { // Don't count jumps over 10km
-                    stats.totalDistance += distance;
+                        // Calculate speed if both points have valid timestamps
+                        if (point.timestamp && prevPoint.timestamp) {
+                            const timeDiff = (point.timestamp - prevPoint.timestamp) / 1000; // in seconds
 
-                    // Calculate speed if time difference is valid
-                    if (timeDiff > 0) {
-                        const speed = distance / timeDiff * 3600; // km/h
+                            // Only calculate speed if time difference is valid
+                            if (timeDiff > 0) {
+                                const speed = distance / timeDiff * 3600; // km/h
 
-                        // Only count reasonable speeds (avoid GPS errors)
-                        if (speed < 300) { // Max 300 km/h
-                            stats.speeds.push(speed);
-                            stats.maxSpeed = Math.max(stats.maxSpeed, speed);
+                                // Only count reasonable speeds (avoid GPS errors)
+                                if (speed < 300) { // Max 300 km/h
+                                    stats.speeds.push(speed);
+                                    stats.maxSpeed = Math.max(stats.maxSpeed, speed);
 
-                            // Add to speed profile (distance, speed)
-                            stats.speedProfile.push({
-                                index: i,
-                                speed: speed
-                            });
+                                    // Add to speed profile
+                                    stats.speedProfile.push({
+                                        index: i,
+                                        speed: speed
+                                    });
+                                }
+                            }
                         }
                     }
+                } catch (e) {
+                    console.warn(`Error calculating distance between waypoints: ${e.message}`);
                 }
             }
 
@@ -264,6 +334,14 @@ const GPSUtils = {
         // If no elevation changes were found, reset min/max
         if (stats.minElevation === Infinity) stats.minElevation = 0;
         if (stats.maxElevation === -Infinity) stats.maxElevation = 0;
+
+        // Round values for better display
+        stats.totalDistance = parseFloat(stats.totalDistance.toFixed(2));
+        stats.avgSpeed = parseFloat(stats.avgSpeed.toFixed(2));
+        stats.maxSpeed = parseFloat(stats.maxSpeed.toFixed(2));
+        stats.minElevation = parseFloat(stats.minElevation.toFixed(1));
+        stats.maxElevation = parseFloat(stats.maxElevation.toFixed(1));
+        stats.elevationGain = parseFloat(stats.elevationGain.toFixed(1));
 
         return stats;
     }
