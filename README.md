@@ -287,6 +287,19 @@ pip install -e ".[dev,web]"
 pytest
 ```
 
+## The Team Behind PixTrail
+
+- **Suki Tsubaki** - *Founder & Lead Developer*  
+  The creative mind behind PixTrail's conception, Suki architects the web interface design and develops the core Python functionality.
+
+- **Yuki Shimizu** - *Documentation Lead*  
+  Responsible for creating and maintaining PixTrail's comprehensive documentation, ensuring users can make the most of the tool.
+
+- **Keisuke Tanaka** - *Quality Assurance & JavaScript Developer*  
+  Oversees the project's quality standards and develops the JavaScript components that power the interactive features.
+
+We're committed to continuously improving PixTrail to help you better visualize and share your journeys.
+
 ## License
 
 - This project is licensed under the MIT License by <a href="https://github.com/sukitsubaki" target="_blank">Suki Tsubaki</a>
