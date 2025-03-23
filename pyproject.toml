@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pixtrail"
-version = "2.3.2"
+version = "2.3.3"
 description = "Extract GPS data from photos and create GPX files"
 readme = "README.md"
 authors = [{name = "Suki Tsubaki"}]

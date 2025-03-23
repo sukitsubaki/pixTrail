@@ -5,4 +5,4 @@ This package extracts GPS data from image EXIF metadata and
 creates GPX files that can be used in mapping applications.
 """
 
-__version__ = "2.3.2"
+__version__ = "2.3.3"
