@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="pixtrail",
-    version="2.3.3",
+    version="2.3.2",
     author="Suki Tsubaki",
     description="Extract GPS data from photos and create GPX files",
     long_description=long_description,
