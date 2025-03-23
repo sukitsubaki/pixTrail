@@ -2,6 +2,43 @@
 
 All notable changes to the PixTrail project will be documented in this file.
 
+## [2.3.0] - 2025-03-22
+
+### New Features
+#### Heatmap Visualization
+* **Time & density visualization**: Color-coded overlay showing where you spent the most time or took the most photos
+* **Intensity calculation**: Smart algorithm that combines photo count and dwell duration for accurate representation
+* **Toggle functionality**: Simple on/off switch for comparing with standard map view
+* **Compatible with other views**: Can be used alongside standard markers or clustering
+
+#### Marker Clustering
+* **Smart grouping**: Automatically combines nearby markers to reduce map clutter
+* **Adjustable radius**: Slider control to fine-tune the clustering sensitivity (20-200px)
+* **Quantity indicators**: Clear display of photo count within each cluster
+* **Interactive expansion**: Click to zoom and reveal individual photos within clusters
+
+#### Route Statistics and Analytics
+* **Performance metrics**: Calculations for total distance, average/max speed, and journey duration
+* **Elevation analysis**: Min/max altitude and total elevation gain
+* **Interactive charts**: Visual representations of elevation profile and speed variations
+* **Time analysis**: Start/end times and timestamp-based calculations
+
+### Improvements
+* Enhanced map interface with action-state visual indicators
+* Optimized performance for large photo collections (300+ waypoints)
+* Mobile-responsive statistics panel and controls
+* Added detailed error handling for GPS data inconsistencies
+
+### Technical Enhancements
+* Added Chart.js for statistical visualizations
+* Implemented Leaflet.heat for heatmap generation
+* Added Leaflet.markercluster for efficient marker management
+* Improved data processing algorithms with outlier detection
+
+### Contributors
+* @sukitsubaki in #8, #13
+* @neoneko87 in #9, #10, #11, #12
+
 ## [2.2.0] - 2025-03-22
 
 ### New Features
