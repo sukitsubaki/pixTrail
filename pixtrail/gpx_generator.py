@@ -83,11 +83,15 @@ class GPXGenerator:
             segment.points.append(track_point)
         
         try:
+            # Normalize and validate the output path
+            normalized_path = os.path.normpath(output_path)
+            
             # Create output directory if it doesn't exist
-            os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)
+            output_dir = os.path.dirname(os.path.abspath(normalized_path))
+            os.makedirs(output_dir, exist_ok=True)
             
             # Write the GPX file
-            with open(output_path, 'w') as gpx_file:
+            with open(normalized_path, 'w') as gpx_file:
                 gpx_file.write(gpx.to_xml())
                 
             return True
@@ -118,11 +122,14 @@ class GPXGenerator:
         Returns:
             bool: True if the waypoint was added successfully, False otherwise
         """
+        # Normalize the file path
+        normalized_gpx_file = os.path.normpath(gpx_file)
+        
         # Check if the GPX file exists
-        if os.path.isfile(gpx_file):
+        if os.path.isfile(normalized_gpx_file):
             try:
                 # Open and parse existing GPX file
-                with open(gpx_file, 'r') as f:
+                with open(normalized_gpx_file, 'r') as f:
                     gpx = gpxpy.parse(f)
             except Exception as e:
                 print(f"Error opening GPX file: {e}")
@@ -170,10 +177,11 @@ class GPXGenerator:
         
         try:
             # Create output directory if it doesn't exist
-            os.makedirs(os.path.dirname(os.path.abspath(gpx_file)), exist_ok=True)
+            output_dir = os.path.dirname(os.path.abspath(normalized_gpx_file))
+            os.makedirs(output_dir, exist_ok=True)
             
             # Write the GPX file
-            with open(gpx_file, 'w') as f:
+            with open(normalized_gpx_file, 'w') as f:
                 f.write(gpx.to_xml())
                 
             return True
