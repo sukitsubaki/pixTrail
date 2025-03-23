@@ -12,7 +12,7 @@ from flask import (
     current_app, send_file, abort, redirect, url_for
 )
 from werkzeug.utils import secure_filename
-
+import logging
 from ..core import PixTrail
 from ..utils import get_image_files, ensure_directory, get_default_output_path
 
@@ -383,9 +383,9 @@ def create_gpx():
         import traceback
         error_details = str(e)
         traceback_details = traceback.format_exc()
-        print(f"Error creating GPX: {error_details}")
-        print(f"Traceback: {traceback_details}")
+        logging.error(f"Error creating GPX: {error_details}")
+        logging.error(f"Traceback: {traceback_details}")
         # Clean up on error
         if os.path.exists(process_dir):
             shutil.rmtree(process_dir)
-        return jsonify({'error': f"Processing failed: {error_details}", 'success': False}), 500
+        return jsonify({'error': 'An internal error has occurred. Please try again later.', 'success': False}), 500
