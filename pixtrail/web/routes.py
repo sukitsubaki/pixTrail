@@ -200,8 +200,17 @@ def download_gpx(session_id, filename):
         session_id: Session ID
         filename: GPX filename
     """
+    # Sanitize session_id to prevent path traversal
+    secure_session_id = secure_filename(session_id)
     secure_name = secure_filename(filename)
-    file_path = os.path.join(current_app.config['PIXTRAIL_DATA_DIR'], session_id, secure_name)
+    
+    # Construct and normalize the file path
+    data_dir = os.path.normpath(current_app.config['PIXTRAIL_DATA_DIR'])
+    file_path = os.path.normpath(os.path.join(data_dir, secure_session_id, secure_name))
+    
+    # Security check: ensure the path is still within the data directory
+    if not file_path.startswith(data_dir):
+        abort(404)
     
     if not os.path.exists(file_path):
         abort(404)
