@@ -7,12 +7,32 @@
 
 # PixTrail
 
-PixTrail is a simple yet powerful tool that extracts the GPS information stored in your photos' EXIF metadata and converts it into standard GPX format that can be used in various mapping applications, allowing you to visualize and share your journeys.
+**PixTrail is a simple yet powerful tool that extracts the GPS information stored in your photos' EXIF metadata and converts it into standard GPX format that can be used in various mapping applications, allowing you to visualize and share your journeys.**
+
+<div align="center">
+  <img src="docs/assets/pixtrail-hero.png" alt="PixTrail Map Visualization" width="80%">
+</div>
+
+## Quick Start
+
+```bash
+# Install with web interface
+pip install pixtrail[web]
+
+# Launch web interface
+pixtrail -w
+
+# Or process photos via command line
+pixtrail -i /path/to/photos
+```
 
 ## The Story Behind PixTrail
-As an avid photographer, I've always enjoyed using the Photos app on iOS and macOS to organize and relive my journeys. While these tools are great for managing photos, I found myself wishing for a way to reconstruct the routes I had taken during day trips or longer journeys based on the photos I captured along the way.
 
-I wanted to see the path I wandered through a city, the trails I hiked in the mountains, or the roads I traveled during a vacation - all visualized on a map using the GPS data already embedded in my photos. This desire to connect my photographic memories with their geographic context led to the creation of PixTrail.
+> As an avid photographer, I've always enjoyed using the Photos app on iOS and macOS to organize and relive my journeys. While these tools are great for managing photos, I found myself wishing for a way to reconstruct the routes I had taken during day trips or longer journeys based on the photos I captured along the way.
+>
+> I wanted to see the path I wandered through a city, the trails I hiked in the mountains, or the roads I traveled during a vacation - all visualized on a map using the GPS data already embedded in my photos. This desire to connect my photographic memories with their geographic context led to the creation of PixTrail.
+> 
+> *Suki Tsubaki*
 
 ## Features
 
@@ -40,6 +60,7 @@ I wanted to see the path I wandered through a city, the trails I hiked in the mo
   - Batch processing of multiple photo collections
 
 ### Advanced Visualization Features
+
 - **Heat Map Visualization:** See where you spent the most time on your journey with color-coded intensity maps
 - **Marker Clustering:** Group nearby photos for cleaner map displays with adjustable radius
 - **Statistical Analysis:** View distance, elevation, speed, and time metrics for your journey
@@ -113,6 +134,10 @@ pixtrail -w --no-browser
 
 The web interface provides a user-friendly way to upload photos, extract GPS data, visualize routes on a map, and download GPX files:
 
+<div align="center">
+  <img src="docs/assets/pixtrail-web-interface.png" alt="PixTrail Web Interface" width="100%">
+</div>
+
 1. Start the web interface:
    ```bash
    pixtrail -w
@@ -149,6 +174,24 @@ pt.generate_gpx("/path/to/output.gpx")
 pt.process_and_generate("/path/to/photos", "/path/to/output.gpx", recursive=True)
 ```
 
+## Example Workflow
+
+Here's a practical example of using PixTrail to document a hiking trip:
+
+1. **Take photos** during your hike with a GPS-enabled camera or smartphone
+2. **Transfer photos** to your computer into a folder (e.g., "Mountain_Hike")
+3. **Process photos** using PixTrail:
+   ```bash
+   pixtrail -i ~/Photos/Mountain_Hike
+   ```
+4. **View the results**:
+   - A GPX file named "Mountain_Hike.gpx" is created in the same directory
+   - Or use the web interface for interactive visualization: `pixtrail -w`
+5. **Use the GPX file**:
+   - Import into Google Earth to see your route in 3D
+   - Upload to hiking platforms like AllTrails or Strava
+   - Share with friends or use in blog posts about your adventure
+
 ## Requirements
 
 - Python 3.6 or newer
@@ -158,14 +201,27 @@ pt.process_and_generate("/path/to/photos", "/path/to/output.gpx", recursive=True
 - Flask (for web interface)
 - Chart.js (automatically included in web interface)
 
-## Example
+## Frequently Asked Questions
 
-After running PixTrail on a directory of geotagged photos, you'll get a GPX file that can be imported into mapping software like:
+<details>
+<summary><b>How accurate is the GPS data from photos?</b></summary>
+The accuracy depends on your camera or smartphone's GPS capabilities. Most modern smartphones provide accuracy within 5-10 meters under good conditions. Professional cameras with built-in GPS may vary in accuracy. PixTrail extracts the data exactly as recorded in your photos' EXIF metadata.
+</details>
 
-- OpenStreetMap
-- Google Earth
-- GPX viewers
-- Mapping applications on smartphones and GPS devices
+<details>
+<summary><b>Can I use photos without GPS data?</b></summary>
+PixTrail requires photos with GPS coordinates in their EXIF metadata. Photos without this data will be skipped during processing. Most smartphones automatically embed GPS data when location services are enabled.
+</details>
+
+<details>
+<summary><b>How does PixTrail handle large photo collections?</b></summary>
+PixTrail is designed to efficiently process large collections. For very large sets (1000+ photos), the batch processing mode allows you to process multiple directories sequentially. The clustering feature in the web interface helps visualize dense collections by grouping nearby photos.
+</details>
+
+<details>
+<summary><b>Can I customize the generated GPX files?</b></summary>
+Basic customization is available through command-line options. For advanced customization, you can use the Python API to process the GPS data and create custom GPX files with specific attributes.
+</details>
 
 ## Documentation
 
@@ -197,10 +253,6 @@ Here are some features we're planning to add in future releases:
 - **Multilingual Support**: Internationalization of the user interface
 - **Interactive Web Export**: Share routes as standalone HTML pages with embedded photos
 - **Map Screenshot Export**: Save the current map view as an image file
-- **Map Enhancements**: 
-  - Support for multiple map providers
-  - Customizable map styles 
-  - More detailed route information
 
 ## Contributing
 
