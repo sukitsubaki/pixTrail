@@ -18,19 +18,22 @@ def get_image_files(directory: str, recursive: bool = False) -> List[str]:
     Returns:
         List of paths to image files
     """
+    # Normalize the directory path to resolve any '..' and ensure consistent format
+    normalized_directory = os.path.normpath(directory)
+    
     # Supported image file extensions
     image_extensions = ('*.jpg', '*.jpeg', '*.png', '*.tiff', '*.bmp',
                    '*.cr2', '*.nef', '*.arw', '*.dng', '*.orf', '*.rw2', '*.pef', '*.srw')
     
     # Check if directory exists
-    if not os.path.isdir(directory):
-        raise FileNotFoundError(f"Directory not found: {directory}")
+    if not os.path.isdir(normalized_directory):
+        raise FileNotFoundError(f"Directory not found: {normalized_directory}")
     
     # List to store found image files
     image_files = []
     
     # Search pattern
-    pattern = os.path.join(directory, '**') if recursive else directory
+    pattern = os.path.join(normalized_directory, '**') if recursive else normalized_directory
     
     # Find image files
     for ext in image_extensions:
@@ -55,7 +58,9 @@ def ensure_directory(directory: str) -> bool:
         True if directory exists or was created successfully, False otherwise
     """
     try:
-        os.makedirs(directory, exist_ok=True)
+        # Normalize the directory path
+        normalized_directory = os.path.normpath(directory)
+        os.makedirs(normalized_directory, exist_ok=True)
         return True
     except Exception as e:
         print(f"Error creating directory {directory}: {e}")
