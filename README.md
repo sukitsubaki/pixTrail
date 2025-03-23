@@ -289,7 +289,7 @@ pytest
 
 ## The Team Behind PixTrail
 
-PixTrail is developed and maintained by a dedicated team of passionate individuals:
+PixTrail is developed and maintained by a [dedicated team](TEAM.md) of passionate individuals:
 
 - **Suki Tsubaki** - *Founder & Lead Developer*  
   The creative mind behind PixTrail's conception, Suki architects the web interface design and develops the core Python functionality.
