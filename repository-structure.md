@@ -2,11 +2,16 @@
 sukitsubaki/pixTrail/
 ├── LICENSE
 ├── README.md
+├── TEAM.md
 ├── build_docs.py
 ├── mkdocs.yml
 ├── pyproject.toml
 ├── requirements.txt
 ├── setup.py
+├── assets/
+│   ├── shimizu-yuki.jpg
+│   ├── tanaka-keisuke.jpg
+│   └── tsubaki-suki.jpg
 ├── docs/
 │   ├── architecture.md
 │   ├── cli.md
