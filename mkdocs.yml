@@ -20,9 +20,38 @@ theme:
 
 nav:
   - Home: index.md
-  - User Guide: usage.md
-  - Web Interface: web_interface.md
-  - API Reference: api.md
+  - Installation & Getting Started:
+    - Installation: installation.md
+    - Getting Started: getting-started.md
+  - User Guide:
+    - Usage: usage.md
+    - Web Interface: web-interface.md
+    - Command Line Interface: cli.md
+    - Troubleshooting: troubleshooting.md
+    - FAQ: faq.md
+  - Development:
+    - Overview: development/index.md
+    - Module Structure: development/module-structure.md
+    - CSS Architecture: development/css-architecture.md
+    - Testing: development/testing.md
+  - Visualization:
+    - Overview: visualization/index.md
+    - Heat Map: visualization/heatmap.md
+    - Marker Clustering: visualization/clustering.md
+    - Statistics and Charts: visualization/statistics.md
+  - Tutorials:
+    - Overview: tutorials/index.md
+    - Photo Journey: tutorials/photo-journey.md
+    - Batch Processing: tutorials/batch-processing.md
+    - Custom Visualizations: tutorials/custom-visualizations.md
+  - Architecture: architecture.md
+  - Contributing: contributing.md
+  - API Reference:
+    - Overview: api/index.md
+    - Core Modules: api/core.md
+    - EXIF Reader: api/exif.md
+    - GPX Generator: api/gpx.md
+    - Utility Modules: api/utils.md
 
 markdown_extensions:
   - pymdownx.highlight
