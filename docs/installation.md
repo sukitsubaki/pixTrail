@@ -1,173 +1,151 @@
 # Installation Guide
 
-This guide provides detailed instructions for installing PixTrail on different platforms and configurations.
+There are several ways to install PixTrail depending on your needs and environment.
 
-## System Requirements
+## Prerequisites
 
-- **Python:** 3.6 or newer
-- **Operating System:** Windows, macOS, or Linux
-- **Disk Space:** Approximately 50MB for installation
-- **Internet Connection:** Required for downloading dependencies and map tiles
+- Python 3.6 or newer
+- pip (Python package installer)
+- Git (only for installation from source)
 
-## Basic Installation
+## Installation Methods
 
-The simplest way to install PixTrail is using pip, the Python package manager:
+### Method 1: Installation via pip (Recommended)
+
+This is the simplest method for most users.
+
+#### Basic Installation
 
 ```bash
+# For bash, PowerShell, or Command Prompt:
 pip install pixtrail
 ```
 
-This installs the core functionality, which includes:
-- GPS data extraction from images
-- GPX file generation
-- Command-line interface
+```zsh
+# For zsh (default shell on macOS):
+pip install pixtrail
+```
 
-## Installation with Web Interface
-
-For most users, we recommend installing PixTrail with the web interface:
+#### Installation with Web Interface
 
 ```bash
+# For bash, PowerShell, or Command Prompt:
 pip install pixtrail[web]
 ```
 
-This installs additional dependencies required for the browser-based interface:
-- Flask web framework
-- Required JavaScript libraries
-- Web server components
-
-## Development Installation
-
-If you plan to contribute to PixTrail or modify it, install the development dependencies:
-
-```bash
-pip install pixtrail[dev]
+```zsh
+# For zsh (default shell on macOS):
+# Note the quotation marks, which are required for zsh
+pip install "pixtrail[web]"
 ```
 
-For all dependencies (web interface and development tools):
+### Method 2: Installation from Source
+
+This method is recommended for developers or users who want the latest unreleased features.
 
 ```bash
-pip install pixtrail[web,dev]
-```
-
-## Installation from Source
-
-To install the latest development version directly from the repository:
-
-```bash
+# Clone the repository
 git clone https://github.com/sukitsubaki/pixtrail.git
+
+# Navigate to the repository directory
 cd pixtrail
+
+# Install in development mode
 pip install -e .
+
+# To include web interface dependencies
+pip install -e ".[web]"
+
+# To include development dependencies
+pip install -e ".[dev]"
+
+# To include both web and development dependencies
+pip install -e ".[web,dev]"
 ```
 
-The `-e` flag installs the package in "editable" mode, which is useful for development.
+### Method 3: Installation using pip with direct GitHub URL
 
-## Platform-Specific Instructions
+This method allows you to install the latest version directly from GitHub without cloning the repository.
 
-### Windows
+```bash
+# Basic installation
+pip install git+https://github.com/sukitsubaki/pixtrail.git
 
-1. Ensure Python is installed and added to your PATH
-2. Open Command Prompt or PowerShell as administrator
-3. Run:
-   ```
-   pip install pixtrail[web]
-   ```
-4. Test the installation:
-   ```
-   pixtrail --help
-   ```
+# With web interface dependencies (for bash/PowerShell)
+pip install "git+https://github.com/sukitsubaki/pixtrail.git#egg=pixtrail[web]"
 
-### macOS
+# With web interface dependencies (for zsh)
+pip install "git+https://github.com/sukitsubaki/pixtrail.git#egg=pixtrail[web]"
+```
 
-1. Install Python from python.org or using Homebrew:
-   ```
-   brew install python
-   ```
-2. Install PixTrail:
-   ```
-   pip3 install pixtrail[web]
-   ```
-3. Test the installation:
-   ```
-   pixtrail --help
-   ```
+## Verification
 
-### Linux
+After installation, verify that PixTrail was installed correctly by running:
 
-1. Install Python if not already installed:
-   ```
-   # Debian/Ubuntu
-   sudo apt update
-   sudo apt install python3 python3-pip
-   
-   # Fedora
-   sudo dnf install python3 python3-pip
-   ```
-2. Install PixTrail:
-   ```
-   pip3 install pixtrail[web]
-   ```
-3. Test the installation:
-   ```
-   pixtrail --help
-   ```
+```bash
+pixtrail --help
+```
 
-## Virtual Environment Installation (Recommended)
+This should display the help information for PixTrail, showing all available commands and options.
 
-For a clean installation that won't interfere with other Python packages, use a virtual environment:
+## Troubleshooting
+
+If you encounter issues with the installation, try these solutions:
+
+### 1. Command Not Found
+
+If you get a "command not found" error when running `pixtrail`, it may be because the Python scripts directory is not in your PATH. You can try running PixTrail with the full Python module path:
+
+```bash
+python -m pixtrail --help
+```
+
+### 2. Issues with Extra Dependencies
+
+If you're having trouble installing with extras like `[web]`, especially on macOS with zsh, make sure to use quotes:
+
+```zsh
+pip install "pixtrail[web]"
+```
+
+### 3. Installation in a Virtual Environment
+
+For a clean installation isolated from your system Python, use a virtual environment:
 
 ```bash
 # Create a virtual environment
-python -m venv pixtrail-env
+python -m venv venv_pixtrail
 
-# Activate the environment
+# Activate the virtual environment
 # On Windows:
-pixtrail-env\Scripts\activate
+# venv_pixtrail\Scripts\activate
 # On macOS/Linux:
-source pixtrail-env/bin/activate
+source venv_pixtrail/bin/activate
 
 # Install PixTrail in the virtual environment
-pip install pixtrail[web]
+pip install "pixtrail[web]"
 ```
 
-## Troubleshooting Installation
+### 4. Upgrade pip
 
-### Common Issues
-
-- **Permission errors:** If you see permission errors, try using `pip install --user pixtrail[web]` or run the installation with administrator privileges.
-- **Missing dependencies:** If you encounter missing dependency errors, ensure you have the latest version of pip: `pip install --upgrade pip` before installing PixTrail.
-- **Installation fails on Windows:** Try installing the wheel package first: `pip install wheel` then retry the PixTrail installation.
-- **ModuleNotFoundError after installation:** Make sure your Python environment path is correctly set and try restarting your terminal or command prompt.
-
-### Verifying Installation
-
-To verify that PixTrail is installed correctly:
+An outdated pip can sometimes cause installation issues:
 
 ```bash
-pixtrail --version
+pip install --upgrade pip
 ```
 
-You should see the current version number displayed.
+### 5. Permission Issues
 
-## Upgrading
-
-To upgrade to the latest version of PixTrail:
+If you're experiencing permission errors, you might need to use `sudo` (on Linux/macOS) or run your command prompt as Administrator (on Windows). Alternatively, use the `--user` flag:
 
 ```bash
-pip install --upgrade pixtrail
+pip install --user "pixtrail[web]"
 ```
 
-Or with the web interface:
+## Uninstallation
 
-```bash
-pip install --upgrade pixtrail[web]
-```
-
-## Uninstalling
-
-If you need to uninstall PixTrail:
+To uninstall PixTrail:
 
 ```bash
 pip uninstall pixtrail
 ```
-
-This will remove the package but preserve your configuration files. To completely remove all traces, manually delete any remaining configuration directories after uninstallation.

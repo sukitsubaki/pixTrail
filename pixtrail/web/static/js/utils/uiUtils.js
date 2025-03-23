@@ -27,10 +27,49 @@ const UIUtils = {
      */
     formatDate: (date, options = {}) => {
         if (!date) return '-';
-        
-        const dateObj = typeof date === 'string' ? new Date(date) : date;
-        
-        return dateObj.toLocaleString(options.locale || undefined, options);
+    
+        let dateObj;
+    
+        // Convert string to Date if needed
+        if (typeof date === 'string') {
+            try {
+                dateObj = new Date(date);
+            } catch (e) {
+                console.warn(`Invalid date string: ${date}`);
+                return '-';
+            }
+        } else if (date instanceof Date) {
+            dateObj = date;
+        } else {
+            return '-';
+        }
+    
+        // Check if date is valid
+        if (isNaN(dateObj.getTime())) {
+            console.warn(`Invalid date: ${date}`);
+            return '-';
+        }
+    
+        // Default options for better timestamp formatting
+        const defaultOptions = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        };
+    
+        // Merge default options with provided options
+        const formatOptions = { ...defaultOptions, ...options };
+    
+        try {
+            return dateObj.toLocaleString(options.locale || undefined, formatOptions);
+        } catch (e) {
+            console.warn(`Error formatting date: ${e.message}`);
+            // Fallback to simple format
+            return dateObj.toISOString().replace('T', ' ').substring(0, 19);
+        }
     },
     
     /**

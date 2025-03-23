@@ -19,6 +19,9 @@
 # Install with web interface
 pip install pixtrail[web]
 
+# Install with web interface (zsh/macOS)
+pip install "pixtrail[web]"
+
 # Launch web interface
 pixtrail -w
 
@@ -86,7 +89,11 @@ pip install pixtrail
 ### Installation with Web Interface
 
 ```bash
+# For bash, PowerShell, or Command Prompt
 pip install pixtrail[web]
+
+# For zsh (macOS default shell)
+pip install "pixtrail[web]"
 ```
 
 ### Install from Source

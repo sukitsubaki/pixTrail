@@ -49,12 +49,6 @@ class MarkerClustering {
      * Initialize event listeners
      */
     init() {
-        // Check if Leaflet.markercluster plugin is available
-        if (!window.L || !L.MarkerClusterGroup) {
-            console.warn('Leaflet.markercluster plugin not loaded correctly. Clustering functionality is disabled.');
-            return;
-        }
-        
         // Set up toggle button
         if (this.toggleButton) {
             DOMHelpers.on(this.toggleButton, 'click', this.toggle.bind(this));
@@ -76,7 +70,12 @@ class MarkerClustering {
      * @param {Array} waypoints - Array of waypoint objects
      */
     setWaypoints(waypoints) {
-        this.waypoints = waypoints;
+        this.waypoints = waypoints || [];
+        
+        // Create markers from waypoints if we don't have markers yet
+        if (this.markers.length === 0 && this.waypoints.length > 0) {
+            this.createMarkersFromWaypoints();
+        }
         
         // Recreate clustering if it's currently enabled
         if (this.clusteringEnabled) {
@@ -89,7 +88,7 @@ class MarkerClustering {
      * @param {Array} markers - Array of Leaflet marker objects
      */
     setMarkers(markers) {
-        this.markers = markers;
+        this.markers = markers || [];
         
         // Recreate clustering if it's currently enabled
         if (this.clusteringEnabled) {
@@ -114,73 +113,105 @@ class MarkerClustering {
     enable() {
         if (!this.map) {
             console.warn('Map not available for clustering');
-            return;
-        }
-        
-        // Check if plugin is available
-        if (!L.MarkerClusterGroup) {
-            console.error("Leaflet.markercluster plugin not loaded correctly");
             if (this.config.onError) {
-                this.config.onError('Clustering feature unavailable. Missing Leaflet.markercluster plugin.');
+                this.config.onError('Clustering error: Map not available');
             }
             return;
         }
         
-        // If no waypoints, nothing to do
-        if (!this.waypoints || this.waypoints.length === 0) {
+        // Check if Leaflet is available
+        if (typeof L === 'undefined') {
+            console.error("Leaflet library not loaded correctly");
+            if (this.config.onError) {
+                this.config.onError('Clustering feature unavailable. Leaflet library not loaded correctly.');
+            }
+            return;
+        }
+        
+        // Check if plugin is available
+        if (typeof L.MarkerClusterGroup !== 'function') {
+            console.error("Leaflet.markercluster plugin not loaded correctly");
+            if (this.config.onError) {
+                this.config.onError('Clustering feature unavailable. Make sure Leaflet.markercluster plugin is properly loaded.');
+            }
+            return;
+        }
+        
+        // If no markers and no waypoints, nothing to do
+        if (this.markers.length === 0 && this.waypoints.length === 0) {
             if (this.config.onError) {
                 this.config.onError('No GPS data available for clustering');
             }
             return;
         }
         
-        // Remove individual markers from map
-        if (this.markers.length > 0) {
-            this.markers.forEach(marker => {
-                if (marker._map) {
-                    this.map.removeLayer(marker);
-                }
-            });
+        // Create markers from waypoints if we don't have markers yet
+        if (this.markers.length === 0 && this.waypoints.length > 0) {
+            this.createMarkersFromWaypoints();
         }
+        
+        // If still no markers, nothing to do
+        if (this.markers.length === 0) {
+            if (this.config.onError) {
+                this.config.onError('No markers available for clustering');
+            }
+            return;
+        }
+        
+        // Remove individual markers from map
+        this.markers.forEach(marker => {
+            if (marker._map) {
+                this.map.removeLayer(marker);
+            }
+        });
         
         // Remove existing cluster group if it exists
         if (this.markerClusterGroup && this.markerClusterGroup._map) {
             this.map.removeLayer(this.markerClusterGroup);
         }
         
-        // Update options with current radius
-        const options = {
-            ...this.clusteringOptions,
-            maxClusterRadius: this.clusterRadius
-        };
-        
-        // Create marker cluster group
-        this.markerClusterGroup = L.markerClusterGroup(options);
-        
-        // Create new markers for all waypoints if markers aren't provided
-        if (this.markers.length === 0 && this.waypoints.length > 0) {
-            this.createMarkersFromWaypoints();
-        }
-        
-        // Add existing markers to cluster group
-        this.markers.forEach(marker => {
-            this.markerClusterGroup.addLayer(marker);
-        });
-        
-        // Add cluster group to map
-        this.map.addLayer(this.markerClusterGroup);
-        
-        // Update state
-        this.clusteringEnabled = true;
-        
-        // Update UI
-        if (this.toggleButton) {
-            this.toggleButton.textContent = 'Disable Clustering';
-            this.toggleButton.classList.add('active');
-        }
-        
-        if (this.clusterOptions) {
-            DOMHelpers.show(this.clusterOptions);
+        try {
+            // Update options with current radius
+            const options = {
+                ...this.clusteringOptions,
+                maxClusterRadius: this.clusterRadius
+            };
+            
+            // Create marker cluster group
+            this.markerClusterGroup = L.markerClusterGroup(options);
+            
+            // Add existing markers to cluster group
+            this.markers.forEach(marker => {
+                this.markerClusterGroup.addLayer(marker);
+            });
+            
+            // Add cluster group to map
+            this.map.addLayer(this.markerClusterGroup);
+            
+            // Update state
+            this.clusteringEnabled = true;
+            
+            // Update UI
+            if (this.toggleButton) {
+                this.toggleButton.textContent = 'Disable Clustering';
+                this.toggleButton.classList.add('active');
+            }
+            
+            if (this.clusterOptions) {
+                DOMHelpers.show(this.clusterOptions);
+            }
+        } catch (error) {
+            console.error("Error enabling clustering:", error);
+            if (this.config.onError) {
+                this.config.onError(`Clustering error: ${error.message}`);
+            }
+            
+            // Restore individual markers
+            this.markers.forEach(marker => {
+                if (!marker._map) {
+                    marker.addTo(this.map);
+                }
+            });
         }
     }
     
@@ -188,28 +219,37 @@ class MarkerClustering {
      * Disable clustering
      */
     disable() {
-        // Remove cluster group from map
-        if (this.markerClusterGroup && this.map) {
-            this.map.removeLayer(this.markerClusterGroup);
-            this.markerClusterGroup = null;
-        }
-        
-        // Add individual markers back to map
-        this.markers.forEach(marker => {
-            marker.addTo(this.map);
-        });
-        
-        // Update state
-        this.clusteringEnabled = false;
-        
-        // Update UI
-        if (this.toggleButton) {
-            this.toggleButton.textContent = 'Enable Clustering';
-            this.toggleButton.classList.remove('active');
-        }
-        
-        if (this.clusterOptions) {
-            DOMHelpers.hide(this.clusterOptions);
+        try {
+            // Remove cluster group from map
+            if (this.markerClusterGroup && this.map) {
+                this.map.removeLayer(this.markerClusterGroup);
+                this.markerClusterGroup = null;
+            }
+            
+            // Add individual markers back to map
+            this.markers.forEach(marker => {
+                if (!marker._map) {
+                    marker.addTo(this.map);
+                }
+            });
+            
+            // Update state
+            this.clusteringEnabled = false;
+            
+            // Update UI
+            if (this.toggleButton) {
+                this.toggleButton.textContent = 'Enable Clustering';
+                this.toggleButton.classList.remove('active');
+            }
+            
+            if (this.clusterOptions) {
+                DOMHelpers.hide(this.clusterOptions);
+            }
+        } catch (error) {
+            console.error("Error disabling clustering:", error);
+            if (this.config.onError) {
+                this.config.onError(`Error disabling clustering: ${error.message}`);
+            }
         }
     }
     
@@ -248,6 +288,10 @@ class MarkerClustering {
      * Create markers from waypoints
      */
     createMarkersFromWaypoints() {
+        if (!this.waypoints || this.waypoints.length === 0) {
+            return;
+        }
+        
         this.markers = [];
         
         this.waypoints.forEach(point => {
