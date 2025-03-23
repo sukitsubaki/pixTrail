@@ -118,7 +118,7 @@ class DragAndDrop {
         const items = e.dataTransfer.items;
         const files = e.dataTransfer.files;
         
-        if (!items || items.length === 0) {
+        if (!items || items.length === 0 || !files || files.length === 0) {
             if (this.config.onError) {
                 this.config.onError('No items detected in the drop');
             }
@@ -161,30 +161,42 @@ class DragAndDrop {
             return;
         }
         
-        // Are we dropping on the file drop area or should we use the file input?
-        if (dropArea === this.fileDropArea || !this.directoryDropArea) {
+        try {
             // Create a new FileList-like object with only image files
-            if (this.fileInput) {
-                this.fileInput.files = FileUtils.createFileList(imageFiles);
+            const fileList = FileUtils.createFileList(imageFiles);
+            
+            // Are we dropping on the file drop area or should we use the file input?
+            if (dropArea === this.fileDropArea || !this.directoryDropArea) {
+                if (this.fileInput) {
+                    // Set the files to the input element
+                    if ('files' in this.fileInput) {
+                        this.fileInput.files = fileList;
+                        
+                        // Trigger the change event
+                        const event = new Event('change');
+                        this.fileInput.dispatchEvent(event);
+                    }
+                }
                 
-                // Trigger the change event
-                const event = new Event('change');
-                this.fileInput.dispatchEvent(event);
+                // Call the onFileDrop callback if provided
+                if (this.config.onFileDrop) {
+                    this.config.onFileDrop(imageFiles);
+                }
+                
+                if (this.config.onInfo) {
+                    this.config.onInfo(`${imageFiles.length} image files ready to process`);
+                }
+            } else {
+                // Handle as directory even though it's files
+                // (this is for when files are dropped on the directory area)
+                if (this.config.onDirectoryDrop) {
+                    this.config.onDirectoryDrop(imageFiles);
+                }
             }
-            
-            // Call the onFileDrop callback if provided
-            if (this.config.onFileDrop) {
-                this.config.onFileDrop(imageFiles);
-            }
-            
-            if (this.config.onInfo) {
-                this.config.onInfo(`${imageFiles.length} image files ready to process`);
-            }
-        } else {
-            // Handle as directory even though it's files
-            // (this is for when files are dropped on the directory area)
-            if (this.config.onDirectoryDrop) {
-                this.config.onDirectoryDrop(imageFiles);
+        } catch (error) {
+            console.error('Error handling dropped files:', error);
+            if (this.config.onError) {
+                this.config.onError(`Error handling dropped files: ${error.message}. Please use the Select Files button instead.`);
             }
         }
     }
@@ -195,12 +207,54 @@ class DragAndDrop {
      * @param {HTMLElement} dropArea - The drop area element
      */
     handleAsDirectory(e, dropArea) {
-        // Due to browser security restrictions, we can't directly access the directory contents via JS
-        // We need the user to use the directory input, but we can make it easier by:
-        // 1. Auto-switching to the directory tab if needed
-        // 2. Auto-opening the directory selector
+        // First, try to extract files directly from the drop event
+        const files = e.dataTransfer.files;
         
+        if (files && files.length > 0) {
+            // Filter for image files
+            const imageFiles = Array.from(files).filter(file => FileUtils.isImageFile(file));
+            
+            if (imageFiles.length === 0) {
+                if (this.config.onError) {
+                    this.config.onError('No valid image files found in the dropped directory');
+                }
+                return;
+            }
+            
+            try {
+                // Create a new FileList-like object with only image files
+                const fileList = FileUtils.createFileList(imageFiles);
+                
+                // Set the files to the directory input if we're on the directory tab
+                if (this.directoryInput && 'files' in this.directoryInput) {
+                    this.directoryInput.files = fileList;
+                    
+                    // Trigger the change event
+                    const event = new Event('change');
+                    this.directoryInput.dispatchEvent(event);
+                }
+                
+                // Call the onDirectoryDrop callback
+                if (this.config.onDirectoryDrop) {
+                    this.config.onDirectoryDrop(imageFiles);
+                }
+                
+                if (this.config.onInfo) {
+                    this.config.onInfo(`${imageFiles.length} image files from directory ready to process`);
+                }
+                
+                return;
+            } catch (error) {
+                console.error('Error handling dropped directory files:', error);
+                // Fall through to the directory input fallback method
+            }
+        }
+        
+        // Fallback: Due to browser security restrictions, we can't always access directory contents directly
+        // So we need the user to select the directory manually
         if (this.directoryInput) {
+            // Switch to directory tab if necessary (not implemented here, handled externally)
+            
             // Trigger the directory input click
             this.directoryInput.click();
             

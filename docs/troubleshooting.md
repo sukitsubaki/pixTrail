@@ -1,13 +1,26 @@
-# Troubleshooting PixTrail
+# Troubleshooting
 
-This guide provides solutions to common issues you might encounter when using PixTrail.
+This guide addresses common issues you might encounter when using PixTrail.
 
 ## Installation Issues
 
+### "No matches found: pixtrail[web]" error in zsh
+
+**Problem:** When trying to install PixTrail with web interface in zsh (default shell on macOS), you get an error like:
+```
+zsh: no matches found: pixtrail[web]
+```
+
+**Solution:** In zsh, square brackets are used for pattern matching. Use quotes around the package name:
+```zsh
+pip install "pixtrail[web]"
+```
+
 ### Package Not Found
 
-If you receive `No matching distribution found for pixtrail`:
+**Problem:** You receive `No matching distribution found for pixtrail`.
 
+**Solutions:**
 - Check your internet connection
 - Verify you have a compatible Python version (3.6+)
 - Try updating pip: `pip install --upgrade pip`
@@ -15,8 +28,9 @@ If you receive `No matching distribution found for pixtrail`:
 
 ### Dependency Installation Failures
 
-If dependencies fail to install:
+**Problem:** Dependencies fail to install.
 
+**Solutions:**
 - Install build dependencies: `pip install wheel setuptools`
 - For Windows users with C extension issues: `pip install pipwin && pipwin install pillow`
 - Try installing in a virtual environment to avoid system conflicts
@@ -24,35 +38,92 @@ If dependencies fail to install:
 
 ### Permission Errors
 
-If you get "Permission denied" errors during installation:
+**Problem:** You get "Permission denied" errors during installation.
 
+**Solutions:**
 - Use `pip install --user pixtrail` to install in user space
 - Run the command prompt/terminal as administrator/root
 - Check folder permissions where Python packages are installed
 
+### Package installed but command not found
+
+**Problem:** You've installed PixTrail, but when you run the `pixtrail` command, you get a "command not found" error.
+
+**Solutions:**
+
+1. Find where Python scripts are installed and add to PATH:
+   ```bash
+   # Find your Python scripts directory
+   python -c "import site; print(site.USER_BASE + '/bin')"  # Linux/macOS
+   python -c "import site; print(site.USER_BASE + '\\Scripts')"  # Windows
+   
+   # Add to PATH (temporary)
+   export PATH="$PATH:/path/to/scripts/directory"  # Linux/macOS
+   set PATH=%PATH%;C:\path\to\scripts\directory  # Windows
+   ```
+
+2. Try running PixTrail with the Python module syntax:
+   ```bash
+   python -m pixtrail --help
+   ```
+
+3. Create an alias in your shell configuration file (.bashrc, .zshrc):
+   ```bash
+   alias pixtrail="python -m pixtrail"
+   ```
+
+4. Reinstall the package with:
+   ```bash
+   pip install --force-reinstall pixtrail
+   ```
+
+### Package shows as installed but doesn't work
+
+**Problem:** Pip says the package is installed, but it doesn't work properly.
+
+**Solutions:**
+1. Try using a virtual environment for a clean installation:
+   ```bash
+   # With venv
+   python -m venv pixtrail_env
+   source pixtrail_env/bin/activate  # Linux/macOS
+   pixtrail_env\Scripts\activate  # Windows
+   
+   # With conda
+   conda create -n pixtrail python=3.9
+   conda activate pixtrail
+   
+   # Then install
+   pip install "pixtrail[web]"
+   ```
+
+2. Install directly from GitHub:
+   ```bash
+   pip install git+https://github.com/sukitsubaki/pixtrail.git
+   ```
+
+3. Verify the package is correctly installed:
+   ```bash
+   python -c "import pixtrail; print(pixtrail.__file__)"
+   pip show pixtrail
+   ```
+
 ## Command Line Issues
-
-### Command Not Found
-
-If `pixtrail` command is not found after installation:
-
-- Ensure Python scripts directory is in your PATH
-- Try the full module path: `python -m pixtrail`
-- Reinstall with: `pip install --force-reinstall pixtrail`
-- For Windows users, check if `Scripts` directory is in PATH
 
 ### Invalid Syntax Errors
 
-If you get Python syntax errors when running PixTrail:
+**Problem:** You get Python syntax errors when running PixTrail.
 
+**Solutions:**
 - Check that you're using Python 3.6 or newer
 - Verify that the command line arguments are correctly formatted
 - Avoid using quotes in paths with spaces; use single quotes if needed: `pixtrail -i '/path with spaces/'`
 
 ### No GPS Data Found
 
-If PixTrail reports "No GPS data found in photos":
+**Problem:** PixTrail reports "No GPS data found in photos".
 
+**Solutions:**
 - Verify your photos actually contain GPS data using other software (like ExifTool)
 - Ensure you have permission to read the input directory
 - Check that the file formats are supported (.jpg, .jpeg, .tiff, .raw formats)
@@ -60,8 +131,9 @@ If PixTrail reports "No GPS data found in photos":
 
 ### Errors with RAW Files
 
-If RAW files aren't processed correctly:
+**Problem:** RAW files aren't processed correctly.
 
+**Solutions:**
 - Install additional dependencies: `pip install rawpy`
 - Check if your RAW format is supported (CR2, NEF, ARW, DNG, etc.)
 - Try converting RAW to JPEG first, then processing the JPEGs
@@ -71,26 +143,29 @@ If RAW files aren't processed correctly:
 
 ### Web Server Won't Start
 
-If the web server fails to start:
+**Problem:** The web server fails to start.
 
+**Solutions:**
 - Check if another application is using port 5000
 - Try a different port: `pixtrail -w --port 8080`
 - Look for error messages in the terminal
 - Check if you have access rights to bind to the specified host
-- Install web dependencies if missing: `pip install pixtrail[web]`
+- Install web dependencies if missing: `pip install "pixtrail[web]"`
 
 ### Browser Doesn't Open Automatically
 
-If the browser doesn't launch:
+**Problem:** The browser doesn't launch when starting the web interface.
 
+**Solutions:**
 - Open your browser manually and navigate to `http://127.0.0.1:5000`
 - Try using the `--no-browser` flag and then open the URL manually
 - Check if you have a default browser set in your system
 
 ### Directory Selection Not Working
 
-If the directory selector doesn't work:
+**Problem:** The directory selector doesn't work in the web interface.
 
+**Solutions:**
 - Try using the file upload option instead
 - Some browsers have limited directory access (especially on mobile)
 - Check if you're using a supported browser (Chrome/Firefox/Edge recommended)
@@ -98,8 +173,9 @@ If the directory selector doesn't work:
 
 ### Files Not Appearing in Upload
 
-If files don't appear after selection:
+**Problem:** Files don't appear after selection in the web interface.
 
+**Solutions:**
 - Check if you're selecting files with supported formats
 - Ensure files aren't too large for browser processing
 - Try dragging and dropping files directly
@@ -108,8 +184,9 @@ If files don't appear after selection:
 
 ### Map Does Not Display
 
-If the map doesn't appear after processing:
+**Problem:** The map doesn't appear after processing.
 
+**Solutions:**
 - Check your internet connection (needed for map tiles)
 - Look for JavaScript errors in the browser console (F12)
 - Verify that your files contain valid GPS coordinates
@@ -119,8 +196,9 @@ If the map doesn't appear after processing:
 
 ### Incorrect Coordinates
 
-If your route appears in the wrong location:
+**Problem:** Your route appears in the wrong location.
 
+**Solutions:**
 - Check that your camera's date/time was correctly set when taking photos
 - Some cameras store coordinates in non-standard formats
 - Try using ExifTool to verify the coordinates are correct in the original files
@@ -128,16 +206,18 @@ If your route appears in the wrong location:
 
 ### Missing Timestamps
 
-If your route has no chronological order:
+**Problem:** Your route has no chronological order.
 
+**Solutions:**
 - Ensure your camera records timestamps in EXIF data
 - Check if file modification dates can be used as a fallback
 - Verify that the time zone settings on your camera were correct
 
 ### Inconsistent GPS Data
 
-If your route has strange jumps or inconsistencies:
+**Problem:** Your route has strange jumps or inconsistencies.
 
+**Solutions:**
 - Photos taken indoors or in "urban canyons" may have poor GPS accuracy
 - Some cameras only update GPS periodically to save battery
 - Try removing outliers manually before processing
@@ -147,8 +227,9 @@ If your route has strange jumps or inconsistencies:
 
 ### Empty GPX File
 
-If the generated GPX file is empty:
+**Problem:** The generated GPX file is empty.
 
+**Solutions:**
 - Ensure your photos contain GPS data
 - Check if you have write permissions for the output location
 - Try specifying a different output path: `pixtrail -i /path/to/photos -o /path/to/output.gpx`
@@ -156,8 +237,9 @@ If the generated GPX file is empty:
 
 ### GPX Import Problems
 
-If mapping software can't import the generated GPX file:
+**Problem:** Mapping software can't import the generated GPX file.
 
+**Solutions:**
 - Verify the file was created successfully (should be non-zero size)
 - Check if the GPX format is compatible with your software
 - Try opening the file in a text editor to check for obvious errors
@@ -165,8 +247,9 @@ If mapping software can't import the generated GPX file:
 
 ### Missing Elevation Data
 
-If elevation data is missing in the GPX file:
+**Problem:** Elevation data is missing in the GPX file.
 
+**Solutions:**
 - Not all cameras record elevation data
 - Elevation data might be absent or inaccurate depending on the device
 - Some mapping software can add elevation data after import
@@ -176,8 +259,9 @@ If elevation data is missing in the GPX file:
 
 ### Slow Processing
 
-If processing is very slow:
+**Problem:** Processing is very slow.
 
+**Solutions:**
 - RAW files take much longer to process than JPEG
 - Processing many files at once requires more memory
 - Processing recursively through many subdirectories takes longer
@@ -186,8 +270,9 @@ If processing is very slow:
 
 ### High Memory Usage
 
-If PixTrail uses too much memory:
+**Problem:** PixTrail uses too much memory.
 
+**Solutions:**
 - Process fewer photos at once
 - Avoid recursive processing of large directory trees
 - Close other memory-intensive applications
@@ -195,8 +280,9 @@ If PixTrail uses too much memory:
 
 ### Browser Performance Issues
 
-If the web interface is slow or unresponsive:
+**Problem:** The web interface is slow or unresponsive.
 
+**Solutions:**
 - Enable clustering when displaying many photo markers
 - Process fewer photos at a time
 - Try a different browser (Chrome often has the best performance)
