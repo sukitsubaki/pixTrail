@@ -85,4 +85,4 @@ Each tutorial follows a similar structure:
 
 ## Request a Tutorial
 
-Don't see what you're looking for? Open an issue on my GitHub repository to request a new tutorial topic.
+Don't see what you're looking for? Open an issue on the GitHub repository to request a new tutorial topic.
