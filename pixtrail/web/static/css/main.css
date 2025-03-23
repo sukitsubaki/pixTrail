@@ -1,0 +1,26 @@
+/**
+ * PixTrail - Main CSS
+ * Main stylesheet importing all modular CSS components
+ */
+
+/* Base styles */
+@import 'base/variables.css';
+@import 'base/reset.css';
+@import 'base/typography.css';
+
+/* Layouts */
+@import 'layouts/container.css';
+@import 'layouts/grid.css';
+
+/* Modules */
+@import 'modules/header.css';
+@import 'modules/footer.css';
+@import 'modules/forms.css';
+@import 'modules/buttons.css';
+@import 'modules/photo-section.css';
+@import 'modules/map-section.css';
+@import 'modules/statistics-section.css';
+@import 'modules/progress.css';
+@import 'modules/status-messages.css';
+@import 'modules/dropdown.css';
+@import 'modules/utilities.css';

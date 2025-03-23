@@ -1,0 +1,45 @@
+/**
+ * PixTrail - Photo Section Module
+ * Styles for the photo upload section
+ */
+
+.photo-section {
+    background-color: white;
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+    box-shadow: var(--shadow-sm);
+}
+
+.drop-area {
+    border: 2px dashed var(--border-medium);
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-xl) var(--spacing-md);
+    margin-top: var(--spacing-md);
+    text-align: center;
+    background-color: var(--bg-medium);
+    transition: all var(--transition-medium);
+    cursor: pointer;
+}
+
+.drop-area.drag-over {
+    border-color: var(--primary-color);
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.drop-message {
+    color: var(--text-muted);
+}
+
+.drop-icon {
+    font-size: 2em;
+    margin-bottom: var(--spacing-sm);
+}
+
+.drop-area p {
+    margin: 0;
+}
+
+.input-selector {
+    margin-bottom: var(--spacing-md);
+}
