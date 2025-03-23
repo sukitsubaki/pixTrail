@@ -2,6 +2,13 @@
 
 All notable changes to the PixTrail project will be documented in this file.
 
+## [2.3.1] - 2025-03-22
+
+### Bug Fixes
+* **Fixed Heatmap Feature**: Corrected script loading order for the Leaflet.heat library
+* **Improved Error Handling**: Added proper error messages when visualization features are unavailable
+* **Enhanced Plugin Detection**: Implemented checks to verify plugin availability before usage
+
 ## [2.3.0] - 2025-03-22
 
 ### New Features
