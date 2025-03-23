@@ -183,10 +183,7 @@ The PixTrail documentation is available in several formats:
   # OR serve locally with live reloading
   python build_docs.py --serve
   ```
-- **Source Documentation**: Browse the documentation in the [docs](docs/) directory:
-  - [User Guide](docs/usage.md)
-  - [Web Interface](docs/web_interface.md)
-  - [API Reference](docs/api.md)
+- **Source Documentation**: Browse the documentation in the [docs](docs/) directory
 
 ## Future Roadmap
 
