@@ -1,0 +1,19 @@
+/**
+ * PixTrail - Header Module
+ * Styles for the application header
+ */
+
+header {
+    text-align: center;
+    padding: var(--spacing-lg) 0;
+}
+
+header h1 {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-xs);
+}
+
+header p {
+    color: var(--text-light);
+    margin-bottom: 0;
+}

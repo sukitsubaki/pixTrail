@@ -1,0 +1,159 @@
+/**
+ * PixTrail - Forms Module
+ * Styles for form elements, inputs, and controls
+ */
+
+/* File input containers */
+.file-input-container {
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* Hide native file input */
+input[type="file"] {
+    position: absolute;
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+/* Custom file button */
+.custom-file-button {
+    display: inline-block;
+    background-color: var(--bg-medium);
+    color: var(--text-color);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    border: 1px solid var(--border-medium);
+    transition: background-color var(--transition-fast);
+}
+
+.custom-file-button:hover {
+    background-color: var(--border-medium);
+}
+
+/* File selection indicators */
+#selected-files-count,
+#selected-directory {
+    margin-left: var(--spacing-sm);
+    color: var(--text-muted);
+}
+
+/* Tab navigation */
+.selector-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-medium);
+    margin-bottom: var(--spacing-md);
+}
+
+.selector-tab {
+    background: transparent;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin-right: var(--spacing-xs);
+    border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
+    cursor: pointer;
+    font-weight: normal;
+    color: var(--text-muted);
+    transition: all var(--transition-fast);
+}
+
+.selector-tab:hover {
+    background-color: var(--bg-medium);
+}
+
+.selector-tab.active {
+    font-weight: 600;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    margin-bottom: -1px;
+}
+
+.selector-content {
+    display: none;
+}
+
+.selector-content.active {
+    display: block;
+}
+
+/* Checkbox and select styles */
+input[type="checkbox"] {
+    margin-right: var(--spacing-sm);
+}
+
+select {
+    padding: var(--spacing-xs);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--border-radius-sm);
+    background-color: white;
+}
+
+/* Option rows */
+.option-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.option-row:last-child {
+    margin-bottom: 0;
+}
+
+/* Recursive options */
+.recursive-options {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--bg-medium);
+}
+
+.depth-selector {
+    margin-left: var(--spacing-lg);
+    display: none;
+}
+
+.depth-selector.visible {
+    display: flex;
+    align-items: center;
+}
+
+.depth-selector label {
+    margin-right: var(--spacing-sm);
+}
+
+/* Range sliders */
+.slider {
+    width: 150px;
+    height: 5px;
+    -webkit-appearance: none;
+    background: var(--border-medium);
+    outline: none;
+    border-radius: var(--border-radius-sm);
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    border: none;
+}
