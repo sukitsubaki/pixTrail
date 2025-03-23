@@ -30,25 +30,25 @@ static/
 │   │   ├── header.css
 │   │   ├── map-section.css
 │   │   └── ...
-│   └── main.css                    # Main CSS file importing all modules
+│   └── main.css            # Main CSS file importing all modules
 ├── js/
-│   ├── api/                        # API communication
-│   │   └── apiClient.js            # Client for server API calls
-│   ├── modules/                    # Feature modules
-│   │   ├── charts.js               # Chart creation and management
-│   │   ├── clustering.js           # Marker clustering
-│   │   ├── dragAndDrop.js          # Drag and drop file handling
-│   │   ├── exifReader.js           # EXIF metadata extraction
-│   │   ├── fileUpload.js           # File upload handling
-│   │   ├── heatmap.js              # Heatmap visualization
-│   │   ├── mapVisualization.js     # Map display and controls
-│   │   └── statistics.js           # Statistics calculations and display
-│   ├── utils/              # Utility functions
-│   │   ├── domHelpers.js   # DOM manipulation helpers
-│   │   ├── fileUtils.js    # File handling utilities
-│   │   ├── gpsUtils.js     # GPS data utilities
-│   │   └── uiUtils.js      # UI helper functions
-│   └── main.js             # Application entry point
+│   ├── api/                     # API communication
+│   │   └── apiClient.js         # Client for server API calls
+│   ├── modules/                 # Feature modules
+│   │   ├── charts.js            # Chart creation and management
+│   │   ├── clustering.js        # Marker clustering
+│   │   ├── dragAndDrop.js       # Drag and drop file handling
+│   │   ├── exifReader.js        # EXIF metadata extraction
+│   │   ├── fileUpload.js        # File upload handling
+│   │   ├── heatmap.js           # Heatmap visualization
+│   │   ├── mapVisualization.js  # Map display and controls
+│   │   └── statistics.js        # Statistics calculations and display
+│   ├── utils/                   # Utility functions
+│   │   ├── domHelpers.js        # DOM manipulation helpers
+│   │   ├── fileUtils.js         # File handling utilities
+│   │   ├── gpsUtils.js          # GPS data utilities
+│   │   └── uiUtils.js           # UI helper functions
+│   └── main.js                  # Application entry point
 ```
 
 ## Module Relationships
