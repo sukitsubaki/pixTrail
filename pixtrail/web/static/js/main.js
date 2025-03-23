@@ -212,22 +212,53 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         
         /**
-         * Handle file drop
-         * @param {File[]} files - Dropped files
-         */
-        handleFileDrop: function(files) {
+ * Handle file drop
+ * @param {File[]} files - Dropped files
+ */
+handleFileDrop: function(files) {
+    if (files && files.length > 0) {
+        try {
+            // Set the files to the photo input
             this.photoInput.files = this.createFileList(files);
             this.handleFileSelection(this.photoInput.files);
-        },
-        
+            this.showStatusMessage(`${files.length} files dropped and ready to process`, 'info');
+            
+            // Enable the process button
+            if (this.activeInput === 'file') {
+                this.processButton.disabled = false;
+            }
+        } catch (error) {
+            console.error('Error handling dropped files:', error);
+            this.showStatusMessage('Error handling dropped files. Please use the Select Photos button instead.', 'error');
+        }
+    } else {
+        this.showStatusMessage('No files found in the drop', 'error');
+    }
+},
+
         /**
          * Handle directory drop
          * @param {File[]} files - Files from dropped directory
          */
         handleDirectoryDrop: function(files) {
-            // Due to browser security limitations, 
-            // we can't directly handle directory drops
-            // The user needs to select the directory manually
+            if (files && files.length > 0) {
+                try {
+                    // Set the files to the directory input
+                    this.directoryInput.files = this.createFileList(files);
+                    this.handleDirectorySelection(this.directoryInput.files);
+                    this.showStatusMessage(`${files.length} files from directory ready to process`, 'info');
+            
+                    // Enable the process button if in directory mode
+                    if (this.activeInput === 'directory') {
+                        this.processButton.disabled = false;
+                    }
+                } catch (error) {
+                    console.error('Error handling dropped directory:', error);
+                    this.showStatusMessage('Error handling dropped directory. Please use the Select Directory button instead.', 'error');
+                }
+            } else {
+                this.showStatusMessage('No files found in the dropped directory', 'error');
+            }
         },
         
         /**
