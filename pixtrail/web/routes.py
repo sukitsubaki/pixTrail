@@ -227,14 +227,12 @@ def process_photos(session_id):
     
     except Exception as e:
         import traceback
-        error_details = str(e)
-        traceback_details = traceback.format_exc()
-        print(f"Error processing photos: {error_details}")
-        print(f"Traceback: {traceback_details}")
+        logging.error(f"Error processing photos: {str(e)}")
+        logging.error(f"Traceback: {traceback.format_exc()}")
         # Clear when error
         if os.path.exists(process_dir):
             shutil.rmtree(process_dir)
-        return jsonify({'error': f"Processing failed: {error_details}", 'success': False}), 500
+        return jsonify({'error': "Processing failed due to an internal error.", 'success': False}), 500
 
 
 @main_bp.route('/api/download/<session_id>/<filename>', methods=['GET'])
