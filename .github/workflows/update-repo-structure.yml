@@ -6,11 +6,9 @@ on:
       - 'repository-structure.md'
   workflow_dispatch: 
 
-runs-on: self-hosted
-
 jobs:
   update-structure:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: write
     
