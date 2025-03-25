@@ -291,7 +291,8 @@ def cleanup_session(session_id):
             shutil.rmtree(session_dir)
             return jsonify({'success': True, 'message': 'Session cleaned up successfully'})
         except Exception as e:
-            return jsonify({'error': str(e)}), 500
+            current_app.logger.error('Error during session cleanup: %s', e)
+            return jsonify({'error': 'An internal error has occurred. Please try again later.'}), 500
     
     return jsonify({'success': True, 'message': 'Nothing to clean up'})
 
