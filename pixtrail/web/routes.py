@@ -110,7 +110,8 @@ def receive_photos():
         # Clean up on error
         if os.path.exists(process_dir):
             shutil.rmtree(process_dir)
-        return jsonify({'error': str(e)}), 500
+        logging.error("Exception occurred", exc_info=True)
+        return jsonify({'error': 'An internal error has occurred!'}), 500
 
 
 @main_bp.route('/api/process/<session_id>', methods=['POST'])
