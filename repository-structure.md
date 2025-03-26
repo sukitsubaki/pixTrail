@@ -27,10 +27,7 @@ sukitsubaki/pixTrail/
 │   │   ├── index.md
 │   │   └── utils.md
 │   ├── assets/
-│   │   ├── pixtrail-web-interface.png
-│   │   ├── shimizu-yuki.jpg
-│   │   ├── tanaka-keisuke.jpg
-│   │   └── tsubaki-suki.jpg
+│   │   └── pixtrail-web-interface.png
 │   ├── development/
 │   │   ├── css-architecture.md
 │   │   ├── index.md
