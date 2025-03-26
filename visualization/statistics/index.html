@@ -1,0 +1,2188 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for PixTrail - GPS Photo to GPX Tracker">
+      
+      
+        <meta name="author" content="Suki Tsubaki">
+      
+      
+      
+        <link rel="prev" href="../clustering/">
+      
+      
+        <link rel="next" href="../../tutorials/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.9">
+    
+    
+      
+        <title>Statistics and Charts - PixTrail Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4af4bdda.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#statistics-and-charts" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="PixTrail Documentation" class="md-header__button md-logo" aria-label="PixTrail Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            PixTrail Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Statistics and Charts
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sukitsubaki/pixtrail" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sukitsubaki/pixtrail
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="PixTrail Documentation" class="md-nav__button md-logo" aria-label="PixTrail Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    PixTrail Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sukitsubaki/pixtrail" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sukitsubaki/pixtrail
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation & Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Installation & Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Usage
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Web Interface
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command Line Interface
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../troubleshooting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/module-structure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module Structure
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/css-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CSS Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Visualization
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Visualization
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../heatmap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Heat Map
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../clustering/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Marker Clustering
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Statistics and Charts
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Statistics and Charts
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#statistics-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Statistics Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accessing Statistics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary Statistics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interactive-charts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interactive Charts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interactive Charts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#elevation-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      Elevation Profile
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#speed-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      Speed Profile
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-statistics-are-calculated" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Statistics Are Calculated
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How Statistics Are Calculated">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#distance-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Distance Calculation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#speed-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Speed Calculation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elevation-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Elevation Analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time Calculation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Applications
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Applications">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hiking-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hiking Analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#city-tour-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      City Tour Review
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#road-trip-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Road Trip Documentation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-interpretations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Interpretations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Interpretations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#speed-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Speed Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elevation-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Elevation Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#correlating-charts-with-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      Correlating Charts with Map
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-and-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting and Limitations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting and Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#missing-or-inaccurate-timestamps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Missing or Inaccurate Timestamps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps-accuracy-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPS Accuracy Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time-gaps-between-photos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time Gaps Between Photos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#speed-and-distance-anomalies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Speed and Distance Anomalies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exporting-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exporting Statistics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparing-multiple-journeys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparing Multiple Journeys
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Details
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frequently Asked Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frequently Asked Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-do-my-speed-calculations-seem-inaccurate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why do my speed calculations seem inaccurate?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-is-my-total-distance-different-from-what-my-fitness-tracker-recorded" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why is my total distance different from what my fitness tracker recorded?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-customize-the-charts-or-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I customize the charts or statistics?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-accurate-is-the-elevation-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      How accurate is the elevation data?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#are-statistics-available-when-using-the-command-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      Are statistics available when using the command line?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Features
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/photo-journey/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Photo Journey
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/batch-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Batch Processing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/custom-visualizations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Custom Visualizations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/core/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Core Modules
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/exif/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EXIF Reader
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/gpx/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GPX Generator
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Utility Modules
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#statistics-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Statistics Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accessing Statistics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary Statistics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interactive-charts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interactive Charts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interactive Charts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#elevation-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      Elevation Profile
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#speed-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      Speed Profile
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-statistics-are-calculated" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Statistics Are Calculated
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How Statistics Are Calculated">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#distance-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Distance Calculation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#speed-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Speed Calculation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elevation-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Elevation Analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time Calculation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Applications
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Applications">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hiking-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hiking Analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#city-tour-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      City Tour Review
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#road-trip-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Road Trip Documentation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-interpretations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Interpretations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Interpretations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#speed-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Speed Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elevation-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Elevation Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#correlating-charts-with-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      Correlating Charts with Map
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-and-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting and Limitations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting and Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#missing-or-inaccurate-timestamps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Missing or Inaccurate Timestamps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps-accuracy-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPS Accuracy Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time-gaps-between-photos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time Gaps Between Photos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#speed-and-distance-anomalies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Speed and Distance Anomalies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exporting-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exporting Statistics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparing-multiple-journeys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparing Multiple Journeys
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Details
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frequently Asked Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frequently Asked Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-do-my-speed-calculations-seem-inaccurate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why do my speed calculations seem inaccurate?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-is-my-total-distance-different-from-what-my-fitness-tracker-recorded" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why is my total distance different from what my fitness tracker recorded?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-customize-the-charts-or-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I customize the charts or statistics?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-accurate-is-the-elevation-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      How accurate is the elevation data?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#are-statistics-available-when-using-the-command-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      Are statistics available when using the command line?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Features
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="statistics-and-charts">Statistics and Charts<a class="headerlink" href="#statistics-and-charts" title="Permanent link">&para;</a></h1>
+<p>PixTrail provides comprehensive statistics and interactive charts to help you understand the quantitative aspects of your journey, including distance, time, speed, and elevation data. These metrics transform your photo collection into a detailed record of your adventure.</p>
+<h2 id="statistics-overview">Statistics Overview<a class="headerlink" href="#statistics-overview" title="Permanent link">&para;</a></h2>
+<p>The statistics feature offers two main components:</p>
+<ol>
+<li><strong>Summary Statistics</strong>: Key metrics about your journey in a tabular format</li>
+<li><strong>Interactive Charts</strong>: Visual representations of elevation and speed data</li>
+</ol>
+<h2 id="accessing-statistics">Accessing Statistics<a class="headerlink" href="#accessing-statistics" title="Permanent link">&para;</a></h2>
+<p>To view statistics for your processed photos:</p>
+<ol>
+<li>After processing your photos and viewing the map, click the "Show Statistics" button in the map controls</li>
+<li>The statistics panel will appear below the map</li>
+<li>Click the button again (now labeled "Hide Statistics") to toggle it off</li>
+</ol>
+<h2 id="summary-statistics">Summary Statistics<a class="headerlink" href="#summary-statistics" title="Permanent link">&para;</a></h2>
+<p>The summary statistics table includes the following metrics:</p>
+<table>
+<thead>
+<tr>
+<th>Statistic</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total Distance</td>
+<td>The cumulative distance traveled between photo locations (in kilometers)</td>
+</tr>
+<tr>
+<td>Total Duration</td>
+<td>The time between the first and last photo (in HH:MM:SS format)</td>
+</tr>
+<tr>
+<td>Start Time</td>
+<td>The timestamp of the first photo</td>
+</tr>
+<tr>
+<td>End Time</td>
+<td>The timestamp of the last photo</td>
+</tr>
+<tr>
+<td>Avg. Speed</td>
+<td>Average traveling speed between photo locations (in km/h)</td>
+</tr>
+<tr>
+<td>Max. Speed</td>
+<td>Maximum recorded speed between any two consecutive photo locations (in km/h)</td>
+</tr>
+<tr>
+<td>Min Elevation</td>
+<td>Lowest recorded elevation (in meters)</td>
+</tr>
+<tr>
+<td>Max Elevation</td>
+<td>Highest recorded elevation (in meters)</td>
+</tr>
+<tr>
+<td>Elevation Gain</td>
+<td>The total climb during the journey (only positive changes in elevation)</td>
+</tr>
+<tr>
+<td>Photo Count</td>
+<td>Total number of photos with GPS data used in the analysis</td>
+</tr>
+</tbody>
+</table>
+<h2 id="interactive-charts">Interactive Charts<a class="headerlink" href="#interactive-charts" title="Permanent link">&para;</a></h2>
+<h3 id="elevation-profile">Elevation Profile<a class="headerlink" href="#elevation-profile" title="Permanent link">&para;</a></h3>
+<p>The elevation profile chart shows how elevation changed throughout your journey:</p>
+<ul>
+<li><strong>X-axis</strong>: Photo index (sequence of photos)</li>
+<li><strong>Y-axis</strong>: Elevation (in meters)</li>
+<li><strong>Line</strong>: Smooth curve connecting elevation points</li>
+<li><strong>Hover</strong>: Shows exact elevation at any point</li>
+</ul>
+<p>This chart helps visualize:
+- Uphill and downhill sections
+- Flat portions of the journey
+- Maximum and minimum elevation points
+- Overall elevation trends</p>
+<h3 id="speed-profile">Speed Profile<a class="headerlink" href="#speed-profile" title="Permanent link">&para;</a></h3>
+<p>The speed profile chart shows how your speed varied between photo locations:</p>
+<ul>
+<li><strong>X-axis</strong>: Segment index (segments between photos)</li>
+<li><strong>Y-axis</strong>: Speed (in km/h)</li>
+<li><strong>Line</strong>: Connected line showing speed changes</li>
+<li><strong>Hover</strong>: Shows exact speed for any segment</li>
+</ul>
+<p>This chart helps visualize:
+- Fast and slow portions of the journey
+- Consistent vs. variable pace
+- Stops (near-zero speed segments)
+- Transportation changes (e.g., walking vs. driving)</p>
+<h2 id="how-statistics-are-calculated">How Statistics Are Calculated<a class="headerlink" href="#how-statistics-are-calculated" title="Permanent link">&para;</a></h2>
+<p>PixTrail calculates statistics based on the GPS coordinates and timestamps in your photos:</p>
+<h3 id="distance-calculation">Distance Calculation<a class="headerlink" href="#distance-calculation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Uses the Haversine formula to calculate distances between coordinates</li>
+<li>Accounts for the Earth's curvature</li>
+<li>Provides distances in kilometers (with two decimal places precision)</li>
+<li>Excludes unreasonable jumps (&gt;10km between consecutive photos) to avoid GPS errors</li>
+</ul>
+<h3 id="speed-calculation">Speed Calculation<a class="headerlink" href="#speed-calculation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Based on distance and time between consecutive photos</li>
+<li>Reported in kilometers per hour (km/h)</li>
+<li>Excludes unreasonable speeds (&gt;300 km/h) to avoid GPS or timestamp errors</li>
+<li>Average speed calculated only from valid speed measurements</li>
+</ul>
+<h3 id="elevation-analysis">Elevation Analysis<a class="headerlink" href="#elevation-analysis" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Uses elevation data from photo EXIF metadata (if available)</li>
+<li>Elevation gain only counts upward changes (not downward)</li>
+<li>All elevation measurements are in meters</li>
+<li>Filters out anomalous elevation changes that likely represent GPS errors</li>
+</ul>
+<h3 id="time-calculation">Time Calculation<a class="headerlink" href="#time-calculation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Based on the timestamps in photo EXIF metadata</li>
+<li>Reported in consistent time zone (based on the first photo's timezone)</li>
+<li>Duration calculated as the difference between first and last photo times</li>
+<li>Times displayed in local format based on your browser settings</li>
+</ul>
+<h2 id="practical-applications">Practical Applications<a class="headerlink" href="#practical-applications" title="Permanent link">&para;</a></h2>
+<h3 id="hiking-analysis">Hiking Analysis<a class="headerlink" href="#hiking-analysis" title="Permanent link">&para;</a></h3>
+<p>For hiking trips, statistics help you:
+- Measure the total distance hiked
+- Calculate your average hiking pace
+- Quantify the elevation gain (important for difficulty assessment)
+- Identify the steepest sections from the elevation chart
+- Detect rest periods from the speed chart
+- Compare difficulty between different hikes</p>
+<h3 id="city-tour-review">City Tour Review<a class="headerlink" href="#city-tour-review" title="Permanent link">&para;</a></h3>
+<p>For urban explorations, statistics help you:
+- Track how far you walked in a day
+- Measure the total time spent exploring
+- Identify periods of rest or attraction visits (low speed)
+- See elevation changes in hilly cities
+- Plan future visits based on distances and times</p>
+<h3 id="road-trip-documentation">Road Trip Documentation<a class="headerlink" href="#road-trip-documentation" title="Permanent link">&para;</a></h3>
+<p>For road trips, statistics help you:
+- Measure total distance driven
+- Calculate average driving speed
+- Identify highways vs. local roads from speed patterns
+- Detect stops and breaks in the journey
+- Track mountainous sections from elevation data
+- Analyze your travel patterns for better planning</p>
+<h2 id="advanced-interpretations">Advanced Interpretations<a class="headerlink" href="#advanced-interpretations" title="Permanent link">&para;</a></h2>
+<h3 id="speed-patterns">Speed Patterns<a class="headerlink" href="#speed-patterns" title="Permanent link">&para;</a></h3>
+<p>Different speed patterns can reveal insights about your journey:</p>
+<ul>
+<li><strong>Consistent speed</strong>: Typically indicates highway driving or steady hiking</li>
+<li><strong>Varying speeds</strong>: Often shows urban exploration or technical trail sections</li>
+<li><strong>Near-zero segments</strong>: Represent stops at attractions, rest areas, or traffic</li>
+<li><strong>Sharp peaks</strong>: May indicate transportation changes (e.g., walking to driving)</li>
+<li><strong>Gradual changes</strong>: Often correlate with terrain changes or traffic conditions</li>
+</ul>
+<h3 id="elevation-patterns">Elevation Patterns<a class="headerlink" href="#elevation-patterns" title="Permanent link">&para;</a></h3>
+<p>The elevation chart can be particularly revealing:</p>
+<ul>
+<li><strong>Sharp peaks and valleys</strong>: Indicate steep terrain or mountainous areas</li>
+<li><strong>Gradual slopes</strong>: Show gentle hills or mountain passes</li>
+<li><strong>Plateaus</strong>: Represent flat sections at consistent elevation</li>
+<li><strong>Sawtooth patterns</strong>: Often indicate ridge hiking or rolling hills</li>
+<li><strong>Long climbs followed by quick descents</strong>: Typical for summit hikes</li>
+</ul>
+<h3 id="correlating-charts-with-map">Correlating Charts with Map<a class="headerlink" href="#correlating-charts-with-map" title="Permanent link">&para;</a></h3>
+<p>For deeper insights, correlate the charts with your map visualizations:</p>
+<ul>
+<li>Match elevation peaks with geographic features</li>
+<li>Identify where speed drops correlate with points of interest</li>
+<li>Look for patterns in clusters and heat map intensity that match speed changes</li>
+<li>Compare the elevation profile with the terrain visible on the map</li>
+</ul>
+<h2 id="troubleshooting-and-limitations">Troubleshooting and Limitations<a class="headerlink" href="#troubleshooting-and-limitations" title="Permanent link">&para;</a></h2>
+<h3 id="missing-or-inaccurate-timestamps">Missing or Inaccurate Timestamps<a class="headerlink" href="#missing-or-inaccurate-timestamps" title="Permanent link">&para;</a></h3>
+<p>If your photos lack accurate timestamps:
+- Speed calculations will be omitted or unreliable
+- Duration may show as "Unknown"
+- The route line will still be drawn, but without time-based information</p>
+<h3 id="gps-accuracy-issues">GPS Accuracy Issues<a class="headerlink" href="#gps-accuracy-issues" title="Permanent link">&para;</a></h3>
+<p>GPS accuracy affects statistical calculations:
+- Inaccurate GPS coordinates may lead to overestimated distances
+- Urban canyons (tall buildings) often reduce GPS accuracy
+- Elevation data from consumer cameras is generally less accurate than horizontal position</p>
+<h3 id="time-gaps-between-photos">Time Gaps Between Photos<a class="headerlink" href="#time-gaps-between-photos" title="Permanent link">&para;</a></h3>
+<p>Large time gaps between photos can affect your statistics:
+- Average speed may not represent your actual pace during gaps
+- The route line assumes direct travel between consecutive photos
+- Very large gaps may be filtered out as unreasonable</p>
+<h3 id="speed-and-distance-anomalies">Speed and Distance Anomalies<a class="headerlink" href="#speed-and-distance-anomalies" title="Permanent link">&para;</a></h3>
+<p>If you see unusual speed or distance values:
+- Very high speeds may indicate timestamp errors or large jumps
+- Distances may be overestimated if GPS data has significant noise
+- Photos taken in approximately the same location may show artificially low speeds</p>
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
+<p>To get the most accurate statistics:</p>
+<ol>
+<li><strong>Ensure accurate timestamps</strong>: Set your camera's clock correctly before your journey</li>
+<li><strong>Take photos at regular intervals</strong>: This provides more consistent tracking</li>
+<li><strong>Use a camera with good GPS</strong>: Higher-end cameras and smartphones generally have better GPS accuracy</li>
+<li><strong>Take more photos on complex routes</strong>: More data points improve the accuracy of the route representation</li>
+<li><strong>Let your camera/phone establish GPS fix</strong>: Avoid taking photos immediately after turning on GPS</li>
+</ol>
+<h2 id="exporting-statistics">Exporting Statistics<a class="headerlink" href="#exporting-statistics" title="Permanent link">&para;</a></h2>
+<p>Currently, statistics can be viewed in the web interface. To save this information:</p>
+<ul>
+<li>Take a screenshot of the statistics panel for visual records</li>
+<li>Export the GPX file, which includes all coordinate and timestamp data</li>
+<li>Future versions may include direct export options for statistics reports</li>
+</ul>
+<h2 id="comparing-multiple-journeys">Comparing Multiple Journeys<a class="headerlink" href="#comparing-multiple-journeys" title="Permanent link">&para;</a></h2>
+<p>While PixTrail doesn't currently offer direct journey comparison, you can:</p>
+<ol>
+<li>Process each journey separately</li>
+<li>Record the statistics for each</li>
+<li>Compare them manually or in a spreadsheet</li>
+<li>Look for patterns and differences in distance, speed, elevation, etc.</li>
+</ol>
+<h2 id="technical-details">Technical Details<a class="headerlink" href="#technical-details" title="Permanent link">&para;</a></h2>
+<p>The statistics and charts are powered by the following technologies:</p>
+<ul>
+<li>Distance and speed calculations use the Haversine formula for accuracy</li>
+<li>Charts are rendered using Chart.js for interactive visualization</li>
+<li>All calculations happen locally in your browser</li>
+<li>GPS data cleaning algorithms remove outliers for more accurate statistics</li>
+</ul>
+<h2 id="frequently-asked-questions">Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permanent link">&para;</a></h2>
+<h3 id="why-do-my-speed-calculations-seem-inaccurate">Why do my speed calculations seem inaccurate?<a class="headerlink" href="#why-do-my-speed-calculations-seem-inaccurate" title="Permanent link">&para;</a></h3>
+<p>Speed calculations depend on both distance and time between photos. Inaccuracies can result from:
+- GPS errors in the original photos
+- Incorrect camera clock settings
+- Too few photos to accurately represent your journey
+- Large gaps between photos</p>
+<h3 id="why-is-my-total-distance-different-from-what-my-fitness-tracker-recorded">Why is my total distance different from what my fitness tracker recorded?<a class="headerlink" href="#why-is-my-total-distance-different-from-what-my-fitness-tracker-recorded" title="Permanent link">&para;</a></h3>
+<p>Several factors can cause differences:
+- PixTrail calculates straight lines between photo points (missing any detours)
+- GPS accuracy varies between devices
+- Fitness trackers typically record more frequent data points
+- PixTrail filters out anomalous jumps that might be included in other tracking</p>
+<h3 id="can-i-customize-the-charts-or-statistics">Can I customize the charts or statistics?<a class="headerlink" href="#can-i-customize-the-charts-or-statistics" title="Permanent link">&para;</a></h3>
+<p>Currently, the charts and statistics have preset configurations. Future versions may include options for customization.</p>
+<h3 id="how-accurate-is-the-elevation-data">How accurate is the elevation data?<a class="headerlink" href="#how-accurate-is-the-elevation-data" title="Permanent link">&para;</a></h3>
+<p>Elevation accuracy depends on your camera's GPS capabilities:
+- Smartphones generally have moderate elevation accuracy (±10-20 meters)
+- Dedicated GPS cameras may have better accuracy
+- Elevation is typically less accurate than horizontal position
+- Some cameras don't record elevation at all</p>
+<h3 id="are-statistics-available-when-using-the-command-line">Are statistics available when using the command line?<a class="headerlink" href="#are-statistics-available-when-using-the-command-line" title="Permanent link">&para;</a></h3>
+<p>Basic statistics are printed to the console when using verbose mode (<code>-v</code> flag). For detailed statistics and charts, use the web interface.</p>
+<h2 id="related-features">Related Features<a class="headerlink" href="#related-features" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../heatmap/">Heat Maps</a> - Visualize where you spent the most time during your journey</li>
+<li><a href="../clustering/">Marker Clustering</a> - Group nearby markers for cleaner map displays</li>
+<li><a href="../../tutorials/custom-visualizations/">Custom Visualizations</a> - Advanced visualization techniques</li>
+</ul>
+<p>By analyzing the statistical aspects of your journeys, you can gain deeper insights into your travel patterns and create more informative records of your adventures.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Documentation written by Yuki Shimizu
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>

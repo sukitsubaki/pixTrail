@@ -1,0 +1,2085 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for PixTrail - GPS Photo to GPX Tracker">
+      
+      
+        <meta name="author" content="Suki Tsubaki">
+      
+      
+      
+        <link rel="prev" href="../css-architecture/">
+      
+      
+        <link rel="next" href="../../visualization/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.9">
+    
+    
+      
+        <title>Testing - PixTrail Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4af4bdda.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#testing-pixtrail-modules" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="PixTrail Documentation" class="md-header__button md-logo" aria-label="PixTrail Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            PixTrail Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Testing
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sukitsubaki/pixtrail" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sukitsubaki/pixtrail
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="PixTrail Documentation" class="md-nav__button md-logo" aria-label="PixTrail Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    PixTrail Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sukitsubaki/pixtrail" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sukitsubaki/pixtrail
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation & Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Installation & Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Usage
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Web Interface
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command Line Interface
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../troubleshooting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module-structure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module Structure
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../css-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CSS Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Testing
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Testing
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#testing-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Approach
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Environment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing Environment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-a-testing-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Up a Testing Environment
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unit-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unit Testing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unit Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testing-utility-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Utility Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-a-testing-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using a Testing Framework
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module Testing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testing-class-based-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Class-Based Modules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mock-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mock Objects
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integration-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration Testing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ui-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      UI Testing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UI Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#event-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Event Handling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#form-submission" class="md-nav__link">
+    <span class="md-ellipsis">
+      Form Submission
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#responsive-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Responsive Design
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#end-to-end-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      End-to-End Testing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-modular-css" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Modular CSS
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automated-testing-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automated Testing Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-custom-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Custom Modules
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-testing-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Testing Issues
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Documentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Visualization
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Visualization
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/heatmap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Heat Map
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/clustering/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Marker Clustering
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/statistics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Statistics and Charts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/photo-journey/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Photo Journey
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/batch-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Batch Processing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/custom-visualizations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Custom Visualizations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/core/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Core Modules
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/exif/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EXIF Reader
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/gpx/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GPX Generator
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Utility Modules
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#testing-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Approach
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Environment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing Environment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-a-testing-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Up a Testing Environment
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unit-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unit Testing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unit Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testing-utility-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Utility Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-a-testing-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using a Testing Framework
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module Testing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testing-class-based-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Class-Based Modules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mock-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mock Objects
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integration-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration Testing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ui-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      UI Testing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UI Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#event-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Event Handling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#form-submission" class="md-nav__link">
+    <span class="md-ellipsis">
+      Form Submission
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#responsive-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Responsive Design
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#end-to-end-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      End-to-End Testing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-modular-css" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Modular CSS
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automated-testing-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automated Testing Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-custom-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Custom Modules
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-testing-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Testing Issues
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Documentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="testing-pixtrail-modules">Testing PixTrail Modules<a class="headerlink" href="#testing-pixtrail-modules" title="Permanent link">&para;</a></h1>
+<p>This document provides guidance on testing PixTrail modules to ensure their quality, reliability, and compatibility.</p>
+<h2 id="testing-approach">Testing Approach<a class="headerlink" href="#testing-approach" title="Permanent link">&para;</a></h2>
+<p>PixTrail uses a modular architecture that makes testing more manageable. Each module can be tested independently, and then integration tests can verify that modules work together correctly.</p>
+<p>The testing approach includes:</p>
+<ol>
+<li><strong>Unit Testing</strong>: Testing individual functions and methods in isolation</li>
+<li><strong>Module Testing</strong>: Testing each module as a whole</li>
+<li><strong>Integration Testing</strong>: Testing interactions between modules</li>
+<li><strong>UI Testing</strong>: Testing the user interface elements</li>
+<li><strong>End-to-End Testing</strong>: Testing complete user workflows</li>
+</ol>
+<h2 id="testing-environment">Testing Environment<a class="headerlink" href="#testing-environment" title="Permanent link">&para;</a></h2>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
+<p>You'll need the following for testing:</p>
+<ul>
+<li>Modern web browser (Chrome, Firefox, Safari, Edge)</li>
+<li>Development server running</li>
+<li>Test data (sample photos with GPS data)</li>
+<li>Browser developer tools</li>
+</ul>
+<h3 id="setting-up-a-testing-environment">Setting Up a Testing Environment<a class="headerlink" href="#setting-up-a-testing-environment" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Clone the repository</li>
+<li>Install dependencies</li>
+<li>Start the development server</li>
+<li>Open the application in your browser</li>
+<li>Open browser developer tools (F12 or Ctrl+Shift+I)</li>
+</ol>
+<h2 id="unit-testing">Unit Testing<a class="headerlink" href="#unit-testing" title="Permanent link">&para;</a></h2>
+<h3 id="testing-utility-functions">Testing Utility Functions<a class="headerlink" href="#testing-utility-functions" title="Permanent link">&para;</a></h3>
+<p>Utility functions can be tested directly in the browser console:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Import utilities</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">DOMHelpers</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;./utils/domHelpers.js&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">GPSUtils</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;./utils/gpsUtils.js&#39;</span><span class="p">;</span>
+
+<span class="c1">// Test DOM helper function</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">element</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">DOMHelpers</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<span class="w">    </span><span class="nx">classes</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;test-class&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">text</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Test element&#39;</span><span class="w"> </span>
+<span class="p">});</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">className</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;test-class&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Class was not applied correctly&#39;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">textContent</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;Test element&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Text was not set correctly&#39;</span><span class="p">);</span>
+
+<span class="c1">// Test GPS utility function</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">GPSUtils</span><span class="p">.</span><span class="nx">calculateDistance</span><span class="p">(</span><span class="mf">35.0394</span><span class="p">,</span><span class="w"> </span><span class="mf">135.7292</span><span class="p">,</span><span class="w"> </span><span class="mf">35.6812</span><span class="p">,</span><span class="w"> </span><span class="mf">139.7671</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">distance</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Distance calculation failed&#39;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Distance: </span><span class="si">${</span><span class="nx">distance</span><span class="si">}</span><span class="sb"> km`</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="using-a-testing-framework">Using a Testing Framework<a class="headerlink" href="#using-a-testing-framework" title="Permanent link">&para;</a></h3>
+<p>For more comprehensive testing, consider using a testing framework like Jest or Mocha:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Example Jest test for gpsUtils.js</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">GPSUtils</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;../utils/gpsUtils.js&#39;</span><span class="p">;</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;GPSUtils&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">test</span><span class="p">(</span><span class="s1">&#39;calculateDistance should return correct value&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">GPSUtils</span><span class="p">.</span><span class="nx">calculateDistance</span><span class="p">(</span><span class="mf">35.0394</span><span class="p">,</span><span class="w"> </span><span class="mf">135.7292</span><span class="p">,</span><span class="w"> </span><span class="mf">35.6812</span><span class="p">,</span><span class="w"> </span><span class="mf">139.7671</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">distance</span><span class="p">).</span><span class="nx">toBeGreaterThan</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">distance</span><span class="p">).</span><span class="nx">toBeCloseTo</span><span class="p">(</span><span class="mf">371.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// Kyoto to Tokyo ~371.5 km</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="nx">test</span><span class="p">(</span><span class="s1">&#39;validateCoordinates should detect invalid coordinates&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">GPSUtils</span><span class="p">.</span><span class="nx">validateCoordinates</span><span class="p">(</span><span class="mf">35.0394</span><span class="p">,</span><span class="w"> </span><span class="mf">135.7292</span><span class="p">)).</span><span class="nx">toBe</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">GPSUtils</span><span class="p">.</span><span class="nx">validateCoordinates</span><span class="p">(</span><span class="mf">190</span><span class="p">,</span><span class="w"> </span><span class="mf">135.7292</span><span class="p">)).</span><span class="nx">toBe</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">GPSUtils</span><span class="p">.</span><span class="nx">validateCoordinates</span><span class="p">(</span><span class="mf">35.0394</span><span class="p">,</span><span class="w"> </span><span class="mf">190</span><span class="p">)).</span><span class="nx">toBe</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">GPSUtils</span><span class="p">.</span><span class="nx">validateCoordinates</span><span class="p">(</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">135.7292</span><span class="p">)).</span><span class="nx">toBe</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+<h2 id="module-testing">Module Testing<a class="headerlink" href="#module-testing" title="Permanent link">&para;</a></h2>
+<h3 id="testing-class-based-modules">Testing Class-Based Modules<a class="headerlink" href="#testing-class-based-modules" title="Permanent link">&para;</a></h3>
+<p>Most PixTrail feature modules use a class-based approach. Here's how to test them:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Test MapVisualization module</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">MapVisualization</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;./modules/mapVisualization.js&#39;</span><span class="p">;</span>
+
+<span class="c1">// Create container elements</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">mapContainer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">mapElement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
+<span class="nx">mapContainer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">mapElement</span><span class="p">);</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">mapContainer</span><span class="p">);</span>
+
+<span class="c1">// Initialize the module</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">mapViz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">MapVisualization</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">mapContainer</span><span class="o">:</span><span class="w"> </span><span class="nx">mapContainer</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">mapElement</span><span class="o">:</span><span class="w"> </span><span class="nx">mapElement</span>
+<span class="p">});</span>
+
+<span class="c1">// Test map initialization</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">mapViz</span><span class="p">.</span><span class="nx">getMap</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">map</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Map should be initialized&#39;</span><span class="p">);</span>
+
+<span class="c1">// Test waypoint addition</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">testWaypoints</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">latitude</span><span class="o">:</span><span class="w"> </span><span class="mf">35.0394</span><span class="p">,</span><span class="w"> </span><span class="nx">longitude</span><span class="o">:</span><span class="w"> </span><span class="mf">135.7292</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Point 1&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">timestamp</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;2023-01-01T12:00:00Z&#39;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">latitude</span><span class="o">:</span><span class="w"> </span><span class="mf">35.6812</span><span class="p">,</span><span class="w"> </span><span class="nx">longitude</span><span class="o">:</span><span class="w"> </span><span class="mf">139.7671</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Point 2&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">timestamp</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;2023-01-01T15:00:00Z&#39;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">];</span>
+<span class="nx">mapViz</span><span class="p">.</span><span class="nx">setWaypoints</span><span class="p">(</span><span class="nx">testWaypoints</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">mapViz</span><span class="p">.</span><span class="nx">markers</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Markers should be created&#39;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">mapViz</span><span class="p">.</span><span class="nx">routeLine</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Route line should be created&#39;</span><span class="p">);</span>
+
+<span class="c1">// Test clearing</span>
+<span class="nx">mapViz</span><span class="p">.</span><span class="nx">clearMapLayers</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">mapViz</span><span class="p">.</span><span class="nx">markers</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Markers should be cleared&#39;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">mapViz</span><span class="p">.</span><span class="nx">routeLine</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Route line should be cleared&#39;</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="mock-objects">Mock Objects<a class="headerlink" href="#mock-objects" title="Permanent link">&para;</a></h3>
+<p>For modules that interact with external services or APIs, use mock objects:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Mock APIClient for testing</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">mockAPIClient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">submitPhotos</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">formData</span><span class="p">,</span><span class="w"> </span><span class="nx">progressCallback</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Simulate progress updates</span>
+<span class="w">    </span><span class="nx">setTimeout</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">progressCallback</span><span class="p">({</span><span class="w"> </span><span class="nx">loaded</span><span class="o">:</span><span class="w"> </span><span class="mf">50</span><span class="p">,</span><span class="w"> </span><span class="nx">total</span><span class="o">:</span><span class="w"> </span><span class="mf">100</span><span class="w"> </span><span class="p">}),</span><span class="w"> </span><span class="mf">100</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">setTimeout</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">progressCallback</span><span class="p">({</span><span class="w"> </span><span class="nx">loaded</span><span class="o">:</span><span class="w"> </span><span class="mf">100</span><span class="p">,</span><span class="w"> </span><span class="nx">total</span><span class="o">:</span><span class="w"> </span><span class="mf">100</span><span class="w"> </span><span class="p">}),</span><span class="w"> </span><span class="mf">200</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Return mock response</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">({</span><span class="w"> </span><span class="nx">session_id</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;test-session-123&#39;</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="p">},</span>
+
+<span class="w">  </span><span class="nx">processPhotos</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">sessionId</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Processing session </span><span class="si">${</span><span class="nx">sessionId</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">success</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">waypoints</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nx">latitude</span><span class="o">:</span><span class="w"> </span><span class="mf">35.0394</span><span class="p">,</span><span class="w"> </span><span class="nx">longitude</span><span class="o">:</span><span class="w"> </span><span class="mf">135.7292</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Test1.jpg&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">timestamp</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;2023-01-01T12:00:00Z&#39;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nx">latitude</span><span class="o">:</span><span class="w"> </span><span class="mf">35.6812</span><span class="p">,</span><span class="w"> </span><span class="nx">longitude</span><span class="o">:</span><span class="w"> </span><span class="mf">139.7671</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Test2.jpg&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">timestamp</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;2023-01-01T15:00:00Z&#39;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// Replace actual API client with mock</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">originalAPIClient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">window</span><span class="p">.</span><span class="nx">APIClient</span><span class="p">;</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">APIClient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">mockAPIClient</span><span class="p">;</span>
+
+<span class="c1">// Test code that uses APIClient</span>
+<span class="c1">// ...</span>
+
+<span class="c1">// Restore original API client</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">APIClient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">window</span><span class="p">.</span><span class="nx">originalAPIClient</span><span class="p">;</span>
+</code></pre></div>
+<h2 id="integration-testing">Integration Testing<a class="headerlink" href="#integration-testing" title="Permanent link">&para;</a></h2>
+<p>Integration tests verify that modules work together correctly:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Integration test for Map Visualization + Heatmap</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">MapVisualization</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;./modules/mapVisualization.js&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">Heatmap</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;./modules/heatmap.js&#39;</span><span class="p">;</span>
+
+<span class="c1">// Set up containers</span>
+<span class="c1">// ...</span>
+
+<span class="c1">// Initialize modules</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">mapViz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">MapVisualization</span><span class="p">({</span><span class="w"> </span><span class="cm">/* config */</span><span class="w"> </span><span class="p">});</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">heatmap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Heatmap</span><span class="p">({</span><span class="w"> </span>
+<span class="w">  </span><span class="nx">map</span><span class="o">:</span><span class="w"> </span><span class="nx">mapViz</span><span class="p">.</span><span class="nx">getMap</span><span class="p">(),</span>
+<span class="w">  </span><span class="nx">toggleButton</span><span class="o">:</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;toggle-heatmap&#39;</span><span class="p">)</span>
+<span class="p">});</span>
+
+<span class="c1">// Test data</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">testWaypoints</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="cm">/* waypoints */</span><span class="p">];</span>
+
+<span class="c1">// Test integration</span>
+<span class="nx">mapViz</span><span class="p">.</span><span class="nx">setWaypoints</span><span class="p">(</span><span class="nx">testWaypoints</span><span class="p">);</span>
+<span class="nx">heatmap</span><span class="p">.</span><span class="nx">setWaypoints</span><span class="p">(</span><span class="nx">testWaypoints</span><span class="p">);</span>
+
+<span class="c1">// Verify heatmap works</span>
+<span class="nx">heatmap</span><span class="p">.</span><span class="nx">show</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">heatmap</span><span class="p">.</span><span class="nx">isVisible</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;Heatmap should be visible&#39;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">heatmap</span><span class="p">.</span><span class="nx">heatLayer</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Heat layer should be created&#39;</span><span class="p">);</span>
+
+<span class="c1">// Verify toggle works</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;toggle-heatmap&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="o">!</span><span class="nx">heatmap</span><span class="p">.</span><span class="nx">isVisible</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;Heatmap should be hidden after toggle&#39;</span><span class="p">);</span>
+</code></pre></div>
+<h2 id="ui-testing">UI Testing<a class="headerlink" href="#ui-testing" title="Permanent link">&para;</a></h2>
+<p>Test UI components to ensure they work correctly:</p>
+<h3 id="event-handling">Event Handling<a class="headerlink" href="#event-handling" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Test button click handling</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">button</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;process-button&#39;</span><span class="p">);</span>
+<span class="nx">button</span><span class="p">.</span><span class="nx">click</span><span class="p">();</span>
+<span class="c1">// Verify expected behavior occurred</span>
+
+<span class="c1">// Test drag and drop</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">dropArea</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;file-drop-area&#39;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">dragEvent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Event</span><span class="p">(</span><span class="s1">&#39;dragover&#39;</span><span class="p">);</span>
+<span class="nx">dropArea</span><span class="p">.</span><span class="nx">dispatchEvent</span><span class="p">(</span><span class="nx">dragEvent</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">dropArea</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="s1">&#39;drag-over&#39;</span><span class="p">),</span><span class="w"> </span>
+<span class="w">               </span><span class="s1">&#39;Drop area should have drag-over class&#39;</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="form-submission">Form Submission<a class="headerlink" href="#form-submission" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Test form submission</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">form</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;process-form&#39;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">submitEvent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Event</span><span class="p">(</span><span class="s1">&#39;submit&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">cancelable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">});</span>
+<span class="nx">form</span><span class="p">.</span><span class="nx">dispatchEvent</span><span class="p">(</span><span class="nx">submitEvent</span><span class="p">);</span>
+<span class="c1">// Verify form submission was handled</span>
+</code></pre></div>
+<h3 id="responsive-design">Responsive Design<a class="headerlink" href="#responsive-design" title="Permanent link">&para;</a></h3>
+<p>Test on different screen sizes:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Test responsive behavior</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">originalWidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">originalHeight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">;</span>
+
+<span class="c1">// Simulate mobile</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">375</span><span class="p">;</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">667</span><span class="p">;</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">dispatchEvent</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="nx">Event</span><span class="p">(</span><span class="s1">&#39;resize&#39;</span><span class="p">));</span>
+<span class="c1">// Verify mobile layout</span>
+
+<span class="c1">// Restore size</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">originalWidth</span><span class="p">;</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">originalHeight</span><span class="p">;</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">dispatchEvent</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="nx">Event</span><span class="p">(</span><span class="s1">&#39;resize&#39;</span><span class="p">));</span>
+</code></pre></div>
+<h2 id="end-to-end-testing">End-to-End Testing<a class="headerlink" href="#end-to-end-testing" title="Permanent link">&para;</a></h2>
+<p>End-to-end tests simulate complete user workflows:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// End-to-end test for photo processing workflow</span>
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">testPhotoProcessingWorkflow</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Starting E2E test: Photo processing workflow&#39;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// 1. Select photos</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Selecting photos...&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">fileInput</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;photo-input&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">// Create mock file</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">File</span><span class="p">([</span><span class="s1">&#39;&#39;</span><span class="p">],</span><span class="w"> </span><span class="s1">&#39;test.jpg&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;image/jpeg&#39;</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">dataTransfer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">DataTransfer</span><span class="p">();</span>
+<span class="w">  </span><span class="nx">dataTransfer</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">file</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">fileInput</span><span class="p">.</span><span class="nx">files</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dataTransfer</span><span class="p">.</span><span class="nx">files</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">fileInput</span><span class="p">.</span><span class="nx">dispatchEvent</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="nx">Event</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">));</span>
+
+<span class="w">  </span><span class="c1">// 2. Submit form</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Submitting form...&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">form</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;process-form&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">submitEvent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Event</span><span class="p">(</span><span class="s1">&#39;submit&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">cancelable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="nx">form</span><span class="p">.</span><span class="nx">dispatchEvent</span><span class="p">(</span><span class="nx">submitEvent</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// 3. Wait for processing</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Waiting for processing...&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Promise</span><span class="p">(</span><span class="nx">resolve</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">setTimeout</span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span><span class="w"> </span><span class="mf">2000</span><span class="p">));</span>
+
+<span class="w">  </span><span class="c1">// 4. Verify map is displayed</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Verifying map display...&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">mapContainer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;map-container&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="o">!</span><span class="nx">mapContainer</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="s1">&#39;hidden&#39;</span><span class="p">),</span><span class="w"> </span>
+<span class="w">                </span><span class="s1">&#39;Map should be visible after processing&#39;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// 5. Test map controls</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Testing map controls...&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;toggle-heatmap&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">();</span>
+<span class="w">  </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;toggle-clustering&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">();</span>
+<span class="w">  </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;toggle-statistics&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">();</span>
+
+<span class="w">  </span><span class="c1">// 6. Verify statistics</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Verifying statistics...&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">statsContainer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;statistics-container&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="o">!</span><span class="nx">statsContainer</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="s1">&#39;hidden&#39;</span><span class="p">),</span><span class="w"> </span>
+<span class="w">                </span><span class="s1">&#39;Statistics should be visible&#39;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;E2E test completed successfully&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Run the E2E test</span>
+<span class="nx">testPhotoProcessingWorkflow</span><span class="p">()</span>
+<span class="w">  </span><span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;E2E test failed:&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">));</span>
+</code></pre></div>
+<h2 id="testing-modular-css">Testing Modular CSS<a class="headerlink" href="#testing-modular-css" title="Permanent link">&para;</a></h2>
+<p>Test CSS modules to ensure they apply correctly:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Test CSS module application</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">testCSSModules</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Testing CSS modules...&#39;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Test button styles</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">button</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;button&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">button</span><span class="p">.</span><span class="nx">className</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;primary-button&#39;</span><span class="p">;</span>
+<span class="w">  </span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">button</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">window</span><span class="p">.</span><span class="nx">getComputedStyle</span><span class="p">(</span><span class="nx">button</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">&#39;rgba(0, 0, 0, 0)&#39;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                </span><span class="s1">&#39;Button should have background color&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">style</span><span class="p">.</span><span class="nx">color</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;rgb(255, 255, 255)&#39;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                </span><span class="s1">&#39;Primary button should have white text&#39;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">button</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Test responsive behavior</span>
+<span class="w">  </span><span class="c1">// ...</span>
+
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;CSS module tests completed&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">testCSSModules</span><span class="p">();</span>
+</code></pre></div>
+<h2 id="automated-testing-setup">Automated Testing Setup<a class="headerlink" href="#automated-testing-setup" title="Permanent link">&para;</a></h2>
+<p>For ongoing development and CI/CD pipelines, consider setting up automated testing:</p>
+<ol>
+<li>
+<p><strong>Add Testing Framework</strong>:
+   <div class="highlight"><pre><span></span><code>npm<span class="w"> </span>install<span class="w"> </span>--save-dev<span class="w"> </span>jest
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Configure Jest for ES Modules</strong>:
+   <div class="highlight"><pre><span></span><code><span class="c1">// jest.config.js</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">transform</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;^.+\\.js$&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;babel-jest&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nx">moduleFileExtensions</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;js&#39;</span><span class="p">],</span>
+<span class="w">  </span><span class="nx">testEnvironment</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;jsdom&#39;</span><span class="p">,</span>
+<span class="p">};</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Create Test Scripts</strong>:
+   <div class="highlight"><pre><span></span><code><span class="c1">// package.json</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;scripts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;test&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jest&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;test:watch&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jest --watch&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Write Test Files</strong>:
+   <div class="highlight"><pre><span></span><code><span class="c1">// __tests__/utils/gpsUtils.test.js</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">GPSUtils</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;../../static/js/utils/gpsUtils.js&#39;</span><span class="p">;</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;GPSUtils&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// Tests...</span>
+<span class="p">});</span>
+</code></pre></div></p>
+</li>
+</ol>
+<h2 id="testing-custom-modules">Testing Custom Modules<a class="headerlink" href="#testing-custom-modules" title="Permanent link">&para;</a></h2>
+<p>When testing custom modules you've developed:</p>
+<ol>
+<li><strong>Create a Test Plan</strong>: Define what you want to test</li>
+<li><strong>Test in Isolation</strong>: First test your module by itself</li>
+<li><strong>Test Integration</strong>: Test how it works with existing modules</li>
+<li><strong>Test Edge Cases</strong>: Consider boundary conditions and errors</li>
+<li><strong>Test Performance</strong>: Ensure the module performs well with large data sets</li>
+</ol>
+<p>Example test for a custom module:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Test for a custom PhotoCarousel module</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">PhotoCarousel</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;./modules/photoCarousel.js&#39;</span><span class="p">;</span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">testPhotoCarousel</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Testing PhotoCarousel module...&#39;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Create container</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">container</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">container</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Initialize carousel</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">carousel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">PhotoCarousel</span><span class="p">({</span>
+<span class="w">    </span><span class="nx">container</span><span class="o">:</span><span class="w"> </span><span class="nx">container</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">onPhotoChange</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">index</span><span class="p">,</span><span class="w"> </span><span class="nx">photo</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Photo changed to </span><span class="si">${</span><span class="nx">index</span><span class="si">}</span><span class="sb">: </span><span class="si">${</span><span class="nx">photo</span><span class="p">.</span><span class="nx">name</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="c1">// Test setting photos</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">photos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">url</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;test1.jpg&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Test 1&#39;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">url</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;test2.jpg&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Test 2&#39;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">url</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;test3.jpg&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Test 3&#39;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">];</span>
+<span class="w">  </span><span class="nx">carousel</span><span class="p">.</span><span class="nx">setPhotos</span><span class="p">(</span><span class="nx">photos</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Test showing the carousel</span>
+<span class="w">  </span><span class="nx">carousel</span><span class="p">.</span><span class="nx">show</span><span class="p">();</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">carousel</span><span class="p">.</span><span class="nx">isVisible</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;Carousel should be visible&#39;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Test navigation</span>
+<span class="w">  </span><span class="nx">carousel</span><span class="p">.</span><span class="nx">showNext</span><span class="p">();</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">carousel</span><span class="p">.</span><span class="nx">currentIndex</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Should advance to next photo&#39;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="nx">carousel</span><span class="p">.</span><span class="nx">showPrevious</span><span class="p">();</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">carousel</span><span class="p">.</span><span class="nx">currentIndex</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Should go back to previous photo&#39;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Test hiding</span>
+<span class="w">  </span><span class="nx">carousel</span><span class="p">.</span><span class="nx">hide</span><span class="p">();</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="o">!</span><span class="nx">carousel</span><span class="p">.</span><span class="nx">isVisible</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;Carousel should be hidden&#39;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Clean up</span>
+<span class="w">  </span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">container</span><span class="p">);</span>
+
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;PhotoCarousel tests completed&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">testPhotoCarousel</span><span class="p">();</span>
+</code></pre></div>
+<h2 id="common-testing-issues">Common Testing Issues<a class="headerlink" href="#common-testing-issues" title="Permanent link">&para;</a></h2>
+<p>Watch out for these common testing issues:</p>
+<ol>
+<li><strong>Asynchronous Operations</strong>: Use <code>async/await</code> or callbacks for asynchronous tests</li>
+<li><strong>DOM Dependencies</strong>: Ensure test DOM elements exist before testing</li>
+<li><strong>Browser Differences</strong>: Test in multiple browsers</li>
+<li><strong>CSS Isolation</strong>: CSS modules should not affect each other</li>
+<li><strong>Module Dependencies</strong>: Mock dependencies when testing individual modules</li>
+<li><strong>Performance Testing</strong>: Test with realistic data volumes</li>
+</ol>
+<h2 id="test-documentation">Test Documentation<a class="headerlink" href="#test-documentation" title="Permanent link">&para;</a></h2>
+<p>When writing tests, document:</p>
+<ol>
+<li><strong>Purpose</strong>: What aspect is being tested</li>
+<li><strong>Setup</strong>: Required environment and initial conditions</li>
+<li><strong>Actions</strong>: Steps to execute</li>
+<li><strong>Expected Results</strong>: What should happen</li>
+<li><strong>Cleanup</strong>: How to restore the system after testing</li>
+</ol>
+<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
+<p>Testing is essential for maintaining the quality and reliability of PixTrail. By testing both individual modules and their integration, you can ensure that changes and extensions work correctly without breaking existing functionality.</p>
+<p>Remember to test across different browsers, screen sizes, and with various inputs to ensure a robust application.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Documentation written by Yuki Shimizu
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2197 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for PixTrail - GPS Photo to GPX Tracker">
+      
+      
+        <meta name="author" content="Suki Tsubaki">
+      
+      
+      
+        <link rel="prev" href="../cli/">
+      
+      
+        <link rel="next" href="../faq/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.9">
+    
+    
+      
+        <title>Troubleshooting - PixTrail Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.4af4bdda.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#troubleshooting" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="PixTrail Documentation" class="md-header__button md-logo" aria-label="PixTrail Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            PixTrail Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Troubleshooting
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sukitsubaki/pixtrail" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sukitsubaki/pixtrail
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="PixTrail Documentation" class="md-nav__button md-logo" aria-label="PixTrail Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    PixTrail Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sukitsubaki/pixtrail" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sukitsubaki/pixtrail
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation & Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Installation & Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Usage
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../web-interface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Web Interface
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command Line Interface
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installation-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#no-matches-found-pixtrailweb-error-in-zsh" class="md-nav__link">
+    <span class="md-ellipsis">
+      "No matches found: pixtrail[web]" error in zsh
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#package-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      Package Not Found
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependency-installation-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dependency Installation Failures
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permission-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Permission Errors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#package-installed-but-command-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      Package installed but command not found
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#package-shows-as-installed-but-doesnt-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      Package shows as installed but doesn't work
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#command-line-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Command Line Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Command Line Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#invalid-syntax-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Invalid Syntax Errors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-gps-data-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      No GPS Data Found
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#errors-with-raw-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Errors with RAW Files
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#web-interface-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Web Interface Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Web Interface Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#web-server-wont-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      Web Server Won't Start
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#browser-doesnt-open-automatically" class="md-nav__link">
+    <span class="md-ellipsis">
+      Browser Doesn't Open Automatically
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#directory-selection-not-working" class="md-nav__link">
+    <span class="md-ellipsis">
+      Directory Selection Not Working
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#files-not-appearing-in-upload" class="md-nav__link">
+    <span class="md-ellipsis">
+      Files Not Appearing in Upload
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#map-does-not-display" class="md-nav__link">
+    <span class="md-ellipsis">
+      Map Does Not Display
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps-data-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPS Data Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GPS Data Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#incorrect-coordinates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Incorrect Coordinates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#missing-timestamps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Missing Timestamps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inconsistent-gps-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inconsistent GPS Data
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gpx-file-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPX File Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GPX File Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#empty-gpx-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Empty GPX File
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gpx-import-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPX Import Problems
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#missing-elevation-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Missing Elevation Data
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#slow-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Slow Processing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-memory-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      High Memory Usage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#browser-performance-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Browser Performance Issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#debugging-with-verbose-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging with Verbose Mode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-to-a-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logging to a File
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checking-exif-data-manually" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checking EXIF Data Manually
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-from-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running from Source
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-additional-help" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting Additional Help
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/module-structure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module Structure
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/css-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CSS Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Visualization
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Visualization
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../visualization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../visualization/heatmap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Heat Map
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../visualization/clustering/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Marker Clustering
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../visualization/statistics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Statistics and Charts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/photo-journey/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Photo Journey
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/batch-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Batch Processing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/custom-visualizations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Custom Visualizations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/core/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Core Modules
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/exif/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EXIF Reader
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/gpx/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GPX Generator
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Utility Modules
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installation-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#no-matches-found-pixtrailweb-error-in-zsh" class="md-nav__link">
+    <span class="md-ellipsis">
+      "No matches found: pixtrail[web]" error in zsh
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#package-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      Package Not Found
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependency-installation-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dependency Installation Failures
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permission-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Permission Errors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#package-installed-but-command-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      Package installed but command not found
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#package-shows-as-installed-but-doesnt-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      Package shows as installed but doesn't work
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#command-line-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Command Line Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Command Line Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#invalid-syntax-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Invalid Syntax Errors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-gps-data-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      No GPS Data Found
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#errors-with-raw-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Errors with RAW Files
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#web-interface-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Web Interface Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Web Interface Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#web-server-wont-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      Web Server Won't Start
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#browser-doesnt-open-automatically" class="md-nav__link">
+    <span class="md-ellipsis">
+      Browser Doesn't Open Automatically
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#directory-selection-not-working" class="md-nav__link">
+    <span class="md-ellipsis">
+      Directory Selection Not Working
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#files-not-appearing-in-upload" class="md-nav__link">
+    <span class="md-ellipsis">
+      Files Not Appearing in Upload
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#map-does-not-display" class="md-nav__link">
+    <span class="md-ellipsis">
+      Map Does Not Display
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps-data-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPS Data Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GPS Data Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#incorrect-coordinates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Incorrect Coordinates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#missing-timestamps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Missing Timestamps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inconsistent-gps-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inconsistent GPS Data
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gpx-file-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPX File Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GPX File Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#empty-gpx-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Empty GPX File
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gpx-import-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPX Import Problems
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#missing-elevation-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Missing Elevation Data
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#slow-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Slow Processing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-memory-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      High Memory Usage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#browser-performance-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Browser Performance Issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#debugging-with-verbose-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging with Verbose Mode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-to-a-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logging to a File
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checking-exif-data-manually" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checking EXIF Data Manually
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-from-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running from Source
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-additional-help" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting Additional Help
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h1>
+<p>This guide addresses common issues you might encounter when using PixTrail.</p>
+<h2 id="installation-issues">Installation Issues<a class="headerlink" href="#installation-issues" title="Permanent link">&para;</a></h2>
+<h3 id="no-matches-found-pixtrailweb-error-in-zsh">"No matches found: pixtrail[web]" error in zsh<a class="headerlink" href="#no-matches-found-pixtrailweb-error-in-zsh" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> When trying to install PixTrail with web interface in zsh (default shell on macOS), you get an error like:
+<div class="highlight"><pre><span></span><code>zsh: no matches found: pixtrail[web]
+</code></pre></div></p>
+<p><strong>Solution:</strong> In zsh, square brackets are used for pattern matching. Use quotes around the package name:
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;pixtrail[web]&quot;</span>
+</code></pre></div></p>
+<h3 id="package-not-found">Package Not Found<a class="headerlink" href="#package-not-found" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> You receive <code>No matching distribution found for pixtrail</code>.</p>
+<p><strong>Solutions:</strong>
+- Check your internet connection
+- Verify you have a compatible Python version (3.6+)
+- Try updating pip: <code>pip install --upgrade pip</code>
+- If behind a proxy, configure pip to use it: <code>pip install --proxy=http://user:password@proxyserver:port pixtrail</code></p>
+<h3 id="dependency-installation-failures">Dependency Installation Failures<a class="headerlink" href="#dependency-installation-failures" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> Dependencies fail to install.</p>
+<p><strong>Solutions:</strong>
+- Install build dependencies: <code>pip install wheel setuptools</code>
+- For Windows users with C extension issues: <code>pip install pipwin &amp;&amp; pipwin install pillow</code>
+- Try installing in a virtual environment to avoid system conflicts
+- If using Linux, install development packages: <code>sudo apt-get install python3-dev libjpeg-dev zlib1g-dev</code></p>
+<h3 id="permission-errors">Permission Errors<a class="headerlink" href="#permission-errors" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> You get "Permission denied" errors during installation.</p>
+<p><strong>Solutions:</strong>
+- Use <code>pip install --user pixtrail</code> to install in user space
+- Run the command prompt/terminal as administrator/root
+- Check folder permissions where Python packages are installed</p>
+<h3 id="package-installed-but-command-not-found">Package installed but command not found<a class="headerlink" href="#package-installed-but-command-not-found" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> You've installed PixTrail, but when you run the <code>pixtrail</code> command, you get a "command not found" error.</p>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li>
+<p>Find where Python scripts are installed and add to PATH:
+   <div class="highlight"><pre><span></span><code><span class="c1"># Find your Python scripts directory</span>
+python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import site; print(site.USER_BASE + &#39;/bin&#39;)&quot;</span><span class="w">  </span><span class="c1"># Linux/macOS</span>
+python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import site; print(site.USER_BASE + &#39;\\Scripts&#39;)&quot;</span><span class="w">  </span><span class="c1"># Windows</span>
+
+<span class="c1"># Add to PATH (temporary)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PATH</span><span class="s2">:/path/to/scripts/directory&quot;</span><span class="w">  </span><span class="c1"># Linux/macOS</span>
+<span class="nb">set</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span>%PATH%<span class="p">;</span>C:<span class="se">\p</span>ath<span class="se">\t</span>o<span class="se">\s</span>cripts<span class="se">\d</span>irectory<span class="w">  </span><span class="c1"># Windows</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Try running PixTrail with the Python module syntax:
+   <div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>pixtrail<span class="w"> </span>--help
+</code></pre></div></p>
+</li>
+<li>
+<p>Create an alias in your shell configuration file (.bashrc, .zshrc):
+   <div class="highlight"><pre><span></span><code><span class="nb">alias</span><span class="w"> </span><span class="nv">pixtrail</span><span class="o">=</span><span class="s2">&quot;python -m pixtrail&quot;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Reinstall the package with:
+   <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>--force-reinstall<span class="w"> </span>pixtrail
+</code></pre></div></p>
+</li>
+</ol>
+<h3 id="package-shows-as-installed-but-doesnt-work">Package shows as installed but doesn't work<a class="headerlink" href="#package-shows-as-installed-but-doesnt-work" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> Pip says the package is installed, but it doesn't work properly.</p>
+<p><strong>Solutions:</strong>
+1. Try using a virtual environment for a clean installation:
+   <div class="highlight"><pre><span></span><code><span class="c1"># With venv</span>
+python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>pixtrail_env
+<span class="nb">source</span><span class="w"> </span>pixtrail_env/bin/activate<span class="w">  </span><span class="c1"># Linux/macOS</span>
+pixtrail_env<span class="se">\S</span>cripts<span class="se">\a</span>ctivate<span class="w">  </span><span class="c1"># Windows</span>
+
+<span class="c1"># With conda</span>
+conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>pixtrail<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.9
+conda<span class="w"> </span>activate<span class="w"> </span>pixtrail
+
+<span class="c1"># Then install</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;pixtrail[web]&quot;</span>
+</code></pre></div></p>
+<ol>
+<li>
+<p>Install directly from GitHub:
+   <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/sukitsubaki/pixtrail.git
+</code></pre></div></p>
+</li>
+<li>
+<p>Verify the package is correctly installed:
+   <div class="highlight"><pre><span></span><code>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import pixtrail; print(pixtrail.__file__)&quot;</span>
+pip<span class="w"> </span>show<span class="w"> </span>pixtrail
+</code></pre></div></p>
+</li>
+</ol>
+<h2 id="command-line-issues">Command Line Issues<a class="headerlink" href="#command-line-issues" title="Permanent link">&para;</a></h2>
+<h3 id="invalid-syntax-errors">Invalid Syntax Errors<a class="headerlink" href="#invalid-syntax-errors" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> You get Python syntax errors when running PixTrail.</p>
+<p><strong>Solutions:</strong>
+- Check that you're using Python 3.6 or newer
+- Verify that the command line arguments are correctly formatted
+- Avoid using quotes in paths with spaces; use single quotes if needed: <code>pixtrail -i '/path with spaces/'</code></p>
+<h3 id="no-gps-data-found">No GPS Data Found<a class="headerlink" href="#no-gps-data-found" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> PixTrail reports "No GPS data found in photos".</p>
+<p><strong>Solutions:</strong>
+- Verify your photos actually contain GPS data using other software (like ExifTool)
+- Ensure you have permission to read the input directory
+- Check that the file formats are supported (.jpg, .jpeg, .tiff, .raw formats)
+- Try processing a single photo known to have GPS data: <code>pixtrail -i /path/to/single_photo.jpg -v</code></p>
+<h3 id="errors-with-raw-files">Errors with RAW Files<a class="headerlink" href="#errors-with-raw-files" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> RAW files aren't processed correctly.</p>
+<p><strong>Solutions:</strong>
+- Install additional dependencies: <code>pip install rawpy</code>
+- Check if your RAW format is supported (CR2, NEF, ARW, DNG, etc.)
+- Try converting RAW to JPEG first, then processing the JPEGs
+- Use verbose mode to see which files have issues: <code>pixtrail -i /path/to/photos -v</code></p>
+<h2 id="web-interface-issues">Web Interface Issues<a class="headerlink" href="#web-interface-issues" title="Permanent link">&para;</a></h2>
+<h3 id="web-server-wont-start">Web Server Won't Start<a class="headerlink" href="#web-server-wont-start" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> The web server fails to start.</p>
+<p><strong>Solutions:</strong>
+- Check if another application is using port 5000
+- Try a different port: <code>pixtrail -w --port 8080</code>
+- Look for error messages in the terminal
+- Check if you have access rights to bind to the specified host
+- Install web dependencies if missing: <code>pip install "pixtrail[web]"</code></p>
+<h3 id="browser-doesnt-open-automatically">Browser Doesn't Open Automatically<a class="headerlink" href="#browser-doesnt-open-automatically" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> The browser doesn't launch when starting the web interface.</p>
+<p><strong>Solutions:</strong>
+- Open your browser manually and navigate to <code>http://127.0.0.1:5000</code>
+- Try using the <code>--no-browser</code> flag and then open the URL manually
+- Check if you have a default browser set in your system</p>
+<h3 id="directory-selection-not-working">Directory Selection Not Working<a class="headerlink" href="#directory-selection-not-working" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> The directory selector doesn't work in the web interface.</p>
+<p><strong>Solutions:</strong>
+- Try using the file upload option instead
+- Some browsers have limited directory access (especially on mobile)
+- Check if you're using a supported browser (Chrome/Firefox/Edge recommended)
+- Try dragging and dropping the directory onto the drop area</p>
+<h3 id="files-not-appearing-in-upload">Files Not Appearing in Upload<a class="headerlink" href="#files-not-appearing-in-upload" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> Files don't appear after selection in the web interface.</p>
+<p><strong>Solutions:</strong>
+- Check if you're selecting files with supported formats
+- Ensure files aren't too large for browser processing
+- Try dragging and dropping files directly
+- Clear your browser cache and try again
+- Use the Chrome or Firefox browser for best compatibility</p>
+<h3 id="map-does-not-display">Map Does Not Display<a class="headerlink" href="#map-does-not-display" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> The map doesn't appear after processing.</p>
+<p><strong>Solutions:</strong>
+- Check your internet connection (needed for map tiles)
+- Look for JavaScript errors in the browser console (F12)
+- Verify that your files contain valid GPS coordinates
+- Try disabling browser extensions that might block content</p>
+<h2 id="gps-data-issues">GPS Data Issues<a class="headerlink" href="#gps-data-issues" title="Permanent link">&para;</a></h2>
+<h3 id="incorrect-coordinates">Incorrect Coordinates<a class="headerlink" href="#incorrect-coordinates" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> Your route appears in the wrong location.</p>
+<p><strong>Solutions:</strong>
+- Check that your camera's date/time was correctly set when taking photos
+- Some cameras store coordinates in non-standard formats
+- Try using ExifTool to verify the coordinates are correct in the original files
+- Check if any software might have modified the EXIF data before processing</p>
+<h3 id="missing-timestamps">Missing Timestamps<a class="headerlink" href="#missing-timestamps" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> Your route has no chronological order.</p>
+<p><strong>Solutions:</strong>
+- Ensure your camera records timestamps in EXIF data
+- Check if file modification dates can be used as a fallback
+- Verify that the time zone settings on your camera were correct</p>
+<h3 id="inconsistent-gps-data">Inconsistent GPS Data<a class="headerlink" href="#inconsistent-gps-data" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> Your route has strange jumps or inconsistencies.</p>
+<p><strong>Solutions:</strong>
+- Photos taken indoors or in "urban canyons" may have poor GPS accuracy
+- Some cameras only update GPS periodically to save battery
+- Try removing outliers manually before processing
+- Use clustering or heatmap visualization to identify problematic points</p>
+<h2 id="gpx-file-issues">GPX File Issues<a class="headerlink" href="#gpx-file-issues" title="Permanent link">&para;</a></h2>
+<h3 id="empty-gpx-file">Empty GPX File<a class="headerlink" href="#empty-gpx-file" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> The generated GPX file is empty.</p>
+<p><strong>Solutions:</strong>
+- Ensure your photos contain GPS data
+- Check if you have write permissions for the output location
+- Try specifying a different output path: <code>pixtrail -i /path/to/photos -o /path/to/output.gpx</code>
+- Run with verbose mode to see what's happening: <code>pixtrail -i /path/to/photos -v</code></p>
+<h3 id="gpx-import-problems">GPX Import Problems<a class="headerlink" href="#gpx-import-problems" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> Mapping software can't import the generated GPX file.</p>
+<p><strong>Solutions:</strong>
+- Verify the file was created successfully (should be non-zero size)
+- Check if the GPX format is compatible with your software
+- Try opening the file in a text editor to check for obvious errors
+- Different applications support different GPX features; try a simple viewer first</p>
+<h3 id="missing-elevation-data">Missing Elevation Data<a class="headerlink" href="#missing-elevation-data" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> Elevation data is missing in the GPX file.</p>
+<p><strong>Solutions:</strong>
+- Not all cameras record elevation data
+- Elevation data might be absent or inaccurate depending on the device
+- Some mapping software can add elevation data after import
+- Consider using a GPX editor to add elevation data from a DEM (Digital Elevation Model)</p>
+<h2 id="performance-issues">Performance Issues<a class="headerlink" href="#performance-issues" title="Permanent link">&para;</a></h2>
+<h3 id="slow-processing">Slow Processing<a class="headerlink" href="#slow-processing" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> Processing is very slow.</p>
+<p><strong>Solutions:</strong>
+- RAW files take much longer to process than JPEG
+- Processing many files at once requires more memory
+- Processing recursively through many subdirectories takes longer
+- For large collections, process in smaller batches
+- Use the command line interface for better performance with many files</p>
+<h3 id="high-memory-usage">High Memory Usage<a class="headerlink" href="#high-memory-usage" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> PixTrail uses too much memory.</p>
+<p><strong>Solutions:</strong>
+- Process fewer photos at once
+- Avoid recursive processing of large directory trees
+- Close other memory-intensive applications
+- For very large collections, use batch processing with smaller groups</p>
+<h3 id="browser-performance-issues">Browser Performance Issues<a class="headerlink" href="#browser-performance-issues" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> The web interface is slow or unresponsive.</p>
+<p><strong>Solutions:</strong>
+- Enable clustering when displaying many photo markers
+- Process fewer photos at a time
+- Try a different browser (Chrome often has the best performance)
+- Avoid having too many browser tabs or applications open simultaneously</p>
+<h2 id="advanced-troubleshooting">Advanced Troubleshooting<a class="headerlink" href="#advanced-troubleshooting" title="Permanent link">&para;</a></h2>
+<h3 id="debugging-with-verbose-mode">Debugging with Verbose Mode<a class="headerlink" href="#debugging-with-verbose-mode" title="Permanent link">&para;</a></h3>
+<p>For detailed information about what's happening:</p>
+<div class="highlight"><pre><span></span><code>pixtrail<span class="w"> </span>-i<span class="w"> </span>/path/to/photos<span class="w"> </span>-v
+</code></pre></div>
+<p>The verbose output will show:
+- Which files are being processed
+- Whether EXIF data was found
+- GPS coordinates extracted
+- Any errors encountered</p>
+<h3 id="logging-to-a-file">Logging to a File<a class="headerlink" href="#logging-to-a-file" title="Permanent link">&para;</a></h3>
+<p>To save troubleshooting information to a file:</p>
+<div class="highlight"><pre><span></span><code>pixtrail<span class="w"> </span>-i<span class="w"> </span>/path/to/photos<span class="w"> </span>-v<span class="w"> </span>&gt;<span class="w"> </span>pixtrail_log.txt<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+</code></pre></div>
+<p>This captures both standard output and error messages for later analysis.</p>
+<h3 id="checking-exif-data-manually">Checking EXIF Data Manually<a class="headerlink" href="#checking-exif-data-manually" title="Permanent link">&para;</a></h3>
+<p>To verify GPS data in your photos:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Using exiftool (may need to be installed separately)</span>
+exiftool<span class="w"> </span>-gps:all<span class="w"> </span>-time:all<span class="w"> </span>photo.jpg
+</code></pre></div>
+<h3 id="running-from-source">Running from Source<a class="headerlink" href="#running-from-source" title="Permanent link">&para;</a></h3>
+<p>For debugging or development:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/sukitsubaki/pixtrail.git
+<span class="nb">cd</span><span class="w"> </span>pixtrail
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+python<span class="w"> </span>-m<span class="w"> </span>pixtrail.cli<span class="w"> </span>-i<span class="w"> </span>/path/to/photos<span class="w"> </span>-v
+</code></pre></div>
+<h2 id="getting-additional-help">Getting Additional Help<a class="headerlink" href="#getting-additional-help" title="Permanent link">&para;</a></h2>
+<p>If you're still experiencing issues:</p>
+<ol>
+<li>Check the <a href="../faq/">FAQ</a> for common questions</li>
+<li>Search for similar issues in the GitHub repository</li>
+<li>Ensure you're using the latest version of PixTrail</li>
+<li>Provide detailed information when reporting issues:</li>
+<li>PixTrail version: <code>pixtrail --version</code></li>
+<li>Python version: <code>python --version</code></li>
+<li>Operating system details</li>
+<li>Complete error messages</li>
+<li>Steps to reproduce the problem</li>
+<li>Sample files (if possible)</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Documentation written by Yuki Shimizu
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>
