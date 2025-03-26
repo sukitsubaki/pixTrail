@@ -4,7 +4,6 @@ sukitsubaki/pixTrail/
 ├── LICENSE
 ├── README.md
 ├── SECURITY.md
-├── TEAM.md
 ├── build_docs.py
 ├── mkdocs.yml
 ├── pyproject.toml
