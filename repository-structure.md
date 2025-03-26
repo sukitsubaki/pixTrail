@@ -2,7 +2,6 @@
 sukitsubaki/pixTrail/
 ├── CHANGELOG.md
 ├── LICENSE
-├── README.md
 ├── SECURITY.md
 ├── build_docs.py
 ├── mkdocs.yml
