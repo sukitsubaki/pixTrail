@@ -8,11 +8,11 @@
 # PixTrail
 
 **PixTrail is a simple yet powerful tool that extracts the GPS information stored in your photos' EXIF metadata and converts it into standard GPX format that can be used in various mapping applications, allowing you to visualize and share your journeys.**
-
+<!--
 <div align="center">
   <img src="docs/assets/pixtrail-hero.png" alt="PixTrail Map Visualization" width="80%">
 </div>
-
+-->
 ## Quick Start
 
 ```bash
@@ -140,11 +140,11 @@ pixtrail -w --no-browser
 ### Web Interface
 
 The web interface provides a user-friendly way to upload photos, extract GPS data, visualize routes on a map, and download GPX files:
-
+<!--
 <div align="center">
   <img src="docs/assets/pixtrail-web-interface.png" alt="PixTrail Web Interface" width="100%">
 </div>
-
+-->
 1. Start the web interface:
    ```bash
    pixtrail -w
